@@ -1,0 +1,30 @@
+/*
+Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+Click nbfs://nbhost/SystemFileSystem/Templates/Other/CascadeStyleSheet.css to edit this template
+*/
+/* 
+    Created on : Mar 9, 2023, 7:50:13 PM
+    Author     : DELL
+*/
+* {
+    -fx-font-family: Tahoma;
+    
+}
+
+HBox.title  {
+    -fx-alignment: CENTER;
+    -fx-background-color: beige;
+    -fx-font-size: 25;
+    -fx-stroke: gold;
+    -fx-stroke-width: 3;
+}
+
+HBox.title Label {
+    -fx-padding: 10;
+}
+
+GridPane {
+    -fx-spacing: 10;
+}
+
+
