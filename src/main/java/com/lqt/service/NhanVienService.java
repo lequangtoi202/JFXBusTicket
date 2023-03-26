@@ -39,6 +39,29 @@ public class NhanVienService {
         return null;
     }
     
+    public NhanVien getNhanVienByUserId(int id) throws SQLException{
+        try ( Connection conn = JdbcUtils.getConn()) {
+            // B3 Truy van
+            String sql = "SELECT * FROM nhan_vien WHERE Ma_User = ?";
+            PreparedStatement stm = conn.prepareCall(sql);
+            stm.setInt(1, id);
+            // Truy van lay du lieu --> select
+            ResultSet rs = stm.executeQuery();
+            while (rs.next()) {
+                return new NhanVien(rs.getInt("Ma_NV"), 
+                        rs.getString("Ten_NV"), 
+                        rs.getBoolean("GioiTinh_NV"), 
+                        rs.getDate("NgaySinh_NV"), 
+                        rs.getString("DiaChi_NV"), 
+                        rs.getString("CCCD_NV"), 
+                        rs.getString("DienThoai"), 
+                        rs.getString("Email"), 
+                        rs.getInt("Ma_User"));
+            }
+        }
+        return null;
+    }
+    
     public NhanVien getNhanVienByName(String name) throws SQLException{
         try ( Connection conn = JdbcUtils.getConn()) {
             // B3 Truy van

@@ -104,5 +104,11 @@ public class ChuyenXe {
     public void setMaTaiXe(int maTaiXe) {
         this.maTaiXe = maTaiXe;
     }
+
+    @Override
+    public String toString() {
+        return this.tenChuyen; // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/OverriddenMethodBody
+    }
+    
     
 }

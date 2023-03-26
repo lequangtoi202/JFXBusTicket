@@ -102,6 +102,11 @@ public class Xe {
     public void setMaLoaiXe(int maLoaiXe) {
         this.maLoaiXe = maLoaiXe;
     }
+
+    @Override
+    public String toString() {
+        return this.tenXe;
+    }
     
     
 }

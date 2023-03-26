@@ -42,7 +42,7 @@ public class TuyenXeService {
     public TuyenXe getTuyenXeById(int id) throws SQLException{
         try ( Connection conn = JdbcUtils.getConn()) {
             // B3 Truy van
-            String sql = "SELECT * FROM tuyen_xe WHERE Ma_Ben = ?";
+            String sql = "SELECT * FROM tuyen_xe WHERE Ma_Tuyen_Xe = ?";
             PreparedStatement stm = conn.prepareCall(sql);
             stm.setInt(1, id);
             // Truy van lay du lieu --> select

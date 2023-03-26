@@ -22,7 +22,7 @@ public class XeService {
     public List<Xe> getAllXe() throws SQLException {
         List<Xe> listXe = new ArrayList<>();
         try (Connection conn = JdbcUtils.getConn()) {
-            String sql = "SELECT * FROM tai_xe";
+            String sql = "SELECT * FROM xe";
             
             Statement stm = conn.createStatement();
             // Truy van lay du lieu --> select
@@ -42,7 +42,7 @@ public class XeService {
     public Xe getXeById(int id) throws SQLException{
         try ( Connection conn = JdbcUtils.getConn()) {
             // B3 Truy van
-            String sql = "SELECT * FROM ben_xe WHERE Ma_Ben = ?";
+            String sql = "SELECT * FROM xe WHERE Ma_xe = ?";
             PreparedStatement stm = conn.prepareCall(sql);
             stm.setInt(1, id);
             // Truy van lay du lieu --> select

@@ -25,7 +25,7 @@ public class ChuyenXeService {
     public List<ChuyenXe> getAllChuyenXe() throws SQLException {
         List<ChuyenXe> listChuyenXe = new ArrayList<>();
         try (Connection conn = JdbcUtils.getConn()) {
-            String sql = "SELECT * FROM tai_xe";
+            String sql = "SELECT * FROM chuyen_xe";
             Statement stm = conn.createStatement();
             // Truy van lay du lieu --> select
             ResultSet rs = stm.executeQuery(sql);
@@ -45,19 +45,17 @@ public class ChuyenXeService {
     public List<ChuyenXe> getChuyenXeByBenDiAndBenDen(String benDi, String benDen) throws SQLException {
         List<ChuyenXe> listChuyenXe = new ArrayList<>();
         try (Connection conn = JdbcUtils.getConn()) {
-            String sql = "select c.Ma_Chuyen_Xe, c.Ma_tai_xe, c.Ma_Tuyen_Xe, c.Ten_Chuyen_Xe, c.Thoi_gian_di\n" +
-                            "from chuyen_xe as c, tuyen_xe as t\n" +
-                            "where c.Ma_Tuyen_Xe = t.Ma_Tuyen_Xe\n" +
-                            "AND t.Ma_Tuyen_Xe = ((select t.Ma_Tuyen_Xe\n" +
-                            "from tuyen_xe as t, ben_xe as b\n" +
-                            "where t.Ma_ben_di = b.Ma_Ben and b.Ten_Ben_Xe like concat('%', ?, '%')) \n" +
-                            "or (select t.Ma_Tuyen_Xe\n" +
-                            "from tuyen_xe as t, ben_xe as b\n" +
-                            "where t.Ma_ben_den = b.Ma_Ben and b.Ten_Ben_Xe like concat('%', ?, '%')));";
+            String sql = "SELECT c.Ma_Chuyen_Xe, c.Ma_tai_xe, c.Ma_Tuyen_Xe, c.Ten_Chuyen_Xe, c.Thoi_gian_di\n" +
+                            "FROM chuyen_xe AS c, tuyen_xe AS t\n" +
+                            "WHERE c.Ma_Tuyen_Xe = t.Ma_Tuyen_Xe\n" +
+                            "  AND t.Ma_ben_di = (SELECT b.Ma_Ben\n" +
+                            "                     FROM ben_xe AS b\n" +
+                            "                     WHERE b.Ten_Ben_Xe LIKE '%" + benDi + "%')\n" +
+                            "  AND t.Ma_ben_den = (SELECT b.Ma_Ben\n" +
+                            "                      FROM ben_xe AS b\n" +
+                            "                      WHERE b.Ten_Ben_Xe LIKE '%" + benDen + "%')";
             
-            PreparedStatement stm = conn.prepareCall(sql);
-            stm.setString(1, benDi);
-            stm.setString(2, benDen);
+            Statement stm = conn.prepareCall(sql);
             // Truy van lay du lieu --> select
             ResultSet rs = stm.executeQuery(sql);
             while (rs.next()) {
@@ -75,7 +73,7 @@ public class ChuyenXeService {
     public ChuyenXe getChuyenXeById(int id) throws SQLException{
         try ( Connection conn = JdbcUtils.getConn()) {
             // B3 Truy van
-            String sql = "SELECT * FROM ben_xe WHERE Ma_Ben = ?";
+            String sql = "SELECT * FROM chuyen_xe WHERE Ma_Chuyen_Xe = ?";
             PreparedStatement stm = conn.prepareCall(sql);
             stm.setInt(1, id);
             // Truy van lay du lieu --> select
@@ -132,4 +130,5 @@ public class ChuyenXeService {
            return stm.executeUpdate() > 0;
         }
     }
+   
 }

@@ -21,7 +21,7 @@ public class BenXeService {
     public List<BenXe> getAllBenXe() throws SQLException {
         List<BenXe> listBenXe = new ArrayList<>();
         try (Connection conn = JdbcUtils.getConn()) {
-            String sql = "SELECT * FROM tai_xe";
+            String sql = "SELECT * FROM ben_xe";
             
             Statement stm = conn.createStatement();
             // Truy van lay du lieu --> select
