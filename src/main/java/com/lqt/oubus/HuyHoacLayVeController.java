@@ -177,4 +177,13 @@ public class HuyHoacLayVeController {
             controller.setUserInfo(user);
             stage.show();
     }
+    
+    public void DangXuat(ActionEvent e) throws IOException, SQLException{
+        Stage stage = (Stage)((Node)e.getSource()).getScene().getWindow();
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("login.fxml"));
+        Parent loginView = loader.load();
+        Scene scene = new Scene(loginView);
+        stage.setScene(scene);
+        stage.show();
+    }
 }

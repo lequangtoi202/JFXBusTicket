@@ -102,6 +102,11 @@ public class TuyenXe {
     public void setMaBenDen(int maBenDen) {
         this.maBenDen = maBenDen;
     }
+
+    @Override
+    public String toString() {
+        return this.tenTuyen; // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/OverriddenMethodBody
+    }
     
     
 }

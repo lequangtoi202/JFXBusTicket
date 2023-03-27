@@ -4,6 +4,7 @@
  */
 package com.lqt.service;
 
+import com.lqt.pojo.Role;
 import com.lqt.pojo.User;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -32,7 +33,7 @@ public class UserService {
     }
     
     public boolean addUser(User user) throws SQLException{
-         try (Connection conn = JdbcUtils.getConn()) {
+        try (Connection conn = JdbcUtils.getConn()) {
             conn.setAutoCommit(false);
             
            String sql = "INSERT INTO user(username, password, role_id) VALUES(?, ?, ?)";//SQL injection
@@ -47,4 +48,5 @@ public class UserService {
            return r > 0;
         }
     }
+    
 }

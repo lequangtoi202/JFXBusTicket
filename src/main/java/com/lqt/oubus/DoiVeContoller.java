@@ -31,8 +31,6 @@ import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -214,5 +212,14 @@ public class DoiVeContoller {
             BanVeController controller = loader.getController();
             controller.setUserInfo(user);
             stage.show();
+    }
+    
+    public void DangXuat(ActionEvent e) throws IOException, SQLException{
+        Stage stage = (Stage)((Node)e.getSource()).getScene().getWindow();
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("login.fxml"));
+        Parent loginView = loader.load();
+        Scene scene = new Scene(loginView);
+        stage.setScene(scene);
+        stage.show();
     }
 }

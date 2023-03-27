@@ -75,47 +75,26 @@ public class BanVeController implements Initializable{
     private User user;
     @FXML private Label lbMaUser;
     @FXML private Label lbUsername;
-    @FXML
-    private ComboBox<Xe> cbXe;
-    @FXML 
-    private TableView<ChuyenXe> tbChuyenXe;
-    @FXML
-    private ComboBox<BenXe> cbBenDi;
-    @FXML
-    private ComboBox<BenXe> cbBenDen;
-    @FXML
-    private ComboBox<Ghe> cbGhe;
-    @FXML
-    private DatePicker dNgaySinh;
-    @FXML
-    private DatePicker dNgayDi;
-    @FXML
-    private TextField txtGioDi;
-    @FXML
-    private Label lbTenChuyen;
-    @FXML
-    private TextField txtMaChuyen;
-    @FXML
-    private TextField txtBenDi;
-    @FXML
-    private TextField txtBenDen;
-    @FXML
-    private TextField txtTenKH;
-    @FXML
-    private RadioButton rdNam;
-    @FXML
-    private RadioButton rdNu;
-    @FXML
-    private TextField txtDiaChi;
-    @FXML
-    private TextField txtDienThoai;
-    @FXML
-    private TextField txtCCCD;
-    @FXML
-    private Label lbThanhTien;
+    @FXML private ComboBox<Xe> cbXe;
+    @FXML private TableView<ChuyenXe> tbChuyenXe;
+    @FXML private ComboBox<BenXe> cbBenDi;
+    @FXML private ComboBox<BenXe> cbBenDen;
+    @FXML private ComboBox<Ghe> cbGhe;
+    @FXML private DatePicker dNgaySinh;
+    @FXML private DatePicker dNgayDi;
+    @FXML private TextField txtGioDi;
+    @FXML private Label lbTenChuyen;
+    @FXML private TextField txtMaChuyen;
+    @FXML private TextField txtBenDi;
+    @FXML private TextField txtBenDen;
+    @FXML private TextField txtTenKH;
+    @FXML private RadioButton rdNam;
+    @FXML private RadioButton rdNu;
+    @FXML private TextField txtDiaChi;
+    @FXML private TextField txtDienThoai;
+    @FXML private TextField txtCCCD;
+    @FXML private Label lbThanhTien;
 
-    
-    
     public void setUserInfo(User user) throws SQLException{
         this.user = user;
         lbMaUser.setText(String.valueOf(nhanVienService.getNhanVienByUserId(user.getMaUser()).getMaNV()));
@@ -173,12 +152,11 @@ public class BanVeController implements Initializable{
         
         // format thời gian
         LocalDate selectedDate = dNgayDi.getValue();
-        String timeString = txtGioDi.getText(); // Example time string
+        String timeString = txtGioDi.getText();
         LocalTime localTime = LocalTime.parse(timeString);
 
-        // Combine the selected date and time values into a LocalDateTime object
         LocalDateTime thoiGianDi = LocalDateTime.of(selectedDate, localTime);
-        Duration duration = Duration.between(LocalDateTime.now(), thoiGianDi); // Calculate the duration between the two LocalDateTime objects
+        Duration duration = Duration.between(LocalDateTime.now(), thoiGianDi); 
         long minutes = duration.toMinutes();
         
         if (minutes < 5)
@@ -200,6 +178,10 @@ public class BanVeController implements Initializable{
                 clear();
             }
         }
+    }
+    
+    public void huyHandler(ActionEvent e){
+        clear();
     }
     
     public void clear(){
@@ -305,5 +287,14 @@ public class BanVeController implements Initializable{
             DoiVeContoller controller = loader.getController();
             controller.setUserInfo(user);
             stage.show();
+    }
+    
+    public void DangXuat(ActionEvent e) throws IOException, SQLException{
+        Stage stage = (Stage)((Node)e.getSource()).getScene().getWindow();
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("login.fxml"));
+        Parent loginView = loader.load();
+        Scene scene = new Scene(loginView);
+        stage.setScene(scene);
+        stage.show();
     }
 }

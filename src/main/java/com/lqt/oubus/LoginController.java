@@ -4,7 +4,9 @@
  */
 package com.lqt.oubus;
 
+import com.lqt.pojo.Role;
 import com.lqt.pojo.User;
+import com.lqt.service.RoleService;
 import com.lqt.service.UserService;
 import com.lqt.utils.MessageBox;
 import java.io.IOException;
@@ -25,6 +27,7 @@ import javafx.stage.Stage;
  */
 public class LoginController {
     private static final UserService UserService = new UserService();
+    private static final RoleService roleService = new RoleService();
     @FXML private TextField txtUsername;
     @FXML private TextField txtPassword;
     
@@ -36,16 +39,28 @@ public class LoginController {
         if (user.getPassword().equals(password)){
             MessageBox.getBox("Login", "Login Success", 
                 Alert.AlertType.INFORMATION).show();
+            Role role = roleService.getRoleById(user.getRoleId());
+            if (role.getName().equals("ADMIN")){
+                Stage stage = (Stage)((Node)evt.getSource()).getScene().getWindow();
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("trangChuAdmin.fxml"));
+                Parent manageView = loader.load();
+                Scene scene = new Scene(manageView);
+                ChuyenXeController controller = loader.getController();
+                controller.setUserInfo(user);
+                stage.setScene(scene);
+                stage.show();
+            }else{
+                // chuyen trang
+                Stage stage = (Stage)((Node)evt.getSource()).getScene().getWindow();
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("datVe.fxml"));
+                Parent manageView = loader.load();
+                Scene scene = new Scene(manageView);
+                DatVeController controller = loader.getController();
+                controller.setUserInfo(user);
+                stage.setScene(scene);
+                stage.show();
+            }
             
-            // chuyen trang
-            Stage stage = (Stage)((Node)evt.getSource()).getScene().getWindow();
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("datVe.fxml"));
-            Parent manageView = loader.load();
-            Scene scene = new Scene(manageView);
-            DatVeController controller = loader.getController();
-            controller.setUserInfo(user);
-            stage.setScene(scene);
-            stage.show();
             
         }else{
             MessageBox.getBox("Login", "Login Fail!", 

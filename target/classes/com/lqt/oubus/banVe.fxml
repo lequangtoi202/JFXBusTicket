@@ -70,7 +70,7 @@
                <children>
                   <Pane prefHeight="90.0" prefWidth="851.0" style="-fx-background-color: #2082cb;">
                      <children>
-                        <Button layoutX="725.0" layoutY="11.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="90.0" text="Đăng xuất" />
+                        <Button layoutX="725.0" layoutY="11.0" mnemonicParsing="false" onAction="#DangXuat" prefHeight="30.0" prefWidth="90.0" text="Đăng xuất" />
                         <Label fx:id="lbUsername" alignment="CENTER" layoutX="574.0" layoutY="11.0" prefHeight="32.0" prefWidth="119.0" text="Username" />
                         <Label fx:id="lbMaUser" layoutX="42.0" layoutY="19.0" text="Mã NV" visible="false" />
                      </children></Pane>
@@ -130,7 +130,7 @@
                               <TextField fx:id="txtDienThoai" promptText="--Số điện thoại--" GridPane.columnIndex="6" GridPane.columnSpan="4" GridPane.rowIndex="6" />
                               <TextField fx:id="txtDiaChi" promptText="--Địa chỉ--" GridPane.columnIndex="11" GridPane.columnSpan="4" GridPane.rowIndex="7" />
                               <Button mnemonicParsing="false" onAction="#muaVeHandler" prefHeight="32.0" prefWidth="78.0" text="Bán vé" GridPane.columnIndex="15" GridPane.columnSpan="3" GridPane.halignment="CENTER" GridPane.rowIndex="8" />
-                              <Button mnemonicParsing="false" prefHeight="33.0" prefWidth="37.0" text="Hủy" GridPane.columnIndex="18" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.rowIndex="8" />
+                              <Button mnemonicParsing="false" onAction="#huyHandler" prefHeight="33.0" prefWidth="37.0" text="Hủy" GridPane.columnIndex="18" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.rowIndex="8" />
                               <Button mnemonicParsing="false" onAction="#timChuyenXe" prefHeight="30.0" prefWidth="119.0" text="Tìm chuyến" GridPane.columnIndex="16" GridPane.columnSpan="3" GridPane.halignment="CENTER" />
                               <Separator prefWidth="200.0" GridPane.columnSpan="20" GridPane.rowIndex="2" />
                               <Label prefHeight="17.0" prefWidth="65.0" text="Nơi đi:" GridPane.columnIndex="4" GridPane.columnSpan="2" />

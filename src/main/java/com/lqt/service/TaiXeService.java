@@ -18,7 +18,7 @@ import java.util.List;
  * @author TOI
  */
 public class TaiXeService {
-    public TaiXe getNhanVienById(int id) throws SQLException{
+    public TaiXe getTaiXeById(int id) throws SQLException{
         try ( Connection conn = JdbcUtils.getConn()) {
             // B3 Truy van
             String sql = "SELECT * FROM tai_xe WHERE Ma_tx = ?";
@@ -33,7 +33,7 @@ public class TaiXeService {
                         rs.getDate("NgaySinh_tx"), 
                         rs.getString("DiaChi_tx"), 
                         rs.getString("CCCD"), 
-                        rs.getString("DienThoai"), 
+                        rs.getString("DienThoai_tx"), 
                         rs.getString("Email"));
             }
         }
@@ -55,7 +55,7 @@ public class TaiXeService {
                         rs.getDate("NgaySinh_tx"), 
                         rs.getString("DiaChi_tx"), 
                         rs.getString("CCCD"), 
-                        rs.getString("DienThoai"), 
+                        rs.getString("DienThoai_tx"), 
                         rs.getString("Email")));
             }
         }

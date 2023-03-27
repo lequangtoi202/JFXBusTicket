@@ -176,7 +176,7 @@ public class DatVeController implements Initializable{
             else
             {
                 if (!gheService.updateTrangThaiGheByMaGhe(this.cbGhe.getSelectionModel().getSelectedItem().getMaGhe(), TrangThaiGhe.Selected))
-                    MessageBox.getBox("Ghế", "Chọn ghế không thành công", Alert.AlertType.WARNING).show();
+                    MessageBox.getBox("Ghế", "Chọn ghế không thành công", Alert.AlertType.ERROR).show();
                 MessageBox.getBox("Ve Xe", "ĐẶT VÉ THÀNH CÔNG", Alert.AlertType.INFORMATION).show();
                 clear();
             }
@@ -284,5 +284,18 @@ public class DatVeController implements Initializable{
             DoiVeContoller controller = loader.getController();
             controller.setUserInfo(user);
             stage.show();
+    }
+    
+    public void DangXuat(ActionEvent e) throws IOException, SQLException{
+        Stage stage = (Stage)((Node)e.getSource()).getScene().getWindow();
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("login.fxml"));
+        Parent loginView = loader.load();
+        Scene scene = new Scene(loginView);
+        stage.setScene(scene);
+        stage.show();
+    }
+    
+    public void huyHandler(ActionEvent e){
+        clear();
     }
 }
