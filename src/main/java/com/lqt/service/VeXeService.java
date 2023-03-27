@@ -35,7 +35,7 @@ public class VeXeService {
             ResultSet rs = stm.executeQuery(sql);
             while (rs.next()) {
                 listVeXe.add(new VeXe(rs.getInt("Ma_Ve_Xe"), 
-                        LocalDateTime.of(LocalDate.now(), rs.getTime("Gio_ban").toLocalTime()),
+                        LocalDateTime.of(rs.getDate("Gio_ban").toLocalDate(), rs.getTime("Gio_ban").toLocalTime()),
                         Status.valueOf(rs.getString("Trang_thai")),
                         rs.getInt("Ma_nv"),
                         rs.getInt("Ma_kh"),
@@ -57,7 +57,7 @@ public class VeXeService {
             ResultSet rs = stm.executeQuery();
             while (rs.next()) {
                 return new VeXe(rs.getInt("Ma_Ve_Xe"), 
-                        LocalDateTime.of(LocalDate.now(), rs.getTime("Gio_ban").toLocalTime()),
+                        LocalDateTime.of(rs.getDate("Gio_ban").toLocalDate(), rs.getTime("Gio_ban").toLocalTime()),
                         Status.valueOf(rs.getString("Trang_thai")),
                         rs.getInt("Ma_nv"),
                         rs.getInt("Ma_kh"),
@@ -79,7 +79,7 @@ public class VeXeService {
             ResultSet rs = stm.executeQuery();
             while (rs.next()) {
                 return new VeXe(rs.getInt("Ma_Ve_Xe"), 
-                        LocalDateTime.of(LocalDate.now(), rs.getTime("Gio_ban").toLocalTime()),
+                        LocalDateTime.of(rs.getDate("Gio_ban").toLocalDate(), rs.getTime("Gio_ban").toLocalTime()),
                         Status.valueOf(rs.getString("Trang_thai")),
                         rs.getInt("Ma_nv"),
                         rs.getInt("Ma_kh"),

@@ -9,6 +9,7 @@ import com.lqt.pojo.ChuyenXe;
 import com.lqt.pojo.Ghe;
 import com.lqt.pojo.KhachHang;
 import com.lqt.pojo.Status;
+import com.lqt.pojo.TrangThaiGhe;
 import com.lqt.pojo.TuyenXe;
 import com.lqt.pojo.User;
 import com.lqt.pojo.VeXe;
@@ -168,8 +169,7 @@ public class BanVeController implements Initializable{
         
         //tạo khách hàng
         KhachHang khachHangSave = new KhachHang(tenKH, gioiTinh, ngaySinh, diaChi, dienThoai, CCCD);
-        int id = khachHangService.addKhachHang(khachHangSave);
-        KhachHang khachHang = khachHangService.getKhachHangById(id);
+        
         
         // format thời gian
         LocalDate selectedDate = dNgayDi.getValue();
@@ -178,21 +178,24 @@ public class BanVeController implements Initializable{
 
         // Combine the selected date and time values into a LocalDateTime object
         LocalDateTime thoiGianDi = LocalDateTime.of(selectedDate, localTime);
-        Duration duration = Duration.between(thoiGianDi, LocalDateTime.now()); // Calculate the duration between the two LocalDateTime objects
+        Duration duration = Duration.between(LocalDateTime.now(), thoiGianDi); // Calculate the duration between the two LocalDateTime objects
         long minutes = duration.toMinutes();
         
         if (minutes < 5)
-            MessageBox.getBox("Ve Xe", "Thời gian mua vé không hợp lệ!", 
+            MessageBox.getBox("Vé Xe", "Thời gian mua vé không hợp lệ!", 
                 Alert.AlertType.WARNING).show();
         else
         {
-            System.out.println(LocalDateTime.now());
+            int id = khachHangService.addKhachHang(khachHangSave);
+            KhachHang khachHang = khachHangService.getKhachHangById(id);
             VeXe veXe = new VeXe(LocalDateTime.now(), Status.Done, Integer.parseInt(lbMaUser.getText()) ,khachHang.getMaKH(),Integer.parseInt(txtMaChuyen.getText()), this.cbGhe.getSelectionModel().getSelectedItem().getMaGhe());
             if (!veXeService.addVeXe(veXe))
                 throw new SQLException("Mua vé thất bại");
             else
             {
-                MessageBox.getBox("Ve Xe", "MUA VÉ THÀNH CÔNG", 
+                if (!gheService.updateTrangThaiGheByMaGhe(this.cbGhe.getSelectionModel().getSelectedItem().getMaGhe(), TrangThaiGhe.Selected))
+                    MessageBox.getBox("Ghế", "Chọn ghế không thành công", Alert.AlertType.WARNING).show();
+                MessageBox.getBox("Vé Xe", "MUA VÉ THÀNH CÔNG", 
                     Alert.AlertType.INFORMATION).show();
                 clear();
             }

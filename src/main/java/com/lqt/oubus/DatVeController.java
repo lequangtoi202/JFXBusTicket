@@ -9,6 +9,7 @@ import com.lqt.pojo.ChuyenXe;
 import com.lqt.pojo.Ghe;
 import com.lqt.pojo.KhachHang;
 import com.lqt.pojo.Status;
+import com.lqt.pojo.TrangThaiGhe;
 import com.lqt.pojo.TuyenXe;
 import com.lqt.pojo.User;
 import com.lqt.pojo.VeXe;
@@ -146,11 +147,9 @@ public class DatVeController implements Initializable{
         String dienThoai = this.txtDienThoai.getText();
        
         Date ngaySinh = new SimpleDateFormat("yyyy-MM-dd").parse(this.dNgaySinh.getValue().toString());
-        
         //tạo khách hàng
         KhachHang khachHangSave = new KhachHang(tenKH, gioiTinh, ngaySinh, diaChi, dienThoai, CCCD);
-        int id = khachHangService.addKhachHang(khachHangSave);
-        KhachHang khachHang = khachHangService.getKhachHangById(id);
+        
         
         // format thời gian
         LocalDate selectedDate = dNgayDi.getValue();
@@ -159,7 +158,9 @@ public class DatVeController implements Initializable{
 
         // Combine the selected date and time values into a LocalDateTime object
         LocalDateTime thoiGianDi = LocalDateTime.of(selectedDate, localTime);
-        Duration duration = Duration.between(thoiGianDi, LocalDateTime.now()); // Calculate the duration between the two LocalDateTime objects
+        System.out.println(thoiGianDi);
+        System.out.println(LocalDateTime.now());
+        Duration duration = Duration.between(LocalDateTime.now(), thoiGianDi); // Calculate the duration between the two LocalDateTime objects
         long minutes = duration.toMinutes();
         
         if (minutes < 60)
@@ -167,14 +168,16 @@ public class DatVeController implements Initializable{
                 Alert.AlertType.WARNING).show();
         else
         {
-            System.out.println(LocalDateTime.now());
+            int id = khachHangService.addKhachHang(khachHangSave);
+            KhachHang khachHang = khachHangService.getKhachHangById(id);
             VeXe veXe = new VeXe(LocalDateTime.now(), Status.Booked, Integer.parseInt(lbMaUser.getText()) ,khachHang.getMaKH(),Integer.parseInt(txtMaChuyen.getText()), this.cbGhe.getSelectionModel().getSelectedItem().getMaGhe());
             if (!veXeService.addVeXe(veXe))
                 throw new SQLException("Đặt vé thất bại");
             else
             {
-                MessageBox.getBox("Ve Xe", "ĐẶT VÉ THÀNH CÔNG", 
-                    Alert.AlertType.INFORMATION).show();
+                if (!gheService.updateTrangThaiGheByMaGhe(this.cbGhe.getSelectionModel().getSelectedItem().getMaGhe(), TrangThaiGhe.Selected))
+                    MessageBox.getBox("Ghế", "Chọn ghế không thành công", Alert.AlertType.WARNING).show();
+                MessageBox.getBox("Ve Xe", "ĐẶT VÉ THÀNH CÔNG", Alert.AlertType.INFORMATION).show();
                 clear();
             }
                 

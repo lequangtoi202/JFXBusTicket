@@ -11,21 +11,22 @@ package com.lqt.pojo;
 public class Ghe {
     private int maGhe;
     private String soGhe;
+    private TrangThaiGhe trangThai;
     private int maXe;
 
     public Ghe() {
     }
 
-    public Ghe(int maGhe, String soGhe, int maXe) {
+    public Ghe(int maGhe, String soGhe, TrangThaiGhe trangThai, int maXe) {
         this.maGhe = maGhe;
         this.soGhe = soGhe;
         this.maXe = maXe;
     }
-    public Ghe(int maGhe, String soGhe) {
+    public Ghe(int maGhe, String soGhe, TrangThaiGhe trangThai) {
         this.maGhe = maGhe;
         this.soGhe = soGhe;
     }
-    public Ghe(String soGhe, int maXe) {
+    public Ghe(String soGhe, TrangThaiGhe trangThai,int maXe) {
         this.soGhe = soGhe;
         this.maXe = maXe;
     }
@@ -72,8 +73,24 @@ public class Ghe {
         this.maXe = maXe;
     }
     
+    
+    
      @Override
     public String toString() {
         return this.soGhe;
+    }
+
+    /**
+     * @return the trangThai
+     */
+    public TrangThaiGhe getTrangThai() {
+        return trangThai;
+    }
+
+    /**
+     * @param trangThai the trangThai to set
+     */
+    public void setTrangThai(TrangThaiGhe trangThai) {
+        this.trangThai = trangThai;
     }
 }

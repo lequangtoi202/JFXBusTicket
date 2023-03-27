@@ -1,5 +1,6 @@
 package com.lqt.oubus;
 
+import com.lqt.service.GheService;
 import com.lqt.service.VeXeService;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -19,6 +20,7 @@ import java.util.logging.Logger;
  */
 public class App extends Application {
     private static final VeXeService veXeService = new VeXeService();
+    private static final GheService gheService = new GheService();
     private static Scene scene;
 
     @Override
@@ -46,6 +48,7 @@ public class App extends Application {
                 try {
                     veXeService.kiemTraTgianQuaHan();
                     veXeService.thuHoiVeXe();
+                    gheService.thuHoiGhe();
                 } catch (SQLException ex) {
                     Logger.getLogger(App.class.getName()).log(Level.SEVERE, null, ex);
                 }

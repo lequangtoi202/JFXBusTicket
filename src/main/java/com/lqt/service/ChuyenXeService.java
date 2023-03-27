@@ -14,6 +14,7 @@ import java.sql.Time;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -60,9 +61,10 @@ public class ChuyenXeService {
             ResultSet rs = stm.executeQuery(sql);
             while (rs.next()) {
                 LocalTime localTime = rs.getTime("Thoi_gian_di").toLocalTime();
+                
                 listChuyenXe.add(new ChuyenXe(rs.getInt("Ma_Chuyen_Xe"), 
                         rs.getString("Ten_Chuyen_Xe"),
-                        LocalDateTime.of(LocalDate.now(), localTime),
+                        LocalDateTime.of(rs.getDate("Thoi_gian_di").toLocalDate(), localTime),
                         rs.getInt("Ma_Tuyen_Xe"),
                         rs.getInt("Ma_Tai_Xe")));
             }
@@ -82,7 +84,7 @@ public class ChuyenXeService {
                 LocalTime localTime = rs.getTime("Thoi_gian_di").toLocalTime();
                 return new ChuyenXe(rs.getInt("Ma_Chuyen_Xe"), 
                         rs.getString("Ten_Chuyen_Xe"),
-                        LocalDateTime.of(LocalDate.now(), localTime),
+                        LocalDateTime.of(rs.getDate("Thoi_gian_di").toLocalDate(), localTime),
                         rs.getInt("Ma_Tuyen_Xe"),
                         rs.getInt("Ma_Tai_Xe")
                 );
@@ -97,6 +99,7 @@ public class ChuyenXeService {
            String sql = "INSERT INTO chuyen_xe(Ten_Chuyen_Xe, Thoi_gian_di, Ma_Tuyen_Xe, Ma_Tai_Xe) VALUES(?, ?, ?, ?)";//SQL injection
            PreparedStatement stm = conn.prepareCall(sql);
            stm.setString(1, chuyenXe.getTenChuyen());
+           // sai vif setTime chir set mooix tgian ko set ddc date
            stm.setTime(2, Time.valueOf(chuyenXe.getThoiGianDi().toLocalTime()));
            stm.setInt(3, chuyenXe.getMaTuyenXe());
            stm.setInt(4, chuyenXe.getMaTaiXe());
@@ -122,6 +125,7 @@ public class ChuyenXeService {
            String sql = "UPDATE chuyen_xe SET Ten_Chuyen_Xe = ?, Thoi_gian_di = ?, Ma_Tuyen_Xe = ?, Ma_tai_xe = ? WHERE Ma_Chuyen_Xe = ?";//SQL injection
            PreparedStatement stm = conn.prepareCall(sql);
            stm.setString(1, chuyenXe.getTenChuyen());
+           //có thể lỗi tại đây
            stm.setTime(2, Time.valueOf(chuyenXe.getThoiGianDi().toLocalTime()));
            stm.setInt(3, chuyenXe.getMaTuyenXe());
            stm.setInt(4, chuyenXe.getMaTaiXe());

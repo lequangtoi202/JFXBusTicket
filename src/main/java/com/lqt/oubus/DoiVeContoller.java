@@ -8,6 +8,7 @@ import com.lqt.pojo.ChuyenXe;
 import com.lqt.pojo.Ghe;
 import com.lqt.pojo.KhachHang;
 import com.lqt.pojo.Status;
+import com.lqt.pojo.TrangThaiGhe;
 import com.lqt.pojo.TuyenXe;
 import com.lqt.pojo.User;
 import com.lqt.pojo.VeXe;
@@ -121,11 +122,11 @@ public class DoiVeContoller {
 
             // Combine the selected date and time values into a LocalDateTime object
             LocalDateTime thoiGianDi = LocalDateTime.of(selectedDate, localTime);
-            Duration duration = Duration.between(thoiGianDi, LocalDateTime.now()); // Calculate the duration between the two LocalDateTime objects
+            Duration duration = Duration.between(LocalDateTime.now(), thoiGianDi); // Calculate the duration between the two LocalDateTime objects
             long minutes = duration.toMinutes();
 
             if (minutes < 60)
-                MessageBox.getBox("Ve Xe", "Thời gian đổi vé không hợp lệ!", 
+                MessageBox.getBox("Vé Xe", "Thời gian đổi vé không hợp lệ!", 
                     Alert.AlertType.WARNING).show();
             else{
                 //sửa thông tin khách hàng
@@ -140,18 +141,27 @@ public class DoiVeContoller {
                     MessageBox.getBox("Khách hàng", "Cập nhật thông tin khách hàng thất bại.", 
                         Alert.AlertType.WARNING).show();
                 }
-                //lấy ghế mới
-                Ghe gheMoi = this.cbGhe.getValue();
-                veXe.setMaGhe(gheMoi.getMaGhe());
-                veXe.setMaChuyenXe(this.cbChuyenXe.getValue().getMaChuyenXe());
-                if (!veXeService.updateVeXe(veXe, veXe.getMaVeXe(), Status.Booked)){
-                    MessageBox.getBox("Vé xe", "Cập nhật thông tin vé xe thất bại.", 
+                int maGheDaDat = veXe.getMaGhe();
+                if (!gheService.updateTrangThaiGheByMaGhe(maGheDaDat, TrangThaiGhe.Empty)){
+                    MessageBox.getBox("Ghế", "Cập nhật ghế thất bại.", 
                         Alert.AlertType.WARNING).show();
                 }else{
-                    MessageBox.getBox("Vé xe", "Cập nhật thông tin vé xe thành công.", 
-                        Alert.AlertType.INFORMATION).show();
+                    //lấy ghế mới
+                    Ghe gheMoi = this.cbGhe.getValue();
+                    veXe.setMaGhe(gheMoi.getMaGhe());
+                    veXe.setMaChuyenXe(this.cbChuyenXe.getValue().getMaChuyenXe());
+                    if (!veXeService.updateVeXe(veXe, veXe.getMaVeXe(), Status.Booked)){
+                        MessageBox.getBox("Vé xe", "Cập nhật thông tin vé xe thất bại.", 
+                            Alert.AlertType.WARNING).show();
+                    }else{
+                        if (!gheService.updateTrangThaiGheByMaGhe(gheMoi.getMaGhe(), TrangThaiGhe.Selected))
+                            MessageBox.getBox("Ghế", "Cập nhật ghế thất bại.", 
+                                Alert.AlertType.WARNING).show();
+                        else
+                            MessageBox.getBox("Vé xe", "Cập nhật thông tin vé xe thành công.", 
+                                Alert.AlertType.INFORMATION).show();
+                    }
                 }
-
             }
             
             

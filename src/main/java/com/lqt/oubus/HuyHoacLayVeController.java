@@ -5,8 +5,10 @@
 package com.lqt.oubus;
 
 import com.lqt.pojo.Status;
+import com.lqt.pojo.TrangThaiGhe;
 import com.lqt.pojo.User;
 import com.lqt.pojo.VeXe;
+import com.lqt.service.GheService;
 import com.lqt.service.VeXeService;
 import com.lqt.utils.MessageBox;
 import java.io.IOException;
@@ -33,6 +35,7 @@ import javafx.stage.Stage;
  */
 public class HuyHoacLayVeController {
     private static final VeXeService veXeService = new VeXeService();
+    private static final GheService gheService = new GheService();
      private User user;
     @FXML private Label lbUsername;
     @FXML 
@@ -97,10 +100,15 @@ public class HuyHoacLayVeController {
                     if (res == ButtonType.OK) {
                         try {
                             if (veXeService.updateVeXe(veXe, maVeXe, Status.Canceled) == true) {
-                                MessageBox.getBox("Vé xe", "Hủy vé thành công!", Alert.AlertType.INFORMATION).show();
-                                clear();
+                                if (!gheService.updateTrangThaiGheByMaGhe(veXe.getMaGhe(), TrangThaiGhe.Empty))
+                                    MessageBox.getBox("Ghế", "Hủy ghế thất bại!", Alert.AlertType.WARNING).show();
+                                else{
+                                    MessageBox.getBox("Vé xe", "Hủy vé thành công!", Alert.AlertType.INFORMATION).show();
+                                    clear();
+                                }
+                                
                             } else
-                                MessageBox.getBox("Vé xe", "Hủy vé thất bại", Alert.AlertType.INFORMATION).show();
+                                MessageBox.getBox("Vé xe", "Hủy vé thất bại", Alert.AlertType.WARNING).show();
                         } catch (SQLException ex) {
                             Logger.getLogger(HuyHoacLayVeController.class.getName()).log(Level.SEVERE, null, ex);
                         }
