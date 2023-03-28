@@ -40,7 +40,6 @@ public class App extends Application {
     }
 
     public static void main(String[] args) {
-        launch();
         Timer timer = new Timer();
         TimerTask timerTask = new TimerTask() {
             @Override
@@ -55,5 +54,7 @@ public class App extends Application {
             }
         };
         timer.scheduleAtFixedRate(timerTask, 0, 1000);
+        launch();
+        
     }
 }

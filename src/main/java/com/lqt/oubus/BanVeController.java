@@ -151,11 +151,11 @@ public class BanVeController implements Initializable{
         
         
         // format thời gian
-        LocalDate selectedDate = dNgayDi.getValue();
-        String timeString = txtGioDi.getText();
-        LocalTime localTime = LocalTime.parse(timeString);
+        LocalDate ngayDi = dNgayDi.getValue();
+        String gioDi = txtGioDi.getText();
+        LocalTime localTime = LocalTime.parse(gioDi);
 
-        LocalDateTime thoiGianDi = LocalDateTime.of(selectedDate, localTime);
+        LocalDateTime thoiGianDi = LocalDateTime.of(ngayDi, localTime);
         Duration duration = Duration.between(LocalDateTime.now(), thoiGianDi); 
         long minutes = duration.toMinutes();
         

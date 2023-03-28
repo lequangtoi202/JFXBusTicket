@@ -148,12 +148,11 @@ public class ChuyenXeController implements Initializable{
                         
                         try {
                             if (chuyenXeService.deleteChuyenXe(chuyenXe.getMaChuyenXe()) == true) {
-                                MessageBox.getBox("Question", "Delete successful!", Alert.AlertType.INFORMATION).show();
+                                MessageBox.getBox("Chuyến xe", "Xóa chuyến xe thành công!", Alert.AlertType.INFORMATION).show();
                                 this.loadChuyenXe();
                             } else
-                                MessageBox.getBox("Question", "Delete failed", Alert.AlertType.INFORMATION).show();
+                                MessageBox.getBox("Chuyến xe", "Xóa chuyến xe thất bại", Alert.AlertType.ERROR).show();
                         } catch (SQLException ex) {
-                            ex.printStackTrace();
                             MessageBox.getBox("Question", "Delete failed", Alert.AlertType.INFORMATION).show();
                             Logger.getLogger(ChuyenXeController.class.getName()).log(Level.SEVERE, null, ex);
                         }

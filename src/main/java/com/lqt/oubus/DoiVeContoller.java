@@ -88,6 +88,7 @@ public class DoiVeContoller {
             Xe xe = xeService.getXeById(ghe.getMaXe());
             List<ChuyenXe> dsChuyenXe = chuyenXeService.getAllChuyenXe();
             List<Ghe> dsGhe = gheService.getAllGheEmptyByMaXe(xe.getMaXe());
+            
             KhachHang khachHang = khachHangService.getKhachHangById(veXe.getMaKH());
             this.cbChuyenXe.setItems(FXCollections.observableList(dsChuyenXe));
             this.cbGhe.setItems(FXCollections.observableList(dsGhe));
@@ -99,6 +100,7 @@ public class DoiVeContoller {
             this.cbGhe.setValue(ghe);
             this.txtGioDi.setText(chuyenXe.getThoiGianDi().toLocalTime().toString());
             this.txtTenKH.setText(khachHang.getTenKH());
+            
             this.dThoiGianDi.setValue(chuyenXe.getThoiGianDi().toLocalDate());
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
             this.dNgaySinh.setValue(LocalDate.parse(khachHang.getNgaySinh().toString(), formatter));
@@ -114,13 +116,12 @@ public class DoiVeContoller {
         int maVe = Integer.parseInt(this.txtMaVe.getText().trim());
         VeXe veXe = veXeService.getVeXeBookedById(maVe);
         if (veXe != null){
-            LocalDate selectedDate = this.dThoiGianDi.getValue();
-            String timeString = txtGioDi.getText(); // Example time string
-            LocalTime localTime = LocalTime.parse(timeString);
+            LocalDate ngayDi = this.dThoiGianDi.getValue();
+            String gioDi = txtGioDi.getText(); 
+            LocalTime localTime = LocalTime.parse(gioDi);
 
-            // Combine the selected date and time values into a LocalDateTime object
-            LocalDateTime thoiGianDi = LocalDateTime.of(selectedDate, localTime);
-            Duration duration = Duration.between(LocalDateTime.now(), thoiGianDi); // Calculate the duration between the two LocalDateTime objects
+            LocalDateTime thoiGianDi = LocalDateTime.of(ngayDi, localTime);
+            Duration duration = Duration.between(LocalDateTime.now(), thoiGianDi); 
             long minutes = duration.toMinutes();
 
             if (minutes < 60)
@@ -161,8 +162,6 @@ public class DoiVeContoller {
                     }
                 }
             }
-            
-            
         }else{
             MessageBox.getBox("Vé Xe", "KHÔNG CÓ VÉ XE CÓ MÃ LÀ " + maVe + " HOẶC VÉ ĐÃ ĐƯỢC MUA.", 
                     Alert.AlertType.WARNING).show();

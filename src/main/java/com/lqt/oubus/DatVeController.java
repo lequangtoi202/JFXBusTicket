@@ -151,12 +151,10 @@ public class DatVeController implements Initializable{
         KhachHang khachHangSave = new KhachHang(tenKH, gioiTinh, ngaySinh, diaChi, dienThoai, CCCD);
         
         
-        // format thời gian
         LocalDate selectedDate = dNgayDi.getValue();
-        String timeString = txtGioDi.getText(); // Example time string
+        String timeString = txtGioDi.getText(); 
         LocalTime localTime = LocalTime.parse(timeString);
 
-        // Combine the selected date and time values into a LocalDateTime object
         LocalDateTime thoiGianDi = LocalDateTime.of(selectedDate, localTime);
         System.out.println(thoiGianDi);
         System.out.println(LocalDateTime.now());
