@@ -4,7 +4,6 @@
  */
 package com.lqt.service;
 
-import com.lqt.pojo.Role;
 import com.lqt.pojo.User;
 import java.sql.Connection;
 import java.sql.PreparedStatement;

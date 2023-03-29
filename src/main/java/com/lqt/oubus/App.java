@@ -53,7 +53,7 @@ public class App extends Application {
                 }
             }
         };
-        timer.scheduleAtFixedRate(timerTask, 0, 1000);
+        timer.scheduleAtFixedRate(timerTask, 0, 60000);
         launch();
         
     }

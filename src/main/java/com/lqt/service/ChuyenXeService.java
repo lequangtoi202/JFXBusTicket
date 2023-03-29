@@ -130,5 +130,15 @@ public class ChuyenXeService {
            return stm.executeUpdate() > 0;
         }
     }
+    
+    public boolean updateChuyenXeDaDi(int id) throws SQLException{
+         try (Connection conn = JdbcUtils.getConn()) {
+           String sql = "UPDATE chuyen_xe SET is_updated = 1 WHERE Ma_Chuyen_Xe = ?";//SQL injection
+           PreparedStatement stm = conn.prepareCall(sql);
+           stm.setInt(1, id);
+           
+           return stm.executeUpdate() > 0;
+        }
+    }
    
 }

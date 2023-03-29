@@ -71,7 +71,6 @@ public class ChuyenXeController implements Initializable{
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         try {
-            
             loadChuyenXe();
             List<TaiXe> dsTaiXe = taiXeService.getAllTaiXe();
             List<TuyenXe> dsTuyenXe = tuyenXeService.getAllTuyenXe();
@@ -179,6 +178,7 @@ public class ChuyenXeController implements Initializable{
     
     public void themHandler(ActionEvent evt) throws SQLException{
         //CHƯA KIỂM TRA CÁC THÔNG TIN HỢP LỆ HAY KO
+        // Pattern pattern = Pattern.compile("^\\d{2}:\\d{2}$");
         String tenChuyen = this.txtTenChuyen.getText();
         String gioDi = this.txtGioDi.getText();
         LocalDate ngayDi = this.dNgayDi.getValue();

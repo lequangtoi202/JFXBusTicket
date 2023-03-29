@@ -4,7 +4,6 @@
  */
 package com.lqt.service;
 
-import com.lqt.pojo.BenXe;
 import com.lqt.pojo.Xe;
 import java.sql.Connection;
 import java.sql.PreparedStatement;

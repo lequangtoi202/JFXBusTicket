@@ -5,6 +5,7 @@
 package com.lqt.service;
 
 import com.lqt.pojo.Ghe;
+import com.lqt.pojo.ThuHoiGheResponse;
 import com.lqt.pojo.TrangThaiGhe;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -79,23 +80,30 @@ public class GheService {
         }
     }
     
-    public void thuHoiGhe() throws SQLException{
+    public boolean thuHoiGhe() throws SQLException{
         try (Connection conn = JdbcUtils.getConn()) {
-            List<Integer> dsMaXe = new ArrayList<>();
-            String sql = "select g.Ma_xe from chuyen_xe as c, ve_xe as v, ghe as g\n" +
-                            "where c.Ma_Chuyen_Xe=v.Ma_Chuyen_Xe and g.Ma_ghe=v.Ma_ghe and TIMEDIFF(c.Thoi_gian_di, now()) = '00:00:00'\n" +
+            List<ThuHoiGheResponse> dsGheThuHoi = new ArrayList<>();
+            String sql = "select g.Ma_xe, c.Ma_Chuyen_Xe from chuyen_xe as c, ve_xe as v, ghe as g\n" +
+                            "where c.Ma_Chuyen_Xe=v.Ma_Chuyen_Xe and g.Ma_ghe=v.Ma_ghe and TIMEDIFF(c.Thoi_gian_di, now()) <= '00:00:00'\n" +
                             "group by g.Ma_xe";
+            
+            
             Statement stm = conn.createStatement();
             ResultSet rs = stm.executeQuery(sql);
             while (rs.next()){
-                dsMaXe.add(rs.getInt("Ma_xe"));
+                dsGheThuHoi.add(new ThuHoiGheResponse(rs.getInt("Ma_xe"), rs.getInt("Ma_Chuyen_Xe")));
             }
-            if (!dsMaXe.isEmpty())
+            if (!dsGheThuHoi.isEmpty())
             {
-                for (Integer i : dsMaXe) {
-                    updateTrangThaiGheByMaXe(TrangThaiGhe.Empty, i);
+                for (ThuHoiGheResponse i : dsGheThuHoi) {
+                    if (!updateTrangThaiGheByMaXe(TrangThaiGhe.Empty, i.getMaXe()))
+                        return false;
+                    ChuyenXeService chuyenXeService = new ChuyenXeService();
+                    if (!chuyenXeService.updateChuyenXeDaDi(i.getMaChuyen()))
+                        return false;
                 }
             }
         }
+        return true;
     }
 }

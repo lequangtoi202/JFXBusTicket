@@ -34,12 +34,13 @@ public class KhachHangService {
                         rs.getBoolean("GioiTinh"), 
                         rs.getDate("NgaySinh"), 
                         rs.getString("DiaChi"), 
-                        rs.getString("CCCD"), 
-                        rs.getString("DienThoai"));
+                        rs.getString("DienThoai"),
+                        rs.getString("CCCD"));
             }
         }
         return null;
     }
+    
     public List<KhachHang> getAllKhachHang() throws SQLException {
         List<KhachHang> listKhachHang = new ArrayList<>();
         try (Connection conn = JdbcUtils.getConn()) {
@@ -54,13 +55,14 @@ public class KhachHangService {
                         rs.getBoolean("GioiTinh"), 
                         rs.getDate("NgaySinh"), 
                         rs.getString("DiaChi"), 
-                        rs.getString("CCCD"), 
-                        rs.getString("DienThoai")));
+                        rs.getString("DienThoai"),
+                        rs.getString("CCCD")));
             }
         }
         
         return listKhachHang;
     }
+    
     public int addKhachHang(KhachHang kh) throws SQLException{
         int id = -1;
          try (Connection conn = JdbcUtils.getConn()) {

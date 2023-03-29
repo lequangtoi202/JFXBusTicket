@@ -34,6 +34,7 @@ public class BenXeService {
         
         return listBenXe;
     }
+    
     public BenXe getBenXeById(int id) throws SQLException{
         try ( Connection conn = JdbcUtils.getConn()) {
             // B3 Truy van
@@ -49,6 +50,7 @@ public class BenXeService {
         }
         return null;
     }
+    
     public boolean addBenXe(BenXe benXe) throws SQLException{
          try (Connection conn = JdbcUtils.getConn()) {
             conn.setAutoCommit(false);
@@ -63,6 +65,7 @@ public class BenXeService {
            return r > 0;
         }
     }
+    
     public boolean deleteBenXe(int id) throws SQLException{
          try (Connection conn = JdbcUtils.getConn()) {
            String sql = "DELETE FROM ben_xe WHERE Ma_Ben = ?";//SQL injection
