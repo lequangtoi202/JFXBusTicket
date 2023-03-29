@@ -4,7 +4,6 @@
  */
 package com.lqt.service;
 
-import com.lqt.pojo.ChuyenXe;
 import com.lqt.pojo.Ghe;
 import com.lqt.pojo.TrangThaiGhe;
 import java.sql.Connection;
@@ -12,7 +11,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -85,7 +83,7 @@ public class GheService {
         try (Connection conn = JdbcUtils.getConn()) {
             List<Integer> dsMaXe = new ArrayList<>();
             String sql = "select g.Ma_xe from chuyen_xe as c, ve_xe as v, ghe as g\n" +
-                            "where c.Ma_Chuyen_Xe=v.Ma_Chuyen_Xe and g.Ma_ghe=v.Ma_ghe and TIMEDIFF(c.Thoi_gian_di, now()) <= '00:00:00'\n" +
+                            "where c.Ma_Chuyen_Xe=v.Ma_Chuyen_Xe and g.Ma_ghe=v.Ma_ghe and TIMEDIFF(c.Thoi_gian_di, now()) = '00:00:00'\n" +
                             "group by g.Ma_xe";
             Statement stm = conn.createStatement();
             ResultSet rs = stm.executeQuery(sql);

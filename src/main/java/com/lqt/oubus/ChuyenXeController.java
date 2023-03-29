@@ -86,8 +86,12 @@ public class ChuyenXeController implements Initializable{
     
     public void loadChuyenXe() throws SQLException{
         List<ChuyenXe> dsChuyenXe = chuyenXeService.getAllChuyenXe();
-        this.tbChuyenXe.getItems().clear();
-        this.tbChuyenXe.setItems(FXCollections.observableList(dsChuyenXe));
+        if (!dsChuyenXe.isEmpty()) {
+            this.tbChuyenXe.getItems().clear();
+            this.tbChuyenXe.setItems(FXCollections.observableList(dsChuyenXe));
+        }else{
+            MessageBox.getBox("Chuyến xe", "Không có chuyến xe.", Alert.AlertType.WARNING).show();
+        }
     }
     
     private void loadTableColumns() {

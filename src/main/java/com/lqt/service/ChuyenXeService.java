@@ -10,8 +10,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.sql.Time;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.ArrayList;
@@ -33,7 +31,7 @@ public class ChuyenXeService {
                 LocalTime localTime = rs.getTime("Thoi_gian_di").toLocalTime();
                 listChuyenXe.add(new ChuyenXe(rs.getInt("Ma_Chuyen_Xe"), 
                         rs.getString("Ten_Chuyen_Xe"),
-                        LocalDateTime.of(LocalDate.now(), localTime),
+                        LocalDateTime.of(rs.getDate("Thoi_gian_di").toLocalDate(), localTime),
                         rs.getInt("Ma_Tuyen_Xe"),
                         rs.getInt("Ma_Tai_Xe")));
             }
@@ -53,7 +51,8 @@ public class ChuyenXeService {
                             "                     WHERE b.Ten_Ben_Xe LIKE '%" + benDi + "%')\n" +
                             "  AND t.Ma_ben_den = (SELECT b.Ma_Ben\n" +
                             "                      FROM ben_xe AS b\n" +
-                            "                      WHERE b.Ten_Ben_Xe LIKE '%" + benDen + "%')";
+                            "                      WHERE b.Ten_Ben_Xe LIKE '%" + benDen + "%')" +
+                            " and TIMEDIFF(c.Thoi_gian_di, now()) >= '00:00:00'";
             
             Statement stm = conn.prepareCall(sql);
             // Truy van lay du lieu --> select

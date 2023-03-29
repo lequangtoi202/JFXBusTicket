@@ -37,6 +37,8 @@ import java.util.List;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -63,7 +65,7 @@ import javafx.stage.Stage;
  *
  * @author TOI
  */
-public class BanVeController implements Initializable{
+public class BanVeController implements Initializable {
     private static final VeXeService veXeService = new VeXeService();
     private static final XeService xeService = new XeService();
     private static final GheService gheService = new GheService();
@@ -73,6 +75,7 @@ public class BanVeController implements Initializable{
     private static final TuyenXeService tuyenXeService = new TuyenXeService();
     private static final NhanVienService nhanVienService = new NhanVienService();
     private User user;
+    
     @FXML private Label lbMaUser;
     @FXML private Label lbUsername;
     @FXML private ComboBox<Xe> cbXe;
@@ -87,7 +90,7 @@ public class BanVeController implements Initializable{
     @FXML private TextField txtMaChuyen;
     @FXML private TextField txtBenDi;
     @FXML private TextField txtBenDen;
-    @FXML private TextField txtTenKH;
+    @FXML  private TextField txtTenKH;
     @FXML private RadioButton rdNam;
     @FXML private RadioButton rdNu;
     @FXML private TextField txtDiaChi;
@@ -95,12 +98,12 @@ public class BanVeController implements Initializable{
     @FXML private TextField txtCCCD;
     @FXML private Label lbThanhTien;
 
-    public void setUserInfo(User user) throws SQLException{
+    public void setUserInfo(User user) throws SQLException {
         this.user = user;
         lbMaUser.setText(String.valueOf(nhanVienService.getNhanVienByUserId(user.getMaUser()).getMaNV()));
         lbUsername.setText(user.getUsername());
     }
-    
+
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         try {
@@ -116,7 +119,7 @@ public class BanVeController implements Initializable{
                 }
                 this.cbGhe.setItems(FXCollections.observableList(dsGhe));
             });
-            
+
             List<BenXe> benXe = benXeService.getAllBenXe();
             this.cbBenDi.setItems(FXCollections.observableList(benXe));
             this.cbBenDen.setItems(FXCollections.observableList(benXe));
@@ -125,66 +128,101 @@ public class BanVeController implements Initializable{
             Logger.getLogger(DatVeController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
-    public void timChuyenXe(ActionEvent e) throws SQLException{
+
+    public void timChuyenXe(ActionEvent e) throws SQLException {
         String tenBenXeDi = this.cbBenDi.getSelectionModel().getSelectedItem().getTenBen();
         String tenBenXeDen = this.cbBenDen.getSelectionModel().getSelectedItem().getTenBen();
         this.loadChuyenXe(tenBenXeDi, tenBenXeDen);
-        
-    }
-    
-    public void muaVeHandler(ActionEvent e) throws ParseException, SQLException{
-         String tenKH = this.txtTenKH.getText();
-        boolean gioiTinh;
-        if (this.rdNam.isSelected())
-            gioiTinh = this.rdNam.isSelected();
-        else
-            gioiTinh = this.rdNu.isSelected();
-        String diaChi = this.txtDiaChi.getText();
-        String CCCD = this.txtCCCD.getText();
-        String dienThoai = this.txtDienThoai.getText();
-       
-        Date ngaySinh = new SimpleDateFormat("yyyy-MM-dd").parse(this.dNgaySinh.getValue().toString());
-        
-        //tạo khách hàng
-        KhachHang khachHangSave = new KhachHang(tenKH, gioiTinh, ngaySinh, diaChi, dienThoai, CCCD);
-        
-        
-        // format thời gian
-        LocalDate ngayDi = dNgayDi.getValue();
-        String gioDi = txtGioDi.getText();
-        LocalTime localTime = LocalTime.parse(gioDi);
 
-        LocalDateTime thoiGianDi = LocalDateTime.of(ngayDi, localTime);
-        Duration duration = Duration.between(LocalDateTime.now(), thoiGianDi); 
-        long minutes = duration.toMinutes();
-        
-        if (minutes < 5)
-            MessageBox.getBox("Vé Xe", "Thời gian mua vé không hợp lệ!", 
-                Alert.AlertType.WARNING).show();
-        else
-        {
-            int id = khachHangService.addKhachHang(khachHangSave);
-            KhachHang khachHang = khachHangService.getKhachHangById(id);
-            VeXe veXe = new VeXe(LocalDateTime.now(), Status.Done, Integer.parseInt(lbMaUser.getText()) ,khachHang.getMaKH(),Integer.parseInt(txtMaChuyen.getText()), this.cbGhe.getSelectionModel().getSelectedItem().getMaGhe());
-            if (!veXeService.addVeXe(veXe))
-                throw new SQLException("Mua vé thất bại");
-            else
-            {
-                if (!gheService.updateTrangThaiGheByMaGhe(this.cbGhe.getSelectionModel().getSelectedItem().getMaGhe(), TrangThaiGhe.Selected))
-                    MessageBox.getBox("Ghế", "Chọn ghế không thành công", Alert.AlertType.WARNING).show();
-                MessageBox.getBox("Vé Xe", "MUA VÉ THÀNH CÔNG", 
-                    Alert.AlertType.INFORMATION).show();
-                clear();
+    }
+
+    public void muaVeHandler(ActionEvent e) throws ParseException, SQLException {
+        if (kiemTraThongTin()) {
+            String tenKH = this.txtTenKH.getText();
+            boolean gioiTinh;
+            if (this.rdNam.isSelected()) {
+                gioiTinh = this.rdNam.isSelected();
+            } else {
+                gioiTinh = this.rdNu.isSelected();
+            }
+            String diaChi = this.txtDiaChi.getText();
+            String CCCD = this.txtCCCD.getText();
+            String dienThoai = this.txtDienThoai.getText();
+
+            Date ngaySinh = new SimpleDateFormat("yyyy-MM-dd").parse(this.dNgaySinh.getValue().toString());
+
+            //tạo khách hàng
+            KhachHang khachHangSave = new KhachHang(tenKH, gioiTinh, ngaySinh, diaChi, dienThoai, CCCD);
+
+            // format thời gian
+            LocalDate ngayDi = dNgayDi.getValue();
+            String gioDi = txtGioDi.getText();
+            LocalTime localTime = LocalTime.parse(gioDi);
+
+            LocalDateTime thoiGianDi = LocalDateTime.of(ngayDi, localTime);
+            Duration duration = Duration.between(LocalDateTime.now(), thoiGianDi);
+            long minutes = duration.toMinutes();
+
+            if (minutes < 5) {
+                MessageBox.getBox("Vé Xe", "Thời gian mua vé không hợp lệ!",
+                        Alert.AlertType.WARNING).show();
+            } else {
+                int id = khachHangService.addKhachHang(khachHangSave);
+                KhachHang khachHang = khachHangService.getKhachHangById(id);
+                VeXe veXe = new VeXe(LocalDateTime.now(), Status.Done, Integer.parseInt(lbMaUser.getText()), khachHang.getMaKH(), Integer.parseInt(txtMaChuyen.getText()), this.cbGhe.getSelectionModel().getSelectedItem().getMaGhe());
+                if (!veXeService.addVeXe(veXe)) {
+                    throw new SQLException("Mua vé thất bại");
+                } else {
+                    if (!gheService.updateTrangThaiGheByMaGhe(this.cbGhe.getSelectionModel().getSelectedItem().getMaGhe(), TrangThaiGhe.Selected)) {
+                        MessageBox.getBox("Ghế", "Chọn ghế không thành công", Alert.AlertType.WARNING).show();
+                    }
+                    MessageBox.getBox("Vé Xe", "MUA VÉ THÀNH CÔNG",
+                            Alert.AlertType.INFORMATION).show();
+                    clear();
+                }
             }
         }
     }
-    
-    public void huyHandler(ActionEvent e){
+
+    public boolean kiemTraThongTin() {
+        Pattern dienThoaiRegex = Pattern.compile("^0\\d{9}$");
+        Pattern CCCDRegex = Pattern.compile("^[0-9]{9,12}$");
+        Matcher dienThoaimatcher = dienThoaiRegex.matcher(this.txtDienThoai.getText().trim());
+        Matcher CCCDmatcher = CCCDRegex.matcher(this.txtCCCD.getText().trim());
+
+        if (!dienThoaimatcher.matches()) {
+            MessageBox.getBox("Điện thoại", "Số điện thoại không hợp lệ",
+                    Alert.AlertType.WARNING).show();
+            return false;
+        }
+        if (!CCCDmatcher.matches()) {
+            MessageBox.getBox("CCCD", "Căn cước công dân không hợp lệ.",
+                    Alert.AlertType.WARNING).show();
+            return false;
+        }
+        if (this.dNgaySinh.getValue().isAfter(LocalDate.now())) {
+            MessageBox.getBox("Ngày sinh", "Ngày sinh không hợp lệ",
+                    Alert.AlertType.WARNING).show();
+            return false;
+        }
+        if (this.cbXe.getValue() == null) {
+            MessageBox.getBox("Xe", "Vui lòng chọn xe đi",
+                    Alert.AlertType.WARNING).show();
+            return false;
+        }
+        if (this.cbGhe.getValue() == null) {
+            MessageBox.getBox("Ghế", "Vui lòng chọn ghế ngồi",
+                    Alert.AlertType.WARNING).show();
+            return false;
+        }
+        return true;
+    }
+
+    public void huyHandler(ActionEvent e) {
         clear();
     }
-    
-    public void clear(){
+
+    public void clear() {
         this.txtBenDen.clear();
         this.txtBenDi.clear();
         this.txtDienThoai.clear();
@@ -195,32 +233,30 @@ public class BanVeController implements Initializable{
         this.txtMaChuyen.clear();
         this.txtTenKH.clear();
     }
-    
-    
-    
+
     private void loadTableColumns() {
-        
+
         TableColumn colMaChuyen = new TableColumn("Mã chuyến");
         colMaChuyen.setCellValueFactory(new PropertyValueFactory("maChuyenXe"));
-        
+
         TableColumn colTenChuyen = new TableColumn("Tên chuyến");
         colTenChuyen.setCellValueFactory(new PropertyValueFactory("tenChuyen"));
-        
+
         TableColumn colThoiGianDi = new TableColumn("Thời gian");
         colThoiGianDi.setCellValueFactory(new PropertyValueFactory("thoiGianDi"));
-        
+
         TableColumn colMaTaiXe = new TableColumn("Mã Tài xế");
         colMaTaiXe.setCellValueFactory(new PropertyValueFactory("maTaiXe"));
-        
+
         TableColumn colMaTuyen = new TableColumn("Mã tuyến xe");
         colMaTuyen.setCellValueFactory(new PropertyValueFactory("maTuyenXe"));
-        
+
         TableColumn colChon = new TableColumn();
         colChon.setCellFactory(p -> {
             Button btn = new Button("Chọn");
-            
+
             btn.setOnAction(evt -> {
-                Button b = (Button)evt.getSource();
+                Button b = (Button) evt.getSource();
                 TableCell cell = (TableCell) b.getParent();
                 ChuyenXe chuyenXe = (ChuyenXe) cell.getTableRow().getItem();
                 LocalTime gioDi = chuyenXe.getThoiGianDi().toLocalTime();
@@ -238,59 +274,61 @@ public class BanVeController implements Initializable{
                 } catch (SQLException ex) {
                     Logger.getLogger(DatVeController.class.getName()).log(Level.SEVERE, null, ex);
                 }
-                });
+            });
             TableCell c = new TableCell();
             c.setGraphic(btn);
             return c;
-            });
-        
+        });
+
         this.tbChuyenXe.getColumns().addAll(colMaChuyen, colTenChuyen, colThoiGianDi, colMaTaiXe, colMaTuyen, colChon);
     }
-    
+
     private void loadChuyenXe(String benDi, String benDen) throws SQLException {
         List<ChuyenXe> dsChuyenXe = chuyenXeService.getChuyenXeByBenDiAndBenDen(benDi, benDen);
-        this.tbChuyenXe.getItems().clear();
-        this.tbChuyenXe.setItems(FXCollections.observableList(dsChuyenXe));
+        if (!dsChuyenXe.isEmpty()) {
+            this.tbChuyenXe.getItems().clear();
+            this.tbChuyenXe.setItems(FXCollections.observableList(dsChuyenXe));
+        }else{
+            MessageBox.getBox("Chuyến xe", "Không có chuyến xe.", Alert.AlertType.WARNING).show();
+        }
     }
-    
-    
+
     // CHUYỂN TRANG
-    public void chuyenTrangDatVe(MouseEvent m) throws IOException, SQLException{
-        Stage stage = (Stage)((Node)m.getSource()).getScene().getWindow();
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("datVe.fxml"));
-            Parent DatVeView = loader.load();
-            Scene scene = new Scene(DatVeView);
-            DatVeController controller = loader.getController();
-            controller.setUserInfo(user);
-            stage.setScene(scene);
-            stage.show();
+    public void chuyenTrangDatVe(MouseEvent m) throws IOException, SQLException {
+        Stage stage = (Stage) ((Node) m.getSource()).getScene().getWindow();
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("datVe.fxml"));
+        Parent DatVeView = loader.load();
+        Scene scene = new Scene(DatVeView);
+        DatVeController controller = loader.getController();
+        controller.setUserInfo(user);
+        stage.setScene(scene);
+        stage.show();
     }
-    
-    
-    public void chuyenTrangHuyHoacLayVe(MouseEvent m) throws IOException, SQLException{
-        Stage stage = (Stage)((Node)m.getSource()).getScene().getWindow();
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("huyHoacLayVe.fxml"));
-            Parent BanVeView = loader.load();
-            Scene scene = new Scene(BanVeView);
-            stage.setScene(scene);
-            HuyHoacLayVeController controller = loader.getController();
-            controller.setUserInfo(user);
-            stage.show();
+
+    public void chuyenTrangHuyHoacLayVe(MouseEvent m) throws IOException, SQLException {
+        Stage stage = (Stage) ((Node) m.getSource()).getScene().getWindow();
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("huyHoacLayVe.fxml"));
+        Parent BanVeView = loader.load();
+        Scene scene = new Scene(BanVeView);
+        stage.setScene(scene);
+        HuyHoacLayVeController controller = loader.getController();
+        controller.setUserInfo(user);
+        stage.show();
     }
-    
-    public void chuyenTrangDoiVe(MouseEvent m) throws IOException, SQLException{
-        Stage stage = (Stage)((Node)m.getSource()).getScene().getWindow();
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("doiVe.fxml"));
-            Parent BanVeView = loader.load();
-            Scene scene = new Scene(BanVeView);
-            stage.setScene(scene);
-            DoiVeContoller controller = loader.getController();
-            controller.setUserInfo(user);
-            stage.show();
+
+    public void chuyenTrangDoiVe(MouseEvent m) throws IOException, SQLException {
+        Stage stage = (Stage) ((Node) m.getSource()).getScene().getWindow();
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("doiVe.fxml"));
+        Parent BanVeView = loader.load();
+        Scene scene = new Scene(BanVeView);
+        stage.setScene(scene);
+        DoiVeContoller controller = loader.getController();
+        controller.setUserInfo(user);
+        stage.show();
     }
-    
-    public void DangXuat(ActionEvent e) throws IOException, SQLException{
-        Stage stage = (Stage)((Node)e.getSource()).getScene().getWindow();
+
+    public void DangXuat(ActionEvent e) throws IOException, SQLException {
+        Stage stage = (Stage) ((Node) e.getSource()).getScene().getWindow();
         FXMLLoader loader = new FXMLLoader(getClass().getResource("login.fxml"));
         Parent loginView = loader.load();
         Scene scene = new Scene(loginView);

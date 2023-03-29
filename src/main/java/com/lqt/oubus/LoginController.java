@@ -36,35 +36,40 @@ public class LoginController {
         String password = this.txtPassword.getText().trim();
         
         User user = UserService.getUsernameAndPassword(username, password);
-        if (user.getPassword().equals(password)){
-            MessageBox.getBox("Login", "Login Success", 
-                Alert.AlertType.INFORMATION).show();
-            Role role = roleService.getRoleById(user.getRoleId());
-            if (role.getName().equals("ADMIN")){
-                Stage stage = (Stage)((Node)evt.getSource()).getScene().getWindow();
-                FXMLLoader loader = new FXMLLoader(getClass().getResource("trangChuAdmin.fxml"));
-                Parent manageView = loader.load();
-                Scene scene = new Scene(manageView);
-                ChuyenXeController controller = loader.getController();
-                controller.setUserInfo(user);
-                stage.setScene(scene);
-                stage.show();
-            }else{
-                // chuyen trang
-                Stage stage = (Stage)((Node)evt.getSource()).getScene().getWindow();
-                FXMLLoader loader = new FXMLLoader(getClass().getResource("datVe.fxml"));
-                Parent manageView = loader.load();
-                Scene scene = new Scene(manageView);
-                DatVeController controller = loader.getController();
-                controller.setUserInfo(user);
-                stage.setScene(scene);
-                stage.show();
-            }
-            
-            
-        }else{
-            MessageBox.getBox("Login", "Login Fail!", 
+        if (user == null){
+            MessageBox.getBox("Login", "Tài khoản không tồn tại!", 
                 Alert.AlertType.ERROR).show();
+        }
+        else
+        {
+            if (user.getPassword().equals(password)){
+                MessageBox.getBox("Login", "Đăng nhập thành công", 
+                    Alert.AlertType.INFORMATION).show();
+                Role role = roleService.getRoleById(user.getRoleId());
+                if (role.getName().equals("ADMIN")){
+                    Stage stage = (Stage)((Node)evt.getSource()).getScene().getWindow();
+                    FXMLLoader loader = new FXMLLoader(getClass().getResource("trangChuAdmin.fxml"));
+                    Parent manageView = loader.load();
+                    Scene scene = new Scene(manageView);
+                    ChuyenXeController controller = loader.getController();
+                    controller.setUserInfo(user);
+                    stage.setScene(scene);
+                    stage.show();
+                }else{
+                    // chuyen trang
+                    Stage stage = (Stage)((Node)evt.getSource()).getScene().getWindow();
+                    FXMLLoader loader = new FXMLLoader(getClass().getResource("datVe.fxml"));
+                    Parent manageView = loader.load();
+                    Scene scene = new Scene(manageView);
+                    DatVeController controller = loader.getController();
+                    controller.setUserInfo(user);
+                    stage.setScene(scene);
+                    stage.show();
+                }
+            }else{
+                MessageBox.getBox("Login", "Mật khẩu không đúng", 
+                Alert.AlertType.ERROR).show();
+            }
         }
     }
 }
