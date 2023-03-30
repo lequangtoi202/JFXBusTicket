@@ -17,7 +17,8 @@ import org.junit.jupiter.api.BeforeAll;
  * @author TOI
  */
 public class ChuyenXeTester {
-     private static Connection conn;
+    private static Connection conn;
+    
     
     @BeforeAll
     public static void beforeAll() {
@@ -37,4 +38,5 @@ public class ChuyenXeTester {
                 Logger.getLogger(ChuyenXeTester.class.getName()).log(Level.SEVERE, null, ex);
             }
     }
+    
 }
