@@ -13,7 +13,6 @@ import com.lqt.utils.MessageBox;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
-import java.time.LocalTime;
 import java.util.List;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
@@ -70,9 +69,15 @@ public class TraCuuController implements Initializable{
     }
     
     public void timChuyenXe(ActionEvent e) throws SQLException{
-        String tenBenXeDi = this.cbBenDi.getSelectionModel().getSelectedItem().getTenBen();
-        String tenBenXeDen = this.cbBenDen.getSelectionModel().getSelectedItem().getTenBen();
-        this.loadChuyenXe(tenBenXeDi, tenBenXeDen);
+        if (this.cbBenDi.getValue() == null && this.cbBenDen.getValue() == null){
+            MessageBox.getBox("Chuyến xe",
+                        "Vui lòng chọn bến đi và bến đến",
+                        Alert.AlertType.WARNING);
+        }else{
+            String tenBenXeDi = this.cbBenDi.getSelectionModel().getSelectedItem().getTenBen();
+            String tenBenXeDen = this.cbBenDen.getSelectionModel().getSelectedItem().getTenBen();
+            this.loadChuyenXe(tenBenXeDi, tenBenXeDen);
+        }
     }
     
     private void loadChuyenXe(String benDi, String benDen) throws SQLException {

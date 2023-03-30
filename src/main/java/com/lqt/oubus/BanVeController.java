@@ -66,6 +66,7 @@ import javafx.stage.Stage;
  * @author TOI
  */
 public class BanVeController implements Initializable {
+
     private static final VeXeService veXeService = new VeXeService();
     private static final XeService xeService = new XeService();
     private static final GheService gheService = new GheService();
@@ -75,28 +76,49 @@ public class BanVeController implements Initializable {
     private static final TuyenXeService tuyenXeService = new TuyenXeService();
     private static final NhanVienService nhanVienService = new NhanVienService();
     private User user;
-    
-    @FXML private Label lbMaUser;
-    @FXML private Label lbUsername;
-    @FXML private ComboBox<Xe> cbXe;
-    @FXML private TableView<ChuyenXe> tbChuyenXe;
-    @FXML private ComboBox<BenXe> cbBenDi;
-    @FXML private ComboBox<BenXe> cbBenDen;
-    @FXML private ComboBox<Ghe> cbGhe;
-    @FXML private DatePicker dNgaySinh;
-    @FXML private DatePicker dNgayDi;
-    @FXML private TextField txtGioDi;
-    @FXML private Label lbTenChuyen;
-    @FXML private TextField txtMaChuyen;
-    @FXML private TextField txtBenDi;
-    @FXML private TextField txtBenDen;
-    @FXML  private TextField txtTenKH;
-    @FXML private RadioButton rdNam;
-    @FXML private RadioButton rdNu;
-    @FXML private TextField txtDiaChi;
-    @FXML private TextField txtDienThoai;
-    @FXML private TextField txtCCCD;
-    @FXML private Label lbThanhTien;
+
+    @FXML
+    private Label lbMaUser;
+    @FXML
+    private Label lbUsername;
+    @FXML
+    private ComboBox<Xe> cbXe;
+    @FXML
+    private TableView<ChuyenXe> tbChuyenXe;
+    @FXML
+    private ComboBox<BenXe> cbBenDi;
+    @FXML
+    private ComboBox<BenXe> cbBenDen;
+    @FXML
+    private ComboBox<Ghe> cbGhe;
+    @FXML
+    private DatePicker dNgaySinh;
+    @FXML
+    private DatePicker dNgayDi;
+    @FXML
+    private TextField txtGioDi;
+    @FXML
+    private Label lbTenChuyen;
+    @FXML
+    private TextField txtMaChuyen;
+    @FXML
+    private TextField txtBenDi;
+    @FXML
+    private TextField txtBenDen;
+    @FXML
+    private TextField txtTenKH;
+    @FXML
+    private RadioButton rdNam;
+    @FXML
+    private RadioButton rdNu;
+    @FXML
+    private TextField txtDiaChi;
+    @FXML
+    private TextField txtDienThoai;
+    @FXML
+    private TextField txtCCCD;
+    @FXML
+    private Label lbThanhTien;
 
     public void setUserInfo(User user) throws SQLException {
         this.user = user;
@@ -130,9 +152,15 @@ public class BanVeController implements Initializable {
     }
 
     public void timChuyenXe(ActionEvent e) throws SQLException {
-        String tenBenXeDi = this.cbBenDi.getSelectionModel().getSelectedItem().getTenBen();
-        String tenBenXeDen = this.cbBenDen.getSelectionModel().getSelectedItem().getTenBen();
-        this.loadChuyenXe(tenBenXeDi, tenBenXeDen);
+        if (this.cbBenDi.getValue() == null && this.cbBenDen.getValue() == null){
+            MessageBox.getBox("Chuyến xe",
+                        "Vui lòng chọn bến đi và bến đến",
+                        Alert.AlertType.WARNING);
+        }else{
+            String tenBenXeDi = this.cbBenDi.getSelectionModel().getSelectedItem().getTenBen();
+            String tenBenXeDen = this.cbBenDen.getSelectionModel().getSelectedItem().getTenBen();
+            this.loadChuyenXe(tenBenXeDi, tenBenXeDen);
+        }
 
     }
 
@@ -189,7 +217,9 @@ public class BanVeController implements Initializable {
         Pattern CCCDRegex = Pattern.compile("^[0-9]{9,12}$");
         Matcher dienThoaimatcher = dienThoaiRegex.matcher(this.txtDienThoai.getText().trim());
         Matcher CCCDmatcher = CCCDRegex.matcher(this.txtCCCD.getText().trim());
-
+        Pattern ngaySinhRegex = Pattern.compile("^\\d{2}/\\d{2}/\\d{4}$");
+        Matcher ngaySinhMatchar = ngaySinhRegex.matcher(this.dNgaySinh.getValue().toString());
+        
         if (!dienThoaimatcher.matches()) {
             MessageBox.getBox("Điện thoại", "Số điện thoại không hợp lệ",
                     Alert.AlertType.WARNING).show();
@@ -200,7 +230,7 @@ public class BanVeController implements Initializable {
                     Alert.AlertType.WARNING).show();
             return false;
         }
-        if (this.dNgaySinh.getValue().isAfter(LocalDate.now())) {
+        if (this.dNgaySinh.getValue().isAfter(LocalDate.now()) && !ngaySinhMatchar.matches()) {
             MessageBox.getBox("Ngày sinh", "Ngày sinh không hợp lệ",
                     Alert.AlertType.WARNING).show();
             return false;
@@ -288,7 +318,7 @@ public class BanVeController implements Initializable {
         if (!dsChuyenXe.isEmpty()) {
             this.tbChuyenXe.getItems().clear();
             this.tbChuyenXe.setItems(FXCollections.observableList(dsChuyenXe));
-        }else{
+        } else {
             MessageBox.getBox("Chuyến xe", "Không có chuyến xe.", Alert.AlertType.WARNING).show();
         }
     }

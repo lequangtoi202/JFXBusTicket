@@ -138,7 +138,8 @@ public class DoiVeContoller {
         Pattern CCCDRegex = Pattern.compile("^[0-9]{9,12}$");
         Matcher dienThoaimatcher = dienThoaiRegex.matcher(this.txtDienThoai.getText().trim());
         Matcher CCCDmatcher = CCCDRegex.matcher(this.txtCCCD.getText().trim());
-
+        Pattern ngaySinhRegex = Pattern.compile("^\\d{2}/\\d{2}/\\d{4}$");
+        Matcher ngaySinhMatchar = ngaySinhRegex.matcher(this.dNgaySinh.getValue().toString());
         if (!dienThoaimatcher.matches()) {
             MessageBox.getBox("Điện thoại", "Số điện thoại không hợp lệ",
                     Alert.AlertType.WARNING).show();
@@ -149,7 +150,8 @@ public class DoiVeContoller {
                     Alert.AlertType.WARNING).show();
             return false;
         }
-        if (this.dNgaySinh.getValue().isAfter(LocalDate.now())) {
+        
+        if (this.dNgaySinh.getValue().isAfter(LocalDate.now())&&!ngaySinhMatchar.matches()) {
             MessageBox.getBox("Ngày sinh", "Ngày sinh không hợp lệ",
                     Alert.AlertType.WARNING).show();
             return false;

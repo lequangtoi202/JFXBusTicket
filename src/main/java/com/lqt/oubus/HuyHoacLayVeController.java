@@ -106,6 +106,10 @@ public class HuyHoacLayVeController {
                     }
                 }
             });
+        }else{
+            MessageBox.getBox("Vé xe",
+                    "Vui lòng nhập mã vé muốn hủy",
+                    Alert.AlertType.WARNING);
         }
     }
 

@@ -6,4 +6,5 @@ module com.lqt.oubus {
     exports com.lqt.oubus;
     exports com.lqt.pojo;
     exports com.lqt.service;
+    exports com.lqt.utils;
 }

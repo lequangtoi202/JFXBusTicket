@@ -156,7 +156,8 @@ public class DatVeController implements Initializable {
         Pattern CCCDRegex = Pattern.compile("^[0-9]{9,12}$");
         Matcher dienThoaimatcher = dienThoaiRegex.matcher(this.txtDienThoai.getText().trim());
         Matcher CCCDmatcher = CCCDRegex.matcher(this.txtCCCD.getText().trim());
-
+        Pattern ngaySinhRegex = Pattern.compile("^\\d{2}/\\d{2}/\\d{4}$");
+        Matcher ngaySinhMatchar = ngaySinhRegex.matcher(this.dNgaySinh.getValue().toString());
         if (!dienThoaimatcher.matches()) {
             MessageBox.getBox("Điện thoại", "Số điện thoại không hợp lệ",
                     Alert.AlertType.WARNING).show();
@@ -167,7 +168,7 @@ public class DatVeController implements Initializable {
                     Alert.AlertType.WARNING).show();
             return false;
         }
-        if (this.dNgaySinh.getValue().isAfter(LocalDate.now())) {
+        if (this.dNgaySinh.getValue().isAfter(LocalDate.now())&&!ngaySinhMatchar.matches()) {
             MessageBox.getBox("Ngày sinh", "Ngày sinh không hợp lệ",
                     Alert.AlertType.WARNING).show();
             return false;
@@ -186,9 +187,15 @@ public class DatVeController implements Initializable {
     }
 
     public void timChuyenXe(ActionEvent e) throws SQLException {
-        String tenBenXeDi = this.cbBenDi.getSelectionModel().getSelectedItem().getTenBen();
-        String tenBenXeDen = this.cbBenDen.getSelectionModel().getSelectedItem().getTenBen();
-        this.loadChuyenXe(tenBenXeDi, tenBenXeDen);
+        if (this.cbBenDi.getValue() == null && this.cbBenDen.getValue() == null){
+            MessageBox.getBox("Chuyến xe",
+                        "Vui lòng chọn bến đi và bến đến",
+                        Alert.AlertType.WARNING);
+        }else{
+            String tenBenXeDi = this.cbBenDi.getSelectionModel().getSelectedItem().getTenBen();
+            String tenBenXeDen = this.cbBenDen.getSelectionModel().getSelectedItem().getTenBen();
+            this.loadChuyenXe(tenBenXeDi, tenBenXeDen);
+        }
     }
 
     public void datVeHandler(ActionEvent e) throws ParseException, SQLException {

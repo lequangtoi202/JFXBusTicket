@@ -85,7 +85,7 @@ public class GheService {
             List<ThuHoiGheResponse> dsGheThuHoi = new ArrayList<>();
             String sql = "select g.Ma_xe, c.Ma_Chuyen_Xe from chuyen_xe as c, ve_xe as v, ghe as g\n" +
                             "where c.Ma_Chuyen_Xe=v.Ma_Chuyen_Xe and g.Ma_ghe=v.Ma_ghe and TIMEDIFF(c.Thoi_gian_di, now()) <= '00:00:00'\n" +
-                            "group by g.Ma_xe";
+                            "group by g.Ma_xe, c.Ma_Chuyen_Xe";
             
             
             Statement stm = conn.createStatement();

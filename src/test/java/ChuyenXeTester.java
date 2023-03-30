@@ -19,7 +19,6 @@ import org.junit.jupiter.api.BeforeAll;
 public class ChuyenXeTester {
     private static Connection conn;
     
-    
     @BeforeAll
     public static void beforeAll() {
         try {
