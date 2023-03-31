@@ -25,10 +25,8 @@ import org.junit.jupiter.api.Assertions;
  * @author TOI
  */
 public class ChuyenXeTester {
-
     private static final ChuyenXeService chuyenXeService = new ChuyenXeService();
     private static Connection conn;
-
     @BeforeAll
     public static void beforeAll() {
         try {
@@ -149,4 +147,5 @@ public class ChuyenXeTester {
         ChuyenXe chuyenXeSauKhiXoa = chuyenXeService.getChuyenXeById(chuyenXeMoiNhat.getMaChuyenXe());
         Assertions.assertNull(chuyenXeSauKhiXoa);
     }
+    
 }
