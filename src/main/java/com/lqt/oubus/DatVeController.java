@@ -57,6 +57,7 @@ import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
+import javafx.scene.control.ToggleGroup;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
@@ -146,6 +147,21 @@ public class DatVeController implements Initializable {
             this.cbBenDen.setItems(FXCollections.observableList(benXe));
 
             this.loadTableColumns();
+
+            ToggleGroup toggleGroup = new ToggleGroup();
+            this.rdNam.setToggleGroup(toggleGroup);
+            this.rdNu.setToggleGroup(toggleGroup);
+
+            this.rdNam.setOnAction(event -> {
+                if (this.rdNam.isSelected()) {
+                    this.rdNu.setSelected(false);
+                }
+            });
+            this.rdNu.setOnAction(event -> {
+                if (this.rdNu.isSelected()) {
+                    this.rdNam.setSelected(false);
+                }
+            });
         } catch (SQLException ex) {
             Logger.getLogger(DatVeController.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -168,7 +184,7 @@ public class DatVeController implements Initializable {
                     Alert.AlertType.WARNING).show();
             return false;
         }
-        if (this.dNgaySinh.getValue().isAfter(LocalDate.now())&&!ngaySinhMatchar.matches()) {
+        if (this.dNgaySinh.getValue().isAfter(LocalDate.now()) && !ngaySinhMatchar.matches()) {
             MessageBox.getBox("Ngày sinh", "Ngày sinh không hợp lệ",
                     Alert.AlertType.WARNING).show();
             return false;
@@ -187,11 +203,11 @@ public class DatVeController implements Initializable {
     }
 
     public void timChuyenXe(ActionEvent e) throws SQLException {
-        if (this.cbBenDi.getValue() == null && this.cbBenDen.getValue() == null){
+        if (this.cbBenDi.getValue() == null && this.cbBenDen.getValue() == null) {
             MessageBox.getBox("Chuyến xe",
-                        "Vui lòng chọn bến đi và bến đến",
-                        Alert.AlertType.WARNING);
-        }else{
+                    "Vui lòng chọn bến đi và bến đến",
+                    Alert.AlertType.WARNING);
+        } else {
             String tenBenXeDi = this.cbBenDi.getSelectionModel().getSelectedItem().getTenBen();
             String tenBenXeDen = this.cbBenDen.getSelectionModel().getSelectedItem().getTenBen();
             this.loadChuyenXe(tenBenXeDi, tenBenXeDen);
@@ -310,7 +326,7 @@ public class DatVeController implements Initializable {
         if (!dsChuyenXe.isEmpty()) {
             this.tbChuyenXe.getItems().clear();
             this.tbChuyenXe.setItems(FXCollections.observableList(dsChuyenXe));
-        }else{
+        } else {
             MessageBox.getBox("Chuyến xe", "Không có chuyến xe.", Alert.AlertType.WARNING).show();
         }
 

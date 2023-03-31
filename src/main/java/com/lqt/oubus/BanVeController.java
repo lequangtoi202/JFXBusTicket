@@ -57,6 +57,7 @@ import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
+import javafx.scene.control.ToggleGroup;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
@@ -146,6 +147,21 @@ public class BanVeController implements Initializable {
             this.cbBenDi.setItems(FXCollections.observableList(benXe));
             this.cbBenDen.setItems(FXCollections.observableList(benXe));
             this.loadTableColumns();
+            
+            ToggleGroup toggleGroup = new ToggleGroup();
+            this.rdNam.setToggleGroup(toggleGroup);
+            this.rdNu.setToggleGroup(toggleGroup);
+
+            this.rdNam.setOnAction(event -> {
+                if (this.rdNam.isSelected()) {
+                    this.rdNu.setSelected(false);
+                }
+            });
+            this.rdNu.setOnAction(event -> {
+                if (this.rdNu.isSelected()) {
+                    this.rdNam.setSelected(false);
+                }
+            });
         } catch (SQLException ex) {
             Logger.getLogger(DatVeController.class.getName()).log(Level.SEVERE, null, ex);
         }

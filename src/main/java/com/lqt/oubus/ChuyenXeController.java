@@ -195,7 +195,7 @@ public class ChuyenXeController implements Initializable {
             LocalDateTime thoiGianDi = LocalDateTime.of(ngayDi, LocalTime.parse(gioDi));
             TuyenXe tuyenXe = this.cbTuyenXe.getSelectionModel().getSelectedItem();
             TaiXe taiXe = this.cbTaiXe.getSelectionModel().getSelectedItem();
-            ChuyenXe chuyenXe = new ChuyenXe(tenChuyen, thoiGianDi, tuyenXe.getMaTuyenXe(), taiXe.getMaTaiXe());
+            ChuyenXe chuyenXe = new ChuyenXe(tenChuyen, thoiGianDi, tuyenXe.getMaTuyenXe(), taiXe.getMaTaiXe(), false);
             if (chuyenXeService.addChuyenXe(chuyenXe)) {
                 MessageBox.getBox("Chuyến xe", "Tạo chuyến xe thành công!",
                         Alert.AlertType.INFORMATION).show();
@@ -235,24 +235,25 @@ public class ChuyenXeController implements Initializable {
     }
 
     public void suaHandler(ActionEvent evt) throws SQLException {
-        //CHƯA KIỂM TRA CÁC THÔNG TIN HỢP LỆ HAY KO
-        int maChuyen = Integer.parseInt(this.txtMaChuyen.getText());
-        String tenChuyen = this.txtTenChuyen.getText();
-        String gioDi = this.txtGioDi.getText();
-        LocalDate ngayDi = this.dNgayDi.getValue();
-        LocalTime gioDiL = LocalTime.parse(gioDi);
-        LocalDateTime thoiGianDi = LocalDateTime.of(ngayDi, gioDiL);
-        System.out.println(thoiGianDi);
-        TuyenXe tuyenXe = this.cbTuyenXe.getSelectionModel().getSelectedItem();
-        TaiXe taiXe = this.cbTaiXe.getSelectionModel().getSelectedItem();
-        ChuyenXe chuyenXe = new ChuyenXe(maChuyen, tenChuyen, thoiGianDi, tuyenXe.getMaTuyenXe(), taiXe.getMaTaiXe());
-        if (chuyenXeService.updateChuyenXe(chuyenXe, maChuyen)) {
-            MessageBox.getBox("Chuyến xe", "Sửa chuyến xe thành công!",
-                    Alert.AlertType.INFORMATION).show();
-            this.loadChuyenXe();
-        } else {
-            MessageBox.getBox("Chuyến xe", "Sửa chuyến xe thất bại!",
-                    Alert.AlertType.ERROR).show();
+        if (kiemTraThongTin()) {
+            int maChuyen = Integer.parseInt(this.txtMaChuyen.getText());
+            String tenChuyen = this.txtTenChuyen.getText();
+            String gioDi = this.txtGioDi.getText();
+            LocalDate ngayDi = this.dNgayDi.getValue();
+            LocalTime gioDiL = LocalTime.parse(gioDi);
+            LocalDateTime thoiGianDi = LocalDateTime.of(ngayDi, gioDiL);
+            System.out.println(thoiGianDi);
+            TuyenXe tuyenXe = this.cbTuyenXe.getSelectionModel().getSelectedItem();
+            TaiXe taiXe = this.cbTaiXe.getSelectionModel().getSelectedItem();
+            ChuyenXe chuyenXe = new ChuyenXe(maChuyen, tenChuyen, thoiGianDi, tuyenXe.getMaTuyenXe(), taiXe.getMaTaiXe(), false);
+            if (chuyenXeService.updateChuyenXe(chuyenXe, maChuyen)) {
+                MessageBox.getBox("Chuyến xe", "Sửa chuyến xe thành công!",
+                        Alert.AlertType.INFORMATION).show();
+                this.loadChuyenXe();
+            } else {
+                MessageBox.getBox("Chuyến xe", "Sửa chuyến xe thất bại!",
+                        Alert.AlertType.ERROR).show();
+            }
         }
     }
 

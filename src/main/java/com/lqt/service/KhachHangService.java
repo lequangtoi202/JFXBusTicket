@@ -100,14 +100,15 @@ public class KhachHangService {
     
     public boolean updateKhachHang(KhachHang kh) throws SQLException{
          try (Connection conn = JdbcUtils.getConn()) {
-           String sql = "UPDATE khach_hang SET Ten_KH=?, NgaySinh=?, DiaChi=?, CCCD=?, DienThoai=? WHERE Ma_KH = ?";//SQL injection
+           String sql = "UPDATE khach_hang SET Ten_KH=?, NgaySinh=?, GioiTinh=?, DiaChi=?, CCCD=?, DienThoai=? WHERE Ma_KH = ?";//SQL injection
            PreparedStatement stm = conn.prepareCall(sql);
            stm.setString(1, kh.getTenKH());
            stm.setDate(2, Date.valueOf(kh.getNgaySinh().toInstant().atZone(ZoneId.systemDefault()).toLocalDate()));
-           stm.setString(3, kh.getDiaChi());
-           stm.setString(4, kh.getCCCD());
-           stm.setString(5, kh.getDienThoai());
-           stm.setInt(6, kh.getMaKH());
+           stm.setBoolean(3, kh.isGioiTinh());
+           stm.setString(4, kh.getDiaChi());
+           stm.setString(5, kh.getCCCD());
+           stm.setString(6, kh.getDienThoai());
+           stm.setInt(7, kh.getMaKH());
            return stm.executeUpdate() > 0;
         }
     }

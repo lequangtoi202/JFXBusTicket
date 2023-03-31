@@ -20,6 +20,27 @@ import java.util.List;
  * @author TOI
  */
 public class GheService {
+    public int addGhe(Ghe ghe) throws SQLException{
+        int id = -1;
+        try (Connection conn = JdbcUtils.getConn()) {
+            conn.setAutoCommit(false);
+            
+           String sql = "INSERT INTO ghe(So_ghe, Trang_thai, Ma_xe) VALUES(?, ?, ?)";
+           PreparedStatement stm = conn.prepareCall(sql);
+           stm.setString(1, ghe.getSoGhe());
+           stm.setString(2, ghe.getTrangThai().toString());
+           stm.setInt(3, ghe.getMaXe());
+           int r = stm.executeUpdate();
+           if (r == 0)
+               throw new SQLException("Insert customer failed, no rows affected.");
+           conn.commit();
+           ResultSet rs = stm.getGeneratedKeys();
+           if (rs.next()){
+               id = rs.getInt(1);
+           }
+           return id;
+        }
+    }
     
     public List<Ghe> getAllGheEmptyByMaXe(int maXe) throws SQLException{
         List<Ghe> dsGhe = new ArrayList<>();
@@ -106,4 +127,7 @@ public class GheService {
         }
         return true;
     }
+    
+    
+    
 }

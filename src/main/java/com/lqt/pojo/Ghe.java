@@ -21,14 +21,12 @@ public class Ghe {
         this.maGhe = maGhe;
         this.soGhe = soGhe;
         this.maXe = maXe;
+        this.trangThai = trangThai;
     }
-    public Ghe(int maGhe, String soGhe, TrangThaiGhe trangThai) {
-        this.maGhe = maGhe;
-        this.soGhe = soGhe;
-    }
-    public Ghe(String soGhe, TrangThaiGhe trangThai,int maXe) {
-        this.soGhe = soGhe;
+    public Ghe(String soGhe, TrangThaiGhe trangThai, int maXe) {
         this.maXe = maXe;
+        this.soGhe = soGhe;
+        this.trangThai = trangThai;
     }
 
     /**

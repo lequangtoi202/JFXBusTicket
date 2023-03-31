@@ -14,7 +14,6 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
-
 /**
  *
  * @author TOI
@@ -33,13 +32,15 @@ public class ChuyenXeService {
                         rs.getString("Ten_Chuyen_Xe"),
                         LocalDateTime.of(rs.getDate("Thoi_gian_di").toLocalDate(), localTime),
                         rs.getInt("Ma_Tuyen_Xe"),
-                        rs.getInt("Ma_Tai_Xe")));
+                        rs.getInt("Ma_Tai_Xe"),
+                        rs.getBoolean("is_updated")
+                ));
             }
         }
         
         return listChuyenXe;
     }
-    // chua test co chuyen nao trung hay khong
+    
     public List<ChuyenXe> getChuyenXeByBenDiAndBenDen(String benDi, String benDen) throws SQLException {
         List<ChuyenXe> listChuyenXe = new ArrayList<>();
         try (Connection conn = JdbcUtils.getConn()) {
@@ -64,7 +65,9 @@ public class ChuyenXeService {
                         rs.getString("Ten_Chuyen_Xe"),
                         LocalDateTime.of(rs.getDate("Thoi_gian_di").toLocalDate(), localTime),
                         rs.getInt("Ma_Tuyen_Xe"),
-                        rs.getInt("Ma_Tai_Xe")));
+                        rs.getInt("Ma_Tai_Xe"),
+                        rs.getBoolean("is_updated")
+                ));
             }
         }
         
@@ -84,22 +87,46 @@ public class ChuyenXeService {
                         rs.getString("Ten_Chuyen_Xe"),
                         LocalDateTime.of(rs.getDate("Thoi_gian_di").toLocalDate(), localTime),
                         rs.getInt("Ma_Tuyen_Xe"),
-                        rs.getInt("Ma_Tai_Xe")
+                        rs.getInt("Ma_Tai_Xe"),
+                        rs.getBoolean("is_updated")
                 );
             }
         }
         return null;
     }
+    
+    public ChuyenXe getChuyenXeMoiNhat() throws SQLException{
+        try ( Connection conn = JdbcUtils.getConn()) {
+            // B3 Truy van
+            String sql = "SELECT * FROM chuyen_xe ORDER BY Ma_Chuyen_Xe DESC LIMIT 1;";
+            Statement stm = conn.createStatement();
+            // Truy van lay du lieu --> select
+            ResultSet rs = stm.executeQuery(sql);
+            while (rs.next()) {
+                LocalTime localTime = rs.getTime("Thoi_gian_di").toLocalTime();
+                return new ChuyenXe(rs.getInt("Ma_Chuyen_Xe"), 
+                        rs.getString("Ten_Chuyen_Xe"),
+                        LocalDateTime.of(rs.getDate("Thoi_gian_di").toLocalDate(), localTime),
+                        rs.getInt("Ma_Tuyen_Xe"),
+                        rs.getInt("Ma_Tai_Xe"),
+                        rs.getBoolean("is_updated")
+                );
+            }
+        }
+        return null;
+    }
+    
     public boolean addChuyenXe(ChuyenXe chuyenXe) throws SQLException{
-         try (Connection conn = JdbcUtils.getConn()) {
+        try (Connection conn = JdbcUtils.getConn()) {
             conn.setAutoCommit(false);
             
-           String sql = "INSERT INTO chuyen_xe(Ten_Chuyen_Xe, Thoi_gian_di, Ma_Tuyen_Xe, Ma_Tai_Xe) VALUES(?, ?, ?, ?)";//SQL injection
+           String sql = "INSERT INTO chuyen_xe(Ten_Chuyen_Xe, Thoi_gian_di, Ma_Tuyen_Xe, Ma_Tai_Xe, is_updated) VALUES(?, ?, ?, ?, ?)";//SQL injection
            PreparedStatement stm = conn.prepareCall(sql);
            stm.setString(1, chuyenXe.getTenChuyen());
            stm.setString(2, chuyenXe.getThoiGianDi().toString());
            stm.setInt(3, chuyenXe.getMaTuyenXe());
            stm.setInt(4, chuyenXe.getMaTaiXe());
+           stm.setBoolean(5, false);
            int r = stm.executeUpdate();
            conn.commit();
            
@@ -119,13 +146,14 @@ public class ChuyenXeService {
     
     public boolean updateChuyenXe(ChuyenXe chuyenXe, int id) throws SQLException{
          try (Connection conn = JdbcUtils.getConn()) {
-           String sql = "UPDATE chuyen_xe SET Ten_Chuyen_Xe = ?, Thoi_gian_di = ?, Ma_Tuyen_Xe = ?, Ma_tai_xe = ? WHERE Ma_Chuyen_Xe = ?";//SQL injection
+           String sql = "UPDATE chuyen_xe SET Ten_Chuyen_Xe = ?, Thoi_gian_di = ?, Ma_Tuyen_Xe = ?, Ma_tai_xe = ?, is_updated=? WHERE Ma_Chuyen_Xe = ?";//SQL injection
            PreparedStatement stm = conn.prepareCall(sql);
            stm.setString(1, chuyenXe.getTenChuyen());
            stm.setString(2, chuyenXe.getThoiGianDi().toString());
            stm.setInt(3, chuyenXe.getMaTuyenXe());
            stm.setInt(4, chuyenXe.getMaTaiXe());
-           stm.setInt(5, id);
+           stm.setBoolean(5, chuyenXe.isIs_updated());
+           stm.setInt(6, id);
            
            return stm.executeUpdate() > 0;
         }
