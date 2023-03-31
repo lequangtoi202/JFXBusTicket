@@ -18,12 +18,11 @@ public class VeXe {
     private int maKH;
     private int maChuyenXe;
     private int maGhe;
-    private int maXe;
 
     public VeXe() {
     }
 
-    public VeXe(int maVeXe, LocalDateTime thoiGianBan, Status trangThai, int maNV, int maKH, int maChuyenXe, int maGhe, int maXe) {
+    public VeXe(int maVeXe, LocalDateTime thoiGianBan, Status trangThai, int maNV, int maKH, int maChuyenXe, int maGhe) {
         this.maVeXe = maVeXe;
         this.thoiGianBan = thoiGianBan;
         this.trangThai = trangThai;
@@ -31,17 +30,15 @@ public class VeXe {
         this.maKH = maKH;
         this.maChuyenXe = maChuyenXe;
         this.maGhe = maGhe;
-        this.maXe = maXe;
     }
     
-    public VeXe(LocalDateTime thoiGianBan, Status trangThai, int maNV, int maKH, int maChuyenXe, int maGhe, int maXe) {
+    public VeXe(LocalDateTime thoiGianBan, Status trangThai, int maNV, int maKH, int maChuyenXe, int maGhe) {
         this.thoiGianBan = thoiGianBan;
         this.trangThai = trangThai;
         this.maNV = maNV;
         this.maKH = maKH;
         this.maChuyenXe = maChuyenXe;
         this.maGhe = maGhe;
-        this.maXe = maXe;
     }
 
     /**
@@ -140,20 +137,6 @@ public class VeXe {
      */
     public void setMaGhe(int maGhe) {
         this.maGhe = maGhe;
-    }
-
-    /**
-     * @return the maXe
-     */
-    public int getMaXe() {
-        return maXe;
-    }
-
-    /**
-     * @param maXe the maXe to set
-     */
-    public void setMaXe(int maXe) {
-        this.maXe = maXe;
     }
     
 }

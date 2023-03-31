@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1100.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.lqt.oubus.HuyHoacLayVeController">
+   <children>
+      <HBox prefHeight="804.0" prefWidth="1000.0" style="-fx-background-color: #fff;">
+         <children>
+            <VBox prefHeight="600.0" prefWidth="249.0">
+               <children>
+                  <Pane prefHeight="803.0" prefWidth="250.0" style="-fx-background-color: #edf0f5;">
+                     <children>
+                        <Pane layoutX="-1.0" prefHeight="53.0" prefWidth="250.0" style="-fx-background-color: blue;" />
+                        <VBox layoutY="54.0" prefHeight="599.0" prefWidth="250.0">
+                           <children>
+                              <Pane prefHeight="50.0" prefWidth="266.0" style="-fx-background-color: #2185d0;">
+                                 <children>
+                                    <Label layoutX="92.0" layoutY="17.0" style="-fx-text-fill: #FFF; -fx-font-weight: BOLD;" text="DANH MỤC" />
+                                 </children>
+                              </Pane>
+                              <Pane layoutX="10.0" layoutY="10.0" prefHeight="50.0" prefWidth="218.0" style="-fx-background-color: #edf0f5;">
+                                 <children>
+                                    <Button layoutY="-1.0" mnemonicParsing="false" onMouseClicked="#chuyenTrangDatVe" prefHeight="50.0" prefWidth="250.0" style="-fx-background-color: #edf0f5; -fx-text-fill: #000; -fx-font-weight: BOLD;" text="ĐẶT VÉ" />
+                                 </children>
+                              </Pane>
+                              <Pane layoutX="10.0" layoutY="60.0" prefHeight="50.0" prefWidth="218.0" style="-fx-background-color: #edf0f5;">
+                                 <children>
+                                    <Separator prefHeight="5.0" prefWidth="250.0" />
+                                    <Label layoutX="51.0" layoutY="16.0" style="-fx-text-fill: black; -fx-font-weight: BOLD;" />
+                                    <Button mnemonicParsing="false" onMouseClicked="#chuyenTrangBanVe" prefHeight="50.0" prefWidth="250.0" style="-fx-background-color: #edf0f5; -fx-text-fill: #000; -fx-font-weight: BOLD;" text="BÁN VÉ" />
+                                 </children>
+                              </Pane>
+                              <Pane layoutX="10.0" layoutY="111.0" prefHeight="50.0" prefWidth="218.0" style="-fx-background-color: #edf0f5;">
+                                 <children>
+                                    <Separator prefHeight="5.0" prefWidth="250.0" />
+                                    <Button mnemonicParsing="false" onMouseClicked="#chuyenTrangDoiVe" prefHeight="50.0" prefWidth="250.0" style="-fx-background-color: #edf0f5; -fx-text-fill: #000; -fx-font-weight: BOLD;" text="ĐỔI VÉ" />
+                                 </children>
+                              </Pane>
+                              <Pane layoutX="10.0" layoutY="161.0" prefHeight="50.0" prefWidth="218.0" style="-fx-background-color: #edf0f5;">
+                                 <children>
+                                    <Separator prefHeight="5.0" prefWidth="250.0" />
+                                    <Button mnemonicParsing="false" prefHeight="50.0" prefWidth="250.0" style="-fx-background-color: #c6c6c6; -fx-text-fill: #67a1cb; -fx-font-weight: BOLD;" text="HỦY HOẶC LẤY VÉ" />
+                                 </children>
+                              </Pane>
+                           </children>
+                        </VBox>
+                     </children>
+                  </Pane>
+               </children>
+            </VBox>
+            <VBox prefHeight="604.0" prefWidth="851.0">
+               <children>
+                  <Pane prefHeight="54.0" prefWidth="851.0" style="-fx-background-color: #2082cb;">
+                     <children>
+                        <Button layoutX="726.0" layoutY="11.0" mnemonicParsing="false" onAction="#DangXuat" prefHeight="30.0" prefWidth="90.0" text="Đăng xuất" />
+                        <Label fx:id="lbUsername" alignment="CENTER" layoutX="595.0" layoutY="10.0" prefHeight="32.0" prefWidth="119.0" text="Username" />
+                     </children></Pane>
+                  <Pane prefHeight="524.0" prefWidth="851.0" style="-fx-background-color: #ffffff;">
+                     <children>
+                        <Pane layoutX="-2.0" layoutY="1.0" prefHeight="50.0" prefWidth="851.0">
+                           <children>
+                              <Label layoutX="315.0" layoutY="7.0" text="HỦY HOẶC LẤY VÉ">
+                                 <font>
+                                    <Font name="System Bold" size="25.0" />
+                                 </font></Label>
+                           </children>
+                        </Pane>
+                        <GridPane layoutY="63.0" prefHeight="312.0" prefWidth="851.0">
+                          <columnConstraints>
+                              <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                              <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                              <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                              <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                              <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                          </columnConstraints>
+                          <rowConstraints>
+                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                          </rowConstraints>
+                           <opaqueInsets>
+                              <Insets />
+                           </opaqueInsets>
+                           <children>
+                              <Button mnemonicParsing="false" onAction="#timVeHandler" prefHeight="30.0" prefWidth="119.0" text="TÌM VÉ" GridPane.columnIndex="2" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.rowIndex="2" />
+                              <TextField fx:id="txtMaVe" prefHeight="26.0" prefWidth="383.0" GridPane.columnIndex="2" GridPane.columnSpan="2">
+                                 <GridPane.margin>
+                                    <Insets left="200.0" right="200.0" />
+                                 </GridPane.margin></TextField>
+                              <Label alignment="CENTER_RIGHT" text="Mã vé xe:" GridPane.columnIndex="2">
+                                 <GridPane.margin>
+                                    <Insets left="110.0" />
+                                 </GridPane.margin></Label>
+                              <TextField fx:id="txtThoiGianBan" disable="true" GridPane.columnIndex="2" GridPane.rowIndex="4">
+                                 <GridPane.margin>
+                                    <Insets left="90.0" right="52.0" />
+                                 </GridPane.margin>
+                              </TextField>
+                              <TextField fx:id="txtMaKH" disable="true" GridPane.columnIndex="3" GridPane.rowIndex="4">
+                                 <GridPane.margin>
+                                    <Insets left="90.0" right="52.0" />
+                                 </GridPane.margin>
+                              </TextField>
+                              <TextField fx:id="txtTrangThai" disable="true" GridPane.columnIndex="2" GridPane.rowIndex="6">
+                                 <GridPane.margin>
+                                    <Insets left="90.0" right="52.0" />
+                                 </GridPane.margin>
+                              </TextField>
+                              <TextField fx:id="txtMaChuyenXe" disable="true" GridPane.columnIndex="3" GridPane.rowIndex="6">
+                                 <GridPane.margin>
+                                    <Insets left="90.0" right="52.0" />
+                                 </GridPane.margin>
+                              </TextField>
+                              <TextField fx:id="txtMaNV" disable="true" GridPane.columnIndex="2" GridPane.rowIndex="8">
+                                 <GridPane.margin>
+                                    <Insets left="90.0" right="52.0" />
+                                 </GridPane.margin>
+                              </TextField>
+                              <TextField fx:id="txtMaGhe" disable="true" GridPane.columnIndex="3" GridPane.rowIndex="8">
+                                 <GridPane.margin>
+                                    <Insets left="90.0" right="52.0" />
+                                 </GridPane.margin>
+                              </TextField>
+                              <Label alignment="CENTER_RIGHT" text="Thời gian bán:" GridPane.columnIndex="2" GridPane.rowIndex="4" />
+                              <Label alignment="CENTER_RIGHT" text="Trạng thái:" GridPane.columnIndex="2" GridPane.rowIndex="6" />
+                              <Label alignment="CENTER_RIGHT" text="Mã nhân viên:" GridPane.columnIndex="2" GridPane.rowIndex="8" />
+                              <Label alignment="CENTER_RIGHT" text="Mã chuyến xe:" GridPane.columnIndex="3" GridPane.rowIndex="6" />
+                              <Label alignment="CENTER_RIGHT" text="Mã khách hàng: " GridPane.columnIndex="3" GridPane.rowIndex="4" />
+                              <Label alignment="CENTER_RIGHT" text="Mã ghế:" GridPane.columnIndex="3" GridPane.rowIndex="8" />
+                              <TextField fx:id="txtMaVeXe" disable="true" prefHeight="25.0" prefWidth="100.0" GridPane.columnSpan="2" GridPane.rowIndex="4">
+                                 <GridPane.margin>
+                                    <Insets left="90.0" right="17.0" />
+                                 </GridPane.margin>
+                              </TextField>
+                              <Label alignment="CENTER_RIGHT" text="Mã vé xe:" GridPane.rowIndex="4" />
+                           </children>
+                           <padding>
+                              <Insets left="10.0" right="10.0" />
+                           </padding>
+                        </GridPane>
+                        <Button layoutX="490.0" layoutY="431.0" mnemonicParsing="false" onAction="#huyVeHandler" prefHeight="25.0" prefWidth="76.0" text="Hủy vé" />
+                        <Button layoutX="609.0" layoutY="431.0" mnemonicParsing="false" onAction="#layVeHandler" prefHeight="25.0" prefWidth="76.0" text="Lấy vé" />
+                     </children>
+                  </Pane>
+               </children>
+            </VBox>
+         </children>
+      </HBox>
+   </children>
+</VBox>

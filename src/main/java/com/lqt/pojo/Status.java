@@ -9,5 +9,5 @@ package com.lqt.pojo;
  * @author TOI
  */
 public enum Status {
-    Done, Canceled, Booked;
+    Done, Canceled, Booked, Retrieved;
 } 

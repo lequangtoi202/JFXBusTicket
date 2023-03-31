@@ -13,6 +13,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
+
 /**
  *
  * @author TOI
@@ -21,7 +22,7 @@ public class BenXeService {
     public List<BenXe> getAllBenXe() throws SQLException {
         List<BenXe> listBenXe = new ArrayList<>();
         try (Connection conn = JdbcUtils.getConn()) {
-            String sql = "SELECT * FROM tai_xe";
+            String sql = "SELECT * FROM ben_xe";
             
             Statement stm = conn.createStatement();
             // Truy van lay du lieu --> select
@@ -34,6 +35,7 @@ public class BenXeService {
         
         return listBenXe;
     }
+    
     public BenXe getBenXeById(int id) throws SQLException{
         try ( Connection conn = JdbcUtils.getConn()) {
             // B3 Truy van
@@ -49,6 +51,7 @@ public class BenXeService {
         }
         return null;
     }
+    
     public boolean addBenXe(BenXe benXe) throws SQLException{
          try (Connection conn = JdbcUtils.getConn()) {
             conn.setAutoCommit(false);
@@ -63,6 +66,7 @@ public class BenXeService {
            return r > 0;
         }
     }
+    
     public boolean deleteBenXe(int id) throws SQLException{
          try (Connection conn = JdbcUtils.getConn()) {
            String sql = "DELETE FROM ben_xe WHERE Ma_Ben = ?";//SQL injection

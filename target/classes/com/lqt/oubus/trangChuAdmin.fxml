@@ -5,7 +5,6 @@
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.ColumnConstraints?>
@@ -16,8 +15,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-
-<HBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1">
+<HBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.lqt.oubus.ChuyenXeController">
    <children>
       <VBox prefHeight="700.0" prefWidth="210.0" style="-fx-background-color: lightgray;">
          <children>
@@ -27,7 +25,7 @@
                   <Font name="System Bold" size="15.0" />
                </font>
             </Button>
-            <Button mnemonicParsing="false" prefHeight="66.0" prefWidth="214.0" text="Tra cứu chuyến xe">
+            <Button mnemonicParsing="false" onMouseClicked="#chuyenTrangTraCuu" prefHeight="66.0" prefWidth="214.0" text="Tra cứu chuyến xe">
                <font>
                   <Font name="System Bold" size="15.0" />
                </font>
@@ -38,11 +36,12 @@
          <children>
             <Pane prefHeight="58.0" prefWidth="691.0" style="-fx-background-color: #2082cb;">
                <children>
-                  <Button layoutX="557.0" layoutY="5.0" mnemonicParsing="false" prefHeight="47.0" prefWidth="102.0" style="-fx-font-weight: bold;" text="Đăng xuất">
+                  <Button layoutX="557.0" layoutY="5.0" mnemonicParsing="false" onAction="#DangXuat" prefHeight="47.0" prefWidth="102.0" style="-fx-font-weight: bold;" text="Đăng xuất">
                      <font>
                         <Font size="14.0" />
                      </font>
                   </Button>
+                  <Label fx:id="lbUsername" layoutX="470.0" layoutY="10.0" prefHeight="38.0" prefWidth="65.0" text="Username" />
                </children>
             </Pane>
             <Pane prefHeight="66.0" prefWidth="691.0">
@@ -75,41 +74,45 @@
                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                   <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                   <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
               </rowConstraints>
                <children>
-                  <Label text="Tên chuyến xe:" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.rowSpan="2" />
-                  <Label text="Thời gian đi:" GridPane.halignment="CENTER" GridPane.rowIndex="3" GridPane.rowSpan="2" />
-                  <Label text="Tuyến xe" GridPane.columnIndex="3" GridPane.halignment="RIGHT" GridPane.rowIndex="1" GridPane.rowSpan="2" />
-                  <Label text="Tài xế:" GridPane.columnIndex="3" GridPane.halignment="RIGHT" GridPane.rowIndex="3" GridPane.rowSpan="2" />
-                  <TextField prefWidth="214.0" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.rowSpan="2" />
-                  <ComboBox prefWidth="150.0" GridPane.columnIndex="4" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.rowSpan="2" />
-                  <ComboBox prefWidth="150.0" GridPane.columnIndex="4" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.rowIndex="3" GridPane.rowSpan="2" />
-                  <DatePicker GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.halignment="LEFT" GridPane.rowIndex="3" GridPane.rowSpan="2" />
-                  <Button mnemonicParsing="false" prefHeight="38.0" prefWidth="102.0" text="Thêm" GridPane.columnIndex="2" GridPane.columnSpan="2" GridPane.halignment="RIGHT" GridPane.rowIndex="7" GridPane.rowSpan="2">
+                  <Label text="Tên chuyến xe:" GridPane.halignment="CENTER" GridPane.rowIndex="3" GridPane.rowSpan="2" />
+                  <Label text="Ngày đi:" GridPane.halignment="CENTER" GridPane.rowIndex="5" GridPane.rowSpan="2" />
+                  <Label text="Tuyến xe" GridPane.columnIndex="3" GridPane.halignment="RIGHT" GridPane.rowIndex="3" GridPane.rowSpan="2" />
+                  <Label text="Tài xế:" GridPane.columnIndex="3" GridPane.halignment="RIGHT" GridPane.rowIndex="5" GridPane.rowSpan="2" />
+                  <TextField fx:id="txtTenChuyen" prefWidth="214.0" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.rowIndex="3" GridPane.rowSpan="2" />
+                  <ComboBox fx:id="cbTuyenXe" prefWidth="150.0" GridPane.columnIndex="4" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.rowIndex="3" GridPane.rowSpan="2" />
+                  <ComboBox fx:id="cbTaiXe" prefWidth="150.0" GridPane.columnIndex="4" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.rowIndex="5" GridPane.rowSpan="2" />
+                  <DatePicker fx:id="dNgayDi" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.halignment="LEFT" GridPane.rowIndex="5" GridPane.rowSpan="2" />
+                  <Button mnemonicParsing="false" onAction="#themHandler" prefHeight="38.0" prefWidth="102.0" text="Thêm" GridPane.columnIndex="2" GridPane.columnSpan="2" GridPane.halignment="RIGHT" GridPane.rowIndex="10" GridPane.rowSpan="2">
                      <GridPane.margin>
                         <Insets right="40.0" />
                      </GridPane.margin>
                   </Button>
-                  <Button mnemonicParsing="false" prefHeight="38.0" prefWidth="102.0" text="Sửa" GridPane.columnIndex="3" GridPane.columnSpan="2" GridPane.halignment="RIGHT" GridPane.rowIndex="7" GridPane.rowSpan="2">
+                  <Button mnemonicParsing="false" onAction="#suaHandler" prefHeight="38.0" prefWidth="103.0" text="Sửa" GridPane.columnIndex="4" GridPane.columnSpan="2" GridPane.halignment="RIGHT" GridPane.rowIndex="10" GridPane.rowSpan="2">
                      <GridPane.margin>
-                        <Insets right="40.0" />
+                        <Insets right="95.0" />
                      </GridPane.margin>
                   </Button>
-                  <Button mnemonicParsing="false" prefHeight="38.0" prefWidth="102.0" text="Xóa" GridPane.columnIndex="4" GridPane.columnSpan="2" GridPane.halignment="RIGHT" GridPane.rowIndex="7" GridPane.rowSpan="2">
+                  <TextField fx:id="txtGioDi" prefHeight="25.0" prefWidth="177.0" promptText="--00:00:00--" GridPane.columnIndex="4" GridPane.columnSpan="2" GridPane.rowIndex="1" GridPane.rowSpan="2">
                      <GridPane.margin>
-                        <Insets right="40.0" />
+                        <Insets left="62.0" right="43.0" />
                      </GridPane.margin>
-                  </Button>
+                  </TextField>
+                  <Label text="Giờ đi:" GridPane.columnIndex="3" GridPane.halignment="RIGHT" GridPane.rowIndex="1" GridPane.rowSpan="2">
+                     <GridPane.margin>
+                        <Insets />
+                     </GridPane.margin>
+                  </Label>
+                  <Label text="Mã chuyến xe:" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.rowSpan="2" />
+                  <TextField fx:id="txtMaChuyen" disable="true" GridPane.columnIndex="1" GridPane.rowIndex="1" GridPane.rowSpan="2" />
                </children>
             </GridPane>
-            <TableView prefHeight="306.0" prefWidth="691.0">
-              <columns>
-                <TableColumn prefWidth="75.0" text="C1" />
-                <TableColumn prefWidth="75.0" text="C2" />
-              </columns>
-            </TableView>
+            <TableView fx:id="tbChuyenXe" prefHeight="306.0" prefWidth="691.0" />
          </children>
       </VBox>
    </children>
 </HBox>
-

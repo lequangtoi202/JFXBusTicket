@@ -4,15 +4,14 @@
  */
 package com.lqt.service;
 
-import com.lqt.pojo.ChuyenXe;
 import com.lqt.pojo.KhachHang;
-import com.lqt.pojo.TaiXe;
 import java.sql.Connection;
 import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -35,12 +34,13 @@ public class KhachHangService {
                         rs.getBoolean("GioiTinh"), 
                         rs.getDate("NgaySinh"), 
                         rs.getString("DiaChi"), 
-                        rs.getString("CCCD"), 
-                        rs.getString("DienThoai"));
+                        rs.getString("DienThoai"),
+                        rs.getString("CCCD"));
             }
         }
         return null;
     }
+    
     public List<KhachHang> getAllKhachHang() throws SQLException {
         List<KhachHang> listKhachHang = new ArrayList<>();
         try (Connection conn = JdbcUtils.getConn()) {
@@ -55,37 +55,60 @@ public class KhachHangService {
                         rs.getBoolean("GioiTinh"), 
                         rs.getDate("NgaySinh"), 
                         rs.getString("DiaChi"), 
-                        rs.getString("CCCD"), 
-                        rs.getString("DienThoai")));
+                        rs.getString("DienThoai"),
+                        rs.getString("CCCD")));
             }
         }
         
         return listKhachHang;
     }
-    public boolean addKhachHang(KhachHang kh) throws SQLException{
+    
+    public int addKhachHang(KhachHang kh) throws SQLException{
+        int id = -1;
          try (Connection conn = JdbcUtils.getConn()) {
             conn.setAutoCommit(false);
             
            String sql = "INSERT INTO khach_hang(Ten_KH, NgaySinh, GioiTinh, DienThoai, DiaChi, CCCD) VALUES(?, ?, ?, ?, ?, ?)";//SQL injection
            PreparedStatement stm = conn.prepareCall(sql);
            stm.setString(1, kh.getTenKH());
-           stm.setDate(2, (Date) kh.getNgaySinh());
+           stm.setDate(2, Date.valueOf(kh.getNgaySinh().toInstant().atZone(ZoneId.systemDefault()).toLocalDate()));
            stm.setBoolean(3, kh.isGioiTinh());
            stm.setString(4, kh.getDienThoai());
            stm.setString(5, kh.getDiaChi());
            stm.setString(6, kh.getCCCD());
            int r = stm.executeUpdate();
+           if (r == 0)
+               throw new SQLException("Insert customer failed, no rows affected.");
            conn.commit();
-           
-           return r > 0;
+           ResultSet rs = stm.getGeneratedKeys();
+           if (rs.next()){
+               id = rs.getInt(1);
+           }
+           return id;
         }
     }
+    
     public boolean deleteKhachHang(int id) throws SQLException{
          try (Connection conn = JdbcUtils.getConn()) {
            String sql = "DELETE FROM khach_hang WHERE Ma_KH = ?";//SQL injection
            PreparedStatement stm = conn.prepareCall(sql);
            stm.setInt(1, id);
            
+           return stm.executeUpdate() > 0;
+        }
+    }
+    
+    public boolean updateKhachHang(KhachHang kh) throws SQLException{
+         try (Connection conn = JdbcUtils.getConn()) {
+           String sql = "UPDATE khach_hang SET Ten_KH=?, NgaySinh=?, GioiTinh=?, DiaChi=?, CCCD=?, DienThoai=? WHERE Ma_KH = ?";//SQL injection
+           PreparedStatement stm = conn.prepareCall(sql);
+           stm.setString(1, kh.getTenKH());
+           stm.setDate(2, Date.valueOf(kh.getNgaySinh().toInstant().atZone(ZoneId.systemDefault()).toLocalDate()));
+           stm.setBoolean(3, kh.isGioiTinh());
+           stm.setString(4, kh.getDiaChi());
+           stm.setString(5, kh.getCCCD());
+           stm.setString(6, kh.getDienThoai());
+           stm.setInt(7, kh.getMaKH());
            return stm.executeUpdate() > 0;
         }
     }

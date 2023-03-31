@@ -16,23 +16,26 @@ public class ChuyenXe {
     private LocalDateTime thoiGianDi;
     private int maTuyenXe;
     private int maTaiXe;
+    private boolean is_updated;
 
     public ChuyenXe() {
     }
 
-    public ChuyenXe(int maChuyenXe, String tenChuyen, LocalDateTime thoiGianDi, int maTuyenXe, int maTaiXe) {
+    public ChuyenXe(int maChuyenXe, String tenChuyen, LocalDateTime thoiGianDi, int maTuyenXe, int maTaiXe, boolean is_updated) {
         this.maChuyenXe = maChuyenXe;
         this.tenChuyen = tenChuyen;
         this.thoiGianDi = thoiGianDi;
         this.maTuyenXe = maTuyenXe;
         this.maTaiXe = maTaiXe;
+        this.is_updated = is_updated;
     }
     
-    public ChuyenXe(String tenChuyen, LocalDateTime thoiGianDi, int maTuyenXe, int maTaiXe) {
+    public ChuyenXe(String tenChuyen, LocalDateTime thoiGianDi, int maTuyenXe, int maTaiXe, boolean is_updated) {
         this.tenChuyen = tenChuyen;
         this.thoiGianDi = thoiGianDi;
         this.maTuyenXe = maTuyenXe;
         this.maTaiXe = maTaiXe;
+        this.is_updated = is_updated;
     }
 
     /**
@@ -104,5 +107,25 @@ public class ChuyenXe {
     public void setMaTaiXe(int maTaiXe) {
         this.maTaiXe = maTaiXe;
     }
+
+    @Override
+    public String toString() {
+        return this.tenChuyen; // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/OverriddenMethodBody
+    }
+
+    /**
+     * @return the is_updated
+     */
+    public boolean isIs_updated() {
+        return is_updated;
+    }
+
+    /**
+     * @param is_updated the is_updated to set
+     */
+    public void setIs_updated(boolean is_updated) {
+        this.is_updated = is_updated;
+    }
+    
     
 }
