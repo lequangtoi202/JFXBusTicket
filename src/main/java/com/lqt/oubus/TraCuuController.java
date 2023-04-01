@@ -143,6 +143,8 @@ public class TraCuuController implements Initializable{
             FXMLLoader loader = new FXMLLoader(getClass().getResource("trangChuAdmin.fxml"));
             Parent adminView = loader.load();
             Scene scene = new Scene(adminView);
+            ChuyenXeController controller = loader.getController();
+            controller.setUserInfo(user);
             stage.setScene(scene);
             stage.show();
     }
