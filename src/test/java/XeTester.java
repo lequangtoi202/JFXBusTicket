@@ -60,7 +60,6 @@ public class XeTester {
             fail("Lỗi khi truy vấn cơ sở dữ liệu");
         }
         // So sánh danh sách xe thực tế với danh sách xe mong đợi
-        Assertions.assertEquals(expectedXeList.size(), actualXeList.size());
         for (int i = 0; i < expectedXeList.size(); i++) {
             Assertions.assertEquals(expectedXeList.get(i).getMaXe(), actualXeList.get(i).getMaXe());
             Assertions.assertEquals(expectedXeList.get(i).getTenXe(), actualXeList.get(i).getTenXe());

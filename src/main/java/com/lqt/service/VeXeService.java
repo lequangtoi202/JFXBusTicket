@@ -25,6 +25,7 @@ import java.util.logging.Logger;
  */
 public class VeXeService {
     private static final VeXeService veXeService = new VeXeService();
+    
     public List<VeXe> getAllVeXe() throws SQLException {
         List<VeXe> listVeXe = new ArrayList<>();
         try (Connection conn = JdbcUtils.getConn()) {
