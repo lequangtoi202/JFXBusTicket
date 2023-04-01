@@ -44,7 +44,7 @@ public class ChuyenXeService {
     public List<ChuyenXe> getChuyenXeByBenDiAndBenDen(String benDi, String benDen) throws SQLException {
         List<ChuyenXe> listChuyenXe = new ArrayList<>();
         try (Connection conn = JdbcUtils.getConn()) {
-            String sql = "SELECT c.Ma_Chuyen_Xe, c.Ma_tai_xe, c.Ma_Tuyen_Xe, c.Ten_Chuyen_Xe, c.Thoi_gian_di\n" +
+            String sql = "SELECT c.Ma_Chuyen_Xe, c.Ma_tai_xe, c.Ma_Tuyen_Xe, c.Ten_Chuyen_Xe, c.Thoi_gian_di, c.is_updated\n" +
                             "FROM chuyen_xe AS c, tuyen_xe AS t\n" +
                             "WHERE c.Ma_Tuyen_Xe = t.Ma_Tuyen_Xe\n" +
                             "  AND t.Ma_ben_di = (SELECT b.Ma_Ben\n" +

@@ -32,8 +32,8 @@ public class TaiXeService {
                         rs.getBoolean("GioiTinh_tx"), 
                         rs.getDate("NgaySinh_tx"), 
                         rs.getString("DiaChi_tx"), 
+                        rs.getString("DienThoai_tx"),
                         rs.getString("CCCD"), 
-                        rs.getString("DienThoai_tx"), 
                         rs.getString("Email"));
             }
         }
@@ -54,8 +54,8 @@ public class TaiXeService {
                         rs.getBoolean("GioiTinh_tx"), 
                         rs.getDate("NgaySinh_tx"), 
                         rs.getString("DiaChi_tx"), 
-                        rs.getString("CCCD"), 
                         rs.getString("DienThoai_tx"), 
+                        rs.getString("CCCD"),
                         rs.getString("Email")));
             }
         }

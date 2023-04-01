@@ -3,6 +3,7 @@ import com.lqt.service.JdbcUtils;
 import com.lqt.service.TaiXeService;
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.junit.jupiter.api.AfterAll;
@@ -64,7 +65,14 @@ public class TaiXeServiceTester {
         Assertions.assertNull(taiXe);
     }
     
+    @Test
+    public void testGetAllVeXe() throws SQLException {
+        List<TaiXe> listTaiXe = taiXeService.getAllTaiXe();
+        
+        Assertions.assertNotNull(listTaiXe);
+        Assertions.assertFalse(listTaiXe.isEmpty());
+    }
     
     
-    
+        
 }
