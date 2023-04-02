@@ -210,16 +210,28 @@ public class ChuyenXeController implements Initializable {
     public boolean kiemTraThongTin() {
         Pattern gioDiRegex = Pattern.compile("^\\d{2}:\\d{2}$");
         Pattern ngayDiRegex = Pattern.compile("^\\d{2}/\\d{2}/\\d{4}$");
-        Matcher ngayDinhMatcher = ngayDiRegex.matcher(this.dNgayDi.getValue().toString());
+        if (this.txtTenChuyen.getText().trim().isEmpty()) {
+            MessageBox.getBox("Xe", "Vui lòng nhập tên chuyến xe",
+                    Alert.AlertType.WARNING).show();
+            return false;
+        }
+
+        if (this.dNgayDi.getValue() == null) {
+            MessageBox.getBox("Xe", "Vui lòng chọn ngày đi",
+                    Alert.AlertType.WARNING).show();
+            return false;
+        }
+        Matcher ngayDiMatcher = ngayDiRegex.matcher(this.dNgayDi.getValue().toString());
         Matcher gioDiMatcher = gioDiRegex.matcher(this.txtGioDi.getText().trim());
-        if (this.dNgayDi.getValue().isBefore(LocalDate.now()) && !ngayDinhMatcher.matches()) {
-            MessageBox.getBox("Ngày sinh", "Ngày đi không hợp lệ",
+        if (this.dNgayDi.getValue().isBefore(LocalDate.now()) && !ngayDiMatcher.matches()) {
+            MessageBox.getBox("Xe", "Ngày đi không hợp lệ",
                     Alert.AlertType.WARNING).show();
             return false;
         }
         if (!gioDiMatcher.matches()) {
             MessageBox.getBox("Xe", "Giờ đi không đúng định dạng",
                     Alert.AlertType.WARNING).show();
+            return false;
         }
         if (this.cbTuyenXe.getValue() == null) {
             MessageBox.getBox("Xe", "Vui lòng chọn tuyến xe",
@@ -227,32 +239,38 @@ public class ChuyenXeController implements Initializable {
             return false;
         }
         if (this.cbTaiXe.getValue() == null) {
-            MessageBox.getBox("Ghế", "Vui lòng chọn tài xế",
+            MessageBox.getBox("Xe", "Vui lòng chọn tài xế",
                     Alert.AlertType.WARNING).show();
             return false;
         }
+
         return true;
     }
 
     public void suaHandler(ActionEvent evt) throws SQLException {
-        if (kiemTraThongTin()) {
-            int maChuyen = Integer.parseInt(this.txtMaChuyen.getText());
-            String tenChuyen = this.txtTenChuyen.getText();
-            String gioDi = this.txtGioDi.getText();
-            LocalDate ngayDi = this.dNgayDi.getValue();
-            LocalTime gioDiL = LocalTime.parse(gioDi);
-            LocalDateTime thoiGianDi = LocalDateTime.of(ngayDi, gioDiL);
-            System.out.println(thoiGianDi);
-            TuyenXe tuyenXe = this.cbTuyenXe.getSelectionModel().getSelectedItem();
-            TaiXe taiXe = this.cbTaiXe.getSelectionModel().getSelectedItem();
-            ChuyenXe chuyenXe = new ChuyenXe(maChuyen, tenChuyen, thoiGianDi, tuyenXe.getMaTuyenXe(), taiXe.getMaTaiXe(), false);
-            if (chuyenXeService.updateChuyenXe(chuyenXe, maChuyen)) {
-                MessageBox.getBox("Chuyến xe", "Sửa chuyến xe thành công!",
-                        Alert.AlertType.INFORMATION).show();
-                this.loadChuyenXe();
-            } else {
-                MessageBox.getBox("Chuyến xe", "Sửa chuyến xe thất bại!",
-                        Alert.AlertType.ERROR).show();
+        if (this.txtMaChuyen.getText().isEmpty()) {
+            MessageBox.getBox("Xe", "Vui lòng chọn chuyến xe để sửa",
+                    Alert.AlertType.WARNING).show();
+        } else {
+            if (kiemTraThongTin()) {
+                int maChuyen = Integer.parseInt(this.txtMaChuyen.getText());
+                String tenChuyen = this.txtTenChuyen.getText();
+                String gioDi = this.txtGioDi.getText();
+                LocalDate ngayDi = this.dNgayDi.getValue();
+                LocalTime gioDiL = LocalTime.parse(gioDi);
+                LocalDateTime thoiGianDi = LocalDateTime.of(ngayDi, gioDiL);
+                System.out.println(thoiGianDi);
+                TuyenXe tuyenXe = this.cbTuyenXe.getSelectionModel().getSelectedItem();
+                TaiXe taiXe = this.cbTaiXe.getSelectionModel().getSelectedItem();
+                ChuyenXe chuyenXe = new ChuyenXe(maChuyen, tenChuyen, thoiGianDi, tuyenXe.getMaTuyenXe(), taiXe.getMaTaiXe(), false);
+                if (chuyenXeService.updateChuyenXe(chuyenXe, maChuyen)) {
+                    MessageBox.getBox("Chuyến xe", "Sửa chuyến xe thành công!",
+                            Alert.AlertType.INFORMATION).show();
+                    this.loadChuyenXe();
+                } else {
+                    MessageBox.getBox("Chuyến xe", "Sửa chuyến xe thất bại!",
+                            Alert.AlertType.ERROR).show();
+                }
             }
         }
     }

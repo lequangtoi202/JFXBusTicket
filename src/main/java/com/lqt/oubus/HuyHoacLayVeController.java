@@ -34,18 +34,28 @@ import javafx.stage.Stage;
  * @author TOI
  */
 public class HuyHoacLayVeController {
+
     private static final VeXeService veXeService = new VeXeService();
     private static final GheService gheService = new GheService();
     private User user;
-    @FXML private Label lbUsername;
-    @FXML private TextField txtMaVe;
-    @FXML private TextField txtMaVeXe;
-    @FXML private TextField txtThoiGianBan;
-    @FXML private TextField txtMaKH;
-    @FXML private TextField txtMaNV;
-    @FXML private TextField txtMaChuyenXe;
-    @FXML private TextField txtMaGhe;
-    @FXML private TextField txtTrangThai;
+    @FXML
+    private Label lbUsername;
+    @FXML
+    private TextField txtMaVe;
+    @FXML
+    private TextField txtMaVeXe;
+    @FXML
+    private TextField txtThoiGianBan;
+    @FXML
+    private TextField txtMaKH;
+    @FXML
+    private TextField txtMaNV;
+    @FXML
+    private TextField txtMaChuyenXe;
+    @FXML
+    private TextField txtMaGhe;
+    @FXML
+    private TextField txtTrangThai;
 
     public void setUserInfo(User user) throws SQLException {
         this.user = user;
@@ -53,21 +63,26 @@ public class HuyHoacLayVeController {
     }
 
     public void timVeHandler(ActionEvent evt) throws SQLException {
-        int maVe = Integer.parseInt(this.txtMaVe.getText().trim());
-        VeXe veXe = veXeService.getVeXeBookedById(maVe);
-        clear();
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
-        if (veXe != null) {
-            this.txtMaGhe.setText(String.valueOf(veXe.getMaGhe()));
-            this.txtMaNV.setText(String.valueOf(veXe.getMaNV()));
-            this.txtMaVeXe.setText(String.valueOf(veXe.getMaVeXe()));
-            this.txtMaChuyenXe.setText(String.valueOf(veXe.getMaChuyenXe()));
-            this.txtMaKH.setText(String.valueOf(veXe.getMaKH()));
-            this.txtThoiGianBan.setText(veXe.getThoiGianBan().format(formatter));
-            this.txtTrangThai.setText(veXe.getTrangThai().toString());
-        } else {
-            MessageBox.getBox("Ve Xe", "KHÔNG CÓ VÉ XE CÓ MÃ LÀ " + maVe + " HOẶC VÉ ĐÃ ĐƯỢC MUA.",
+        if (txtMaVe.getText().trim().isBlank()) {
+            MessageBox.getBox("Vé Xe", "Vui lòng nhập mã vé",
                     Alert.AlertType.WARNING).show();
+        } else {
+            int maVe = Integer.parseInt(this.txtMaVe.getText().trim());
+            VeXe veXe = veXeService.getVeXeBookedById(maVe);
+            clear();
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
+            if (veXe != null) {
+                this.txtMaGhe.setText(String.valueOf(veXe.getMaGhe()));
+                this.txtMaNV.setText(String.valueOf(veXe.getMaNV()));
+                this.txtMaVeXe.setText(String.valueOf(veXe.getMaVeXe()));
+                this.txtMaChuyenXe.setText(String.valueOf(veXe.getMaChuyenXe()));
+                this.txtMaKH.setText(String.valueOf(veXe.getMaKH()));
+                this.txtThoiGianBan.setText(veXe.getThoiGianBan().format(formatter));
+                this.txtTrangThai.setText(veXe.getTrangThai().toString());
+            } else {
+                MessageBox.getBox("Vé Xe", "KHÔNG CÓ VÉ XE CÓ MÃ LÀ " + maVe + " HOẶC VÉ ĐÃ ĐƯỢC MUA.",
+                        Alert.AlertType.WARNING).show();
+            }
         }
     }
 
@@ -106,7 +121,7 @@ public class HuyHoacLayVeController {
                     }
                 }
             });
-        }else{
+        } else {
             MessageBox.getBox("Vé xe",
                     "Vui lòng nhập mã vé muốn hủy",
                     Alert.AlertType.WARNING);

@@ -45,15 +45,15 @@ public class ChuyenXeService {
         List<ChuyenXe> listChuyenXe = new ArrayList<>();
         try (Connection conn = JdbcUtils.getConn()) {
             String sql = "SELECT c.Ma_Chuyen_Xe, c.Ma_tai_xe, c.Ma_Tuyen_Xe, c.Ten_Chuyen_Xe, c.Thoi_gian_di, c.is_updated\n" +
-                            "FROM chuyen_xe AS c, tuyen_xe AS t\n" +
-                            "WHERE c.Ma_Tuyen_Xe = t.Ma_Tuyen_Xe\n" +
-                            "  AND t.Ma_ben_di = (SELECT b.Ma_Ben\n" +
-                            "                     FROM ben_xe AS b\n" +
-                            "                     WHERE b.Ten_Ben_Xe LIKE '%" + benDi + "%')\n" +
-                            "  AND t.Ma_ben_den = (SELECT b.Ma_Ben\n" +
-                            "                      FROM ben_xe AS b\n" +
-                            "                      WHERE b.Ten_Ben_Xe LIKE '%" + benDen + "%')" +
-                            " and TIMEDIFF(c.Thoi_gian_di, now()) >= '00:00:00'";
+"                            FROM chuyen_xe AS c, tuyen_xe AS t\n" +
+"                            WHERE c.Ma_Tuyen_Xe = t.Ma_Tuyen_Xe\n" +
+"                              AND t.Ma_ben_di = (SELECT b.Ma_Ben\n" +
+"                                                 FROM ben_xe AS b\n" +
+"                                                 WHERE b.Ten_Ben_Xe LIKE '%" + benDi + "%')\n" +
+"                              AND t.Ma_ben_den = (SELECT b.Ma_Ben\n" +
+"                                                  FROM ben_xe AS b\n" +
+"                                                  WHERE b.Ten_Ben_Xe LIKE '%" + benDen + "%')\n" +
+"                             and TIMEDIFF(c.Thoi_gian_di, now()) >= '00:00:00' and c.is_updated = 0";
             
             Statement stm = conn.prepareCall(sql);
             // Truy van lay du lieu --> select

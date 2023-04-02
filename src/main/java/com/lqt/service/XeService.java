@@ -21,8 +21,7 @@ public class XeService {
     public List<Xe> getAllXe() throws SQLException {
         List<Xe> listXe = new ArrayList<>();
         try (Connection conn = JdbcUtils.getConn()) {
-            String sql = "SELECT * FROM xe";
-            
+            String sql = "select * from xe";
             Statement stm = conn.createStatement();
             // Truy van lay du lieu --> select
             ResultSet rs = stm.executeQuery(sql);

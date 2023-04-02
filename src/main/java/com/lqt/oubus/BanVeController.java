@@ -231,13 +231,42 @@ public class BanVeController implements Initializable {
     public boolean kiemTraThongTin() {
         Pattern dienThoaiRegex = Pattern.compile("^0\\d{9}$");
         Pattern CCCDRegex = Pattern.compile("^[0-9]{9,12}$");
+        if (this.txtMaChuyen.getText().isEmpty()){
+            MessageBox.getBox("Chuyến xe", "Vui lòng chọn chuyến xe muốn đi",
+                    Alert.AlertType.WARNING).show();
+            return false;
+        }
+        if (this.txtTenKH.getText().trim().isEmpty()){
+            MessageBox.getBox("Khách hàng", "Vui lòng nhập tên khách hàng",
+                    Alert.AlertType.WARNING).show();
+            return false;
+        }
+        if (this.dNgaySinh.getValue()==null){
+            MessageBox.getBox("Ngày Sinh", "Vui lòng nhập ngày sinh",
+                    Alert.AlertType.WARNING).show();
+            return false;
+        }
         Matcher dienThoaimatcher = dienThoaiRegex.matcher(this.txtDienThoai.getText().trim());
         Matcher CCCDmatcher = CCCDRegex.matcher(this.txtCCCD.getText().trim());
         Pattern ngaySinhRegex = Pattern.compile("^\\d{2}/\\d{2}/\\d{4}$");
         Matcher ngaySinhMatchar = ngaySinhRegex.matcher(this.dNgaySinh.getValue().toString());
-        
+        if (this.dNgaySinh.getValue().isAfter(LocalDate.now()) && !ngaySinhMatchar.matches()) {
+            MessageBox.getBox("Ngày sinh", "Ngày sinh không hợp lệ",
+                    Alert.AlertType.WARNING).show();
+            return false;
+        }
+        if (this.txtDienThoai.getText().trim().isEmpty()) {
+            MessageBox.getBox("Điện thoại", "Vui lòng nhập số điện thoại.",
+                    Alert.AlertType.WARNING).show();
+            return false;
+        }
         if (!dienThoaimatcher.matches()) {
             MessageBox.getBox("Điện thoại", "Số điện thoại không hợp lệ",
+                    Alert.AlertType.WARNING).show();
+            return false;
+        }
+        if (this.txtCCCD.getText().trim().isEmpty()) {
+            MessageBox.getBox("CCCD", "Vui lòng nhập số căn cước công dân.",
                     Alert.AlertType.WARNING).show();
             return false;
         }
@@ -246,8 +275,9 @@ public class BanVeController implements Initializable {
                     Alert.AlertType.WARNING).show();
             return false;
         }
-        if (this.dNgaySinh.getValue().isAfter(LocalDate.now()) && !ngaySinhMatchar.matches()) {
-            MessageBox.getBox("Ngày sinh", "Ngày sinh không hợp lệ",
+        
+        if (this.txtDiaChi.getText().trim().isEmpty()) {
+            MessageBox.getBox("Khách hàng", "Vui lòng nhập địa chỉ",
                     Alert.AlertType.WARNING).show();
             return false;
         }
@@ -274,7 +304,7 @@ public class BanVeController implements Initializable {
         this.txtDienThoai.clear();
         this.txtCCCD.clear();
         this.txtDiaChi.clear();
-        this.lbTenChuyen.setText("");
+        this.lbTenChuyen.setText("Nơi đi - Nơi đến");
         this.txtGioDi.clear();
         this.txtMaChuyen.clear();
         this.txtTenKH.clear();
