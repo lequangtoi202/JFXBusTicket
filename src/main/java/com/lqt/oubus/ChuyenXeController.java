@@ -160,14 +160,14 @@ public class ChuyenXeController implements Initializable {
                         ChuyenXe chuyenXe = (ChuyenXe) cell.getTableRow().getItem();
 
                         try {
-                            if (chuyenXeService.deleteChuyenXe(chuyenXe.getMaChuyenXe()) == true) {
+                            if (chuyenXeService.deleteChuyenXe(chuyenXe.getMaChuyenXe())) {
                                 MessageBox.getBox("Chuyến xe", "Xóa chuyến xe thành công!", Alert.AlertType.INFORMATION).show();
                                 this.loadChuyenXe();
                             } else {
                                 MessageBox.getBox("Chuyến xe", "Xóa chuyến xe thất bại", Alert.AlertType.ERROR).show();
                             }
                         } catch (SQLException ex) {
-                            MessageBox.getBox("Question", "Delete failed", Alert.AlertType.INFORMATION).show();
+                            MessageBox.getBox("Chuyến xe", "Xóa chuyến xe thất bại", Alert.AlertType.ERROR).show();
                             Logger.getLogger(ChuyenXeController.class.getName()).log(Level.SEVERE, null, ex);
                         }
                     }
@@ -218,7 +218,7 @@ public class ChuyenXeController implements Initializable {
             return false;
         }
         if (!gioDiMatcher.matches()) {
-            MessageBox.getBox("Xe", "Giowf đi không đuungs định dạng",
+            MessageBox.getBox("Xe", "Giờ đi không đúng định dạng",
                     Alert.AlertType.WARNING).show();
         }
         if (this.cbTuyenXe.getValue() == null) {
