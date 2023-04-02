@@ -19,7 +19,7 @@ public class UserService {
     public User getUsernameAndPassword(String username, String password) throws SQLException{
         try ( Connection conn = JdbcUtils.getConn()) {
             // B3 Truy van
-            String sql = "SELECT * FROM user WHERE username like concat('%', ?, '%')";
+            String sql = "SELECT * FROM user WHERE username = ?";
             PreparedStatement stm = conn.prepareCall(sql);
             stm.setString(1, username);
             // Truy van lay du lieu --> select

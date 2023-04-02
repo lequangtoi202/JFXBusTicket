@@ -26,50 +26,56 @@ import javafx.stage.Stage;
  * @author TOI
  */
 public class LoginController {
+
     private static final UserService UserService = new UserService();
     private static final RoleService roleService = new RoleService();
-    @FXML private TextField txtUsername;
-    @FXML private TextField txtPassword;
-    
-    public void login(ActionEvent evt) throws SQLException, IOException{
+    @FXML
+    private TextField txtUsername;
+    @FXML
+    private TextField txtPassword;
+
+    public void login(ActionEvent evt) throws SQLException, IOException {
         String username = this.txtUsername.getText().trim();
         String password = this.txtPassword.getText().trim();
-        
-        User user = UserService.getUsernameAndPassword(username, password);
-        if (user == null){
-            MessageBox.getBox("Login", "Tài khoản không tồn tại!", 
-                Alert.AlertType.ERROR).show();
-        }
-        else
-        {
-            if (user.getPassword().equals(password)){
-                MessageBox.getBox("Login", "Đăng nhập thành công", 
-                    Alert.AlertType.INFORMATION).show();
-                Role role = roleService.getRoleById(user.getRoleId());
-                if (role.getName().equals("ADMIN")){
-                    Stage stage = (Stage)((Node)evt.getSource()).getScene().getWindow();
-                    FXMLLoader loader = new FXMLLoader(getClass().getResource("trangChuAdmin.fxml"));
-                    Parent manageView = loader.load();
-                    Scene scene = new Scene(manageView);
-                    ChuyenXeController controller = loader.getController();
-                    controller.setUserInfo(user);
-                    stage.setScene(scene);
-                    stage.show();
-                }else{
-                    // chuyen trang
-                    Stage stage = (Stage)((Node)evt.getSource()).getScene().getWindow();
-                    FXMLLoader loader = new FXMLLoader(getClass().getResource("datVe.fxml"));
-                    Parent manageView = loader.load();
-                    Scene scene = new Scene(manageView);
-                    DatVeController controller = loader.getController();
-                    controller.setUserInfo(user);
-                    stage.setScene(scene);
-                    stage.show();
+        if (username.isEmpty()) {
+            MessageBox.getBox("Login", "Vui lòng nhập tên đăng nhập",
+                    Alert.AlertType.ERROR).show();
+        } else {
+            User user = UserService.getUsernameAndPassword(username, password);
+            if (user == null) {
+                MessageBox.getBox("Login", "Tài khoản không tồn tại!",
+                        Alert.AlertType.ERROR).show();
+            } else {
+                if (user.getPassword().equals(password)) {
+                    MessageBox.getBox("Login", "Đăng nhập thành công",
+                            Alert.AlertType.INFORMATION).show();
+                    Role role = roleService.getRoleById(user.getRoleId());
+                    if (role.getName().equals("ADMIN")) {
+                        Stage stage = (Stage) ((Node) evt.getSource()).getScene().getWindow();
+                        FXMLLoader loader = new FXMLLoader(getClass().getResource("trangChuAdmin.fxml"));
+                        Parent manageView = loader.load();
+                        Scene scene = new Scene(manageView);
+                        ChuyenXeController controller = loader.getController();
+                        controller.setUserInfo(user);
+                        stage.setScene(scene);
+                        stage.show();
+                    } else {
+                        // chuyen trang
+                        Stage stage = (Stage) ((Node) evt.getSource()).getScene().getWindow();
+                        FXMLLoader loader = new FXMLLoader(getClass().getResource("datVe.fxml"));
+                        Parent manageView = loader.load();
+                        Scene scene = new Scene(manageView);
+                        DatVeController controller = loader.getController();
+                        controller.setUserInfo(user);
+                        stage.setScene(scene);
+                        stage.show();
+                    }
+                } else {
+                    MessageBox.getBox("Login", "Mật khẩu không đúng",
+                            Alert.AlertType.ERROR).show();
                 }
-            }else{
-                MessageBox.getBox("Login", "Mật khẩu không đúng", 
-                Alert.AlertType.ERROR).show();
             }
         }
+
     }
 }
