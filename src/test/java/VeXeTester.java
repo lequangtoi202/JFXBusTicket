@@ -148,7 +148,7 @@ public class VeXeTester {
     @Test
     public void testUpdateVeXe() throws SQLException {
         VeXe veXe = new VeXe();
-
+        
         // Thực hiện cập nhật thông tin của đối tượng VeXe vào cơ sở dữ liệu
          VeXeService veXeService = new VeXeService();
         boolean result = veXeService.updateVeXe(veXe, 27, Status.Canceled);
@@ -163,7 +163,20 @@ public class VeXeTester {
         ResultSet rs = stm.executeQuery();
         Assertions.assertTrue(rs.next());
         Assertions.assertEquals(Status.Canceled.toString(), rs.getString("Trang_thai"));
+    }
+    
+    @Test
+    public void testKiemTraTgianQuaHan() {
+        VeXeService veXeService = new VeXeService();
         
+        //Kiểm tra xem có trả ra ngoại lệ nào hay không
+        Assertions.assertDoesNotThrow(() -> veXeService.kiemTraTgianQuaHan());
+    }
+    
+    @Test
+    public void testThuHoiVeXe() {
+        VeXeService veXeService = new VeXeService();
+        Assertions.assertDoesNotThrow(() -> veXeService.thuHoiVeXe());
     }
 
 }
