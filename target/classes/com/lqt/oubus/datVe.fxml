@@ -139,7 +139,7 @@
                               <TextField fx:id="txtGioDi" disable="true" editable="false" promptText="Giờ khởi hành" GridPane.columnIndex="1" GridPane.columnSpan="4" GridPane.rowIndex="3" />
                               <RadioButton fx:id="rdNam" mnemonicParsing="false" prefHeight="17.0" prefWidth="68.0" selected="true" text="Nam" GridPane.columnIndex="12" GridPane.columnSpan="2" GridPane.rowIndex="6" />
                               <RadioButton fx:id="rdNu" mnemonicParsing="false" prefHeight="17.0" prefWidth="64.0" text="Nữ" GridPane.columnIndex="14" GridPane.columnSpan="2" GridPane.rowIndex="6" />
-                              <DatePicker fx:id="dNgaySinh" promptText="--Ngày sinh--" GridPane.columnIndex="1" GridPane.columnSpan="4" GridPane.rowIndex="7" />
+                              <DatePicker fx:id="dNgaySinh" editable="false" promptText="--Ngày sinh--" GridPane.columnIndex="1" GridPane.columnSpan="4" GridPane.rowIndex="7" />
                               <ComboBox fx:id="cbXe" prefWidth="150.0" promptText="--Chọn xe--" GridPane.columnIndex="12" GridPane.columnSpan="4" GridPane.rowIndex="3" />
                            </children>
                         </GridPane>

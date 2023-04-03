@@ -135,19 +135,22 @@ public class BanVeController implements Initializable {
             this.cbXe.setOnAction(e -> {
                 Xe xeDaChon = this.cbXe.getSelectionModel().getSelectedItem();
                 List<Ghe> dsGhe = null;
-                try {
-                    dsGhe = gheService.getAllGheEmptyByMaXe(xeDaChon.getMaXe());
-                } catch (SQLException ex) {
-                    Logger.getLogger(DatVeController.class.getName()).log(Level.SEVERE, null, ex);
+                if (xeDaChon != null) {
+                    try {
+                        dsGhe = gheService.getAllGheEmptyByMaXe(xeDaChon.getMaXe());
+                    } catch (SQLException ex) {
+                        Logger.getLogger(DatVeController.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                    this.cbGhe.setItems(FXCollections.observableList(dsGhe));
                 }
-                this.cbGhe.setItems(FXCollections.observableList(dsGhe));
+
             });
 
             List<BenXe> benXe = benXeService.getAllBenXe();
             this.cbBenDi.setItems(FXCollections.observableList(benXe));
             this.cbBenDen.setItems(FXCollections.observableList(benXe));
             this.loadTableColumns();
-            
+
             ToggleGroup toggleGroup = new ToggleGroup();
             this.rdNam.setToggleGroup(toggleGroup);
             this.rdNu.setToggleGroup(toggleGroup);
@@ -168,11 +171,11 @@ public class BanVeController implements Initializable {
     }
 
     public void timChuyenXe(ActionEvent e) throws SQLException {
-        if (this.cbBenDi.getValue() == null && this.cbBenDen.getValue() == null){
+        if (this.cbBenDi.getValue() == null || this.cbBenDen.getValue() == null) {
             MessageBox.getBox("Chuyến xe",
-                        "Vui lòng chọn bến đi và bến đến",
-                        Alert.AlertType.WARNING);
-        }else{
+                    "Vui lòng chọn bến đi và bến đến",
+                    Alert.AlertType.WARNING);
+        } else {
             String tenBenXeDi = this.cbBenDi.getSelectionModel().getSelectedItem().getTenBen();
             String tenBenXeDen = this.cbBenDen.getSelectionModel().getSelectedItem().getTenBen();
             this.loadChuyenXe(tenBenXeDi, tenBenXeDen);
@@ -184,11 +187,7 @@ public class BanVeController implements Initializable {
         if (kiemTraThongTin()) {
             String tenKH = this.txtTenKH.getText();
             boolean gioiTinh;
-            if (this.rdNam.isSelected()) {
-                gioiTinh = this.rdNam.isSelected();
-            } else {
-                gioiTinh = this.rdNu.isSelected();
-            }
+            gioiTinh = this.rdNam.isSelected();
             String diaChi = this.txtDiaChi.getText();
             String CCCD = this.txtCCCD.getText();
             String dienThoai = this.txtDienThoai.getText();
@@ -231,17 +230,17 @@ public class BanVeController implements Initializable {
     public boolean kiemTraThongTin() {
         Pattern dienThoaiRegex = Pattern.compile("^0\\d{9}$");
         Pattern CCCDRegex = Pattern.compile("^[0-9]{9,12}$");
-        if (this.txtMaChuyen.getText().isEmpty()){
+        if (this.txtMaChuyen.getText().isEmpty()) {
             MessageBox.getBox("Chuyến xe", "Vui lòng chọn chuyến xe muốn đi",
                     Alert.AlertType.WARNING).show();
             return false;
         }
-        if (this.txtTenKH.getText().trim().isEmpty()){
+        if (this.txtTenKH.getText().trim().isEmpty()) {
             MessageBox.getBox("Khách hàng", "Vui lòng nhập tên khách hàng",
                     Alert.AlertType.WARNING).show();
             return false;
         }
-        if (this.dNgaySinh.getValue()==null){
+        if (this.dNgaySinh.getValue() == null) {
             MessageBox.getBox("Ngày Sinh", "Vui lòng nhập ngày sinh",
                     Alert.AlertType.WARNING).show();
             return false;
@@ -275,7 +274,7 @@ public class BanVeController implements Initializable {
                     Alert.AlertType.WARNING).show();
             return false;
         }
-        
+
         if (this.txtDiaChi.getText().trim().isEmpty()) {
             MessageBox.getBox("Khách hàng", "Vui lòng nhập địa chỉ",
                     Alert.AlertType.WARNING).show();
@@ -294,20 +293,25 @@ public class BanVeController implements Initializable {
         return true;
     }
 
-    public void huyHandler(ActionEvent e) {
+    public void huyHandler(ActionEvent e) throws SQLException {
         clear();
     }
 
-    public void clear() {
+    public void clear() throws SQLException {
         this.txtBenDen.clear();
         this.txtBenDi.clear();
         this.txtDienThoai.clear();
         this.txtCCCD.clear();
         this.txtDiaChi.clear();
-        this.lbTenChuyen.setText("Nơi đi - Nơi đến");
+        this.lbTenChuyen.setText("Nơi đi --> Nơi đến");
         this.txtGioDi.clear();
         this.txtMaChuyen.clear();
         this.txtTenKH.clear();
+        this.cbXe.getItems().clear();
+        this.cbGhe.getItems().clear();
+        List<Xe> dsXe = xeService.getAllXe();
+        this.cbXe.setItems(FXCollections.observableList(dsXe));
+
     }
 
     private void loadTableColumns() {

@@ -40,7 +40,10 @@ public class LoginController {
         if (username.isEmpty()) {
             MessageBox.getBox("Login", "Vui lòng nhập tên đăng nhập",
                     Alert.AlertType.ERROR).show();
-        } else {
+        } else if (password.isEmpty()) {
+            MessageBox.getBox("Login", "Vui lòng nhập mật khẩu",
+                    Alert.AlertType.ERROR).show();
+        }else {
             User user = UserService.getUsernameAndPassword(username, password);
             if (user == null) {
                 MessageBox.getBox("Login", "Tài khoản không tồn tại!",

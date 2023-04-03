@@ -134,12 +134,15 @@ public class DatVeController implements Initializable {
             this.cbXe.setOnAction(e -> {
                 Xe xeDaChon = this.cbXe.getSelectionModel().getSelectedItem();
                 List<Ghe> dsGhe = null;
-                try {
-                    dsGhe = gheService.getAllGheEmptyByMaXe(xeDaChon.getMaXe());
-                } catch (SQLException ex) {
-                    Logger.getLogger(DatVeController.class.getName()).log(Level.SEVERE, null, ex);
+                if (xeDaChon != null) {
+                    try {
+                        dsGhe = gheService.getAllGheEmptyByMaXe(xeDaChon.getMaXe());
+                    } catch (SQLException ex) {
+                        Logger.getLogger(DatVeController.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                    this.cbGhe.setItems(FXCollections.observableList(dsGhe));
                 }
-                this.cbGhe.setItems(FXCollections.observableList(dsGhe));
+
             });
 
             List<BenXe> benXe = benXeService.getAllBenXe();
@@ -170,17 +173,17 @@ public class DatVeController implements Initializable {
     public boolean kiemTraThongTin() {
         Pattern dienThoaiRegex = Pattern.compile("^0\\d{9}$");
         Pattern CCCDRegex = Pattern.compile("^[0-9]{9,12}$");
-        if (this.txtMaChuyen.getText().isEmpty()){
+        if (this.txtMaChuyen.getText().isEmpty()) {
             MessageBox.getBox("Chuyến xe", "Vui lòng chọn chuyến xe muốn đi",
                     Alert.AlertType.WARNING).show();
             return false;
         }
-        if (this.txtTenKH.getText().trim().isEmpty()){
+        if (this.txtTenKH.getText().trim().isEmpty()) {
             MessageBox.getBox("Khách hàng", "Vui lòng nhập tên khách hàng",
                     Alert.AlertType.WARNING).show();
             return false;
         }
-        if (this.dNgaySinh.getValue()==null){
+        if (this.dNgaySinh.getValue() == null) {
             MessageBox.getBox("Ngày Sinh", "Vui lòng nhập ngày sinh",
                     Alert.AlertType.WARNING).show();
             return false;
@@ -188,8 +191,8 @@ public class DatVeController implements Initializable {
         Matcher dienThoaimatcher = dienThoaiRegex.matcher(this.txtDienThoai.getText().trim());
         Matcher CCCDmatcher = CCCDRegex.matcher(this.txtCCCD.getText().trim());
         Pattern ngaySinhRegex = Pattern.compile("^\\d{2}/\\d{2}/\\d{4}$");
-        Matcher ngaySinhMatchar = ngaySinhRegex.matcher(this.dNgaySinh.getValue().toString());
-        if (this.dNgaySinh.getValue().isAfter(LocalDate.now()) && !ngaySinhMatchar.matches()) {
+        Matcher ngaySinhMatcher = ngaySinhRegex.matcher(this.dNgaySinh.getValue().toString());
+        if (this.dNgaySinh.getValue().isAfter(LocalDate.now()) && !ngaySinhMatcher.matches()) {
             MessageBox.getBox("Ngày sinh", "Ngày sinh không hợp lệ",
                     Alert.AlertType.WARNING).show();
             return false;
@@ -214,7 +217,7 @@ public class DatVeController implements Initializable {
                     Alert.AlertType.WARNING).show();
             return false;
         }
-        
+
         if (this.txtDiaChi.getText().trim().isEmpty()) {
             MessageBox.getBox("Khách hàng", "Vui lòng nhập địa chỉ",
                     Alert.AlertType.WARNING).show();
@@ -248,11 +251,7 @@ public class DatVeController implements Initializable {
         if (kiemTraThongTin()) {
             String tenKH = this.txtTenKH.getText();
             boolean gioiTinh;
-            if (this.rdNam.isSelected()) {
-                gioiTinh = this.rdNam.isSelected();
-            } else {
-                gioiTinh = this.rdNu.isSelected();
-            }
+            gioiTinh = this.rdNam.isSelected();
             String diaChi = this.txtDiaChi.getText();
             String CCCD = this.txtCCCD.getText();
             String dienThoai = this.txtDienThoai.getText();
@@ -283,10 +282,9 @@ public class DatVeController implements Initializable {
                         MessageBox.getBox("Ghế", "Chọn ghế không thành công", Alert.AlertType.ERROR).show();
                     }
                     MessageBox.getBox("Vé Xe", "ĐẶT VÉ THÀNH CÔNG", Alert.AlertType.INFORMATION).show();
-                    
+
                     clear();
                 }
-
             }
         }
     }
@@ -297,10 +295,16 @@ public class DatVeController implements Initializable {
         this.txtDienThoai.clear();
         this.txtCCCD.clear();
         this.txtDiaChi.clear();
-        this.lbTenChuyen.setText("Nơi đi - Nơi đến");
+        this.lbTenChuyen.setText("Nơi đi --> Nơi đến");
         this.txtGioDi.clear();
         this.txtMaChuyen.clear();
         this.txtTenKH.clear();
+        this.cbXe.getItems().clear();
+        this.cbGhe.getItems().clear();
+
+        List<Xe> dsXe = xeService.getAllXe();
+        this.cbXe.setItems(FXCollections.observableList(dsXe));
+
     }
 
     private void loadTableColumns() {
