@@ -86,7 +86,7 @@
                   <TextField fx:id="txtTenChuyen" prefWidth="214.0" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.rowIndex="3" GridPane.rowSpan="2" />
                   <ComboBox fx:id="cbTuyenXe" prefWidth="150.0" GridPane.columnIndex="4" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.rowIndex="3" GridPane.rowSpan="2" />
                   <ComboBox fx:id="cbTaiXe" prefWidth="150.0" GridPane.columnIndex="4" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.rowIndex="5" GridPane.rowSpan="2" />
-                  <DatePicker fx:id="dNgayDi" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.halignment="LEFT" GridPane.rowIndex="5" GridPane.rowSpan="2" />
+                  <DatePicker fx:id="dNgayDi" editable="false" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.halignment="LEFT" GridPane.rowIndex="5" GridPane.rowSpan="2" />
                   <Button mnemonicParsing="false" onAction="#themHandler" prefHeight="38.0" prefWidth="102.0" text="Thêm" GridPane.columnIndex="2" GridPane.columnSpan="2" GridPane.halignment="RIGHT" GridPane.rowIndex="10" GridPane.rowSpan="2">
                      <GridPane.margin>
                         <Insets right="40.0" />

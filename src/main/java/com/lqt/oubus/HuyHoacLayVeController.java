@@ -13,6 +13,7 @@ import com.lqt.service.VeXeService;
 import com.lqt.utils.MessageBox;
 import java.io.IOException;
 import java.sql.SQLException;
+import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -124,9 +125,11 @@ public class HuyHoacLayVeController {
         } else {
             MessageBox.getBox("Vé xe",
                     "Vui lòng nhập mã vé muốn hủy",
-                    Alert.AlertType.WARNING);
+                    Alert.AlertType.WARNING).show();
         }
     }
+    
+    
 
     public void layVeHandler(ActionEvent evt) throws SQLException {
         if (!txtMaVeXe.getText().isEmpty()) {
@@ -150,7 +153,7 @@ public class HuyHoacLayVeController {
                 }
             });
         } else {
-            MessageBox.getBox("Vé xe", "Vui lòng điền mã vé.", Alert.AlertType.WARNING);
+            MessageBox.getBox("Vé xe", "Vui lòng điền mã vé.", Alert.AlertType.WARNING).show();
         }
     }
 
