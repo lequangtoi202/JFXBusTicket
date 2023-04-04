@@ -8,6 +8,7 @@ import com.lqt.pojo.ChuyenXe;
 import com.lqt.pojo.TaiXe;
 import com.lqt.pojo.TuyenXe;
 import com.lqt.pojo.User;
+import com.lqt.pojo.Xe;
 import com.lqt.service.ChuyenXeService;
 import com.lqt.service.TaiXeService;
 import com.lqt.service.TuyenXeService;
@@ -181,10 +182,17 @@ public class ChuyenXeController implements Initializable {
         this.tbChuyenXe.getColumns().addAll(colMaChuyen, colTenChuyen, colThoiGianDi, colMaTaiXe, colMaTuyen, colChon, colXoa);
     }
 
-    public void clear() {
+    public void clear() throws SQLException {
         this.txtGioDi.setText("");
         this.txtMaChuyen.setText("");
+        this.txtTenChuyen.clear();
         this.dNgayDi.setValue(LocalDate.now());
+        this.cbTaiXe.getItems().clear();
+        this.cbTuyenXe.getItems().clear();
+        List<TuyenXe> dsTuyenXe = tuyenXeService.getAllTuyenXe();
+        this.cbTuyenXe.setItems(FXCollections.observableList(dsTuyenXe));
+        List<TaiXe> dsTaiXe = taiXeService.getAllTaiXe();
+        this.cbTaiXe.setItems(FXCollections.observableList(dsTaiXe));
     }
 
     public void themHandler(ActionEvent evt) throws SQLException {
@@ -204,6 +212,7 @@ public class ChuyenXeController implements Initializable {
                 MessageBox.getBox("Chuyến xe", "Tạo chuyến xe thất bại!",
                         Alert.AlertType.ERROR).show();
             }
+            clear();
         }
     }
 
@@ -271,9 +280,11 @@ public class ChuyenXeController implements Initializable {
                     MessageBox.getBox("Chuyến xe", "Sửa chuyến xe thất bại!",
                             Alert.AlertType.ERROR).show();
                 }
+                clear();
             }
         }
     }
+    
 
     //----------------------------Chuyển trang-----------------------------
     public void chuyenTrangTraCuu(MouseEvent m) throws IOException, SQLException {
