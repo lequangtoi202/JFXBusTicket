@@ -134,6 +134,26 @@ public class DoiVeContoller {
     }
 
     public boolean kiemTraThongTin() {
+        if (this.txtTenKH.getText().trim().isEmpty()) {
+            MessageBox.getBox("Khách hàng", "Vui lòng nhập tên khách hàng",
+                    Alert.AlertType.WARNING).show();
+            return false;
+        }
+        if (this.txtDienThoai.getText().trim().isEmpty()) {
+            MessageBox.getBox("Khách hàng", "Vui lòng nhập số điện thoại",
+                    Alert.AlertType.WARNING).show();
+            return false;
+        }
+        if (this.txtDiaChi.getText().trim().isEmpty()) {
+            MessageBox.getBox("Khách hàng", "Vui lòng nhập địa chỉ",
+                    Alert.AlertType.WARNING).show();
+            return false;
+        }
+        if (this.txtCCCD.getText().trim().isEmpty()) {
+            MessageBox.getBox("Khách hàng", "Vui lòng nhập căn cước công dân",
+                    Alert.AlertType.WARNING).show();
+            return false;
+        }
         Pattern dienThoaiRegex = Pattern.compile("^0\\d{9}$");
         Pattern CCCDRegex = Pattern.compile("^[0-9]{9,12}$");
         Matcher dienThoaimatcher = dienThoaiRegex.matcher(this.txtDienThoai.getText().trim());
