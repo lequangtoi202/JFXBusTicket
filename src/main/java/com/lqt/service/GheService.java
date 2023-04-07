@@ -105,8 +105,8 @@ public class GheService {
         try (Connection conn = JdbcUtils.getConn()) {
             List<ThuHoiGheResponse> dsGheThuHoi = new ArrayList<>();
             String sql = "select g.Ma_xe, c.Ma_Chuyen_Xe from chuyen_xe as c, ve_xe as v, ghe as g\n" +
-                            "where c.Ma_Chuyen_Xe=v.Ma_Chuyen_Xe and g.Ma_ghe=v.Ma_ghe and TIMEDIFF(c.Thoi_gian_di, now()) <= '00:00:00'\n" +
-                            "group by g.Ma_xe, c.Ma_Chuyen_Xe";
+                        "where c.Ma_Chuyen_Xe=v.Ma_Chuyen_Xe and g.Ma_ghe=v.Ma_ghe and TIMEDIFF(c.Thoi_gian_di, now()) <= '00:00:00' and c.is_updated=0\n" +
+                        "group by g.Ma_xe, c.Ma_Chuyen_Xe";
             
             
             Statement stm = conn.createStatement();
@@ -117,10 +117,11 @@ public class GheService {
             if (!dsGheThuHoi.isEmpty())
             {
                 for (ThuHoiGheResponse i : dsGheThuHoi) {
-                    if (!updateTrangThaiGheByMaXe(TrangThaiGhe.Empty, i.getMaXe()))
-                        return false;
                     ChuyenXeService chuyenXeService = new ChuyenXeService();
-                    if (!chuyenXeService.updateChuyenXeDaDi(i.getMaChuyen()))
+                    if (chuyenXeService.updateChuyenXeDaDi(i.getMaChuyen()))
+                        if (!updateTrangThaiGheByMaXe(TrangThaiGhe.Empty, i.getMaXe()))
+                            return false;
+                    else 
                         return false;
                 }
             }
