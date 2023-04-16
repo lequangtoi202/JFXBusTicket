@@ -87,8 +87,12 @@ public class TraCuuController implements Initializable {
 
     private void loadChuyenXe(String benDi, String benDen) throws SQLException {
         List<ChuyenXe> dsChuyenXe = chuyenXeService.getChuyenXeByBenDiAndBenDen(benDi, benDen);
-        this.tbChuyenXe.getItems().clear();
-        this.tbChuyenXe.setItems(FXCollections.observableList(dsChuyenXe));
+        if (!dsChuyenXe.isEmpty()) {
+            this.tbChuyenXe.getItems().clear();
+            this.tbChuyenXe.setItems(FXCollections.observableList(dsChuyenXe));
+        } else {
+            MessageBox.getBox("Chuyến xe", "Không có chuyến xe.", Alert.AlertType.WARNING).show();
+        }
     }
 
     private void loadTableColumns() {
