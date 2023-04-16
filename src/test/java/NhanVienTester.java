@@ -48,7 +48,7 @@ public class NhanVienTester {
         NhanVien nhanVien = nhanVienService.getNhanVienByUserId(userId);
         
         Assertions.assertNotNull(nhanVien);
-        Assertions.assertEquals("Tới", nhanVien.getTenNV());
+        Assertions.assertEquals("Lê Quang Tới", nhanVien.getTenNV());
         //Assertions.assertTrue(nhanVien.isGioiTinh());
         //Assertions.assertEquals("123456789", nhanVien.getCCCD());
         //Assertions.assertEquals("0123456789", nhanVien.getDienThoai());

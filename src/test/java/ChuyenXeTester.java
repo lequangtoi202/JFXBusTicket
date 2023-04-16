@@ -7,7 +7,6 @@ import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -61,24 +60,24 @@ public class ChuyenXeTester {
         List<ChuyenXe> chuyenXeList = chuyenXeService.getChuyenXeByBenDiAndBenDen(benDi, benDen);
         System.out.println(chuyenXeList.size());
         // Assert
-        Assertions.assertEquals("Hà Nội - Hải Phòng 2", chuyenXeList.get(0).getTenChuyen());
-        Assertions.assertEquals(1, chuyenXeList.get(0).getMaTaiXe());
+        Assertions.assertEquals("Hà Nội - Nam Định 1", chuyenXeList.get(0).getTenChuyen());
+        Assertions.assertEquals(2, chuyenXeList.get(0).getMaTaiXe());
         Assertions.assertEquals(2, chuyenXeList.get(0).getMaTuyenXe());
-        Assertions.assertEquals(4, chuyenXeList.get(0).getMaChuyenXe());
+        Assertions.assertEquals(15, chuyenXeList.get(0).getMaChuyenXe());
     }
 
     @Test
     public void testGetChuyenXeById() throws SQLException {
-        int maChuyenXe = 4;
+        int maChuyenXe = 14;
 
         // Act
         ChuyenXe chuyenXe = chuyenXeService.getChuyenXeById(maChuyenXe);
         // Assert
         Assertions.assertNotNull(chuyenXe);
-        Assertions.assertEquals("Hà Nội - Hải Phòng 2", chuyenXe.getTenChuyen());
+        Assertions.assertEquals("Hà Nội - Hải Phòng 1", chuyenXe.getTenChuyen());
         Assertions.assertEquals(1, chuyenXe.getMaTaiXe());
-        Assertions.assertEquals(2, chuyenXe.getMaTuyenXe());
-        Assertions.assertEquals(4, chuyenXe.getMaChuyenXe());
+        Assertions.assertEquals(1, chuyenXe.getMaTuyenXe());
+        Assertions.assertEquals(14, chuyenXe.getMaChuyenXe());
     }
 
     @Test
@@ -95,8 +94,8 @@ public class ChuyenXeTester {
 
     @Test
     public void testAddChuyenXe() throws SQLException {
-        String gioDi = "15:50:00";
-        LocalDate ngayDi = LocalDate.of(2023, 4, 5);
+        String gioDi = "15:30:00";
+        LocalDate ngayDi = LocalDate.of(2023, 5, 6);
         LocalDateTime thoiGianDi = LocalDateTime.of(ngayDi, LocalTime.parse(gioDi));
         ChuyenXe chuyenXe = new ChuyenXe("Hà Nội - Hải Phòng 3", thoiGianDi, 1, 1, false);
         // Act
@@ -114,19 +113,19 @@ public class ChuyenXeTester {
     @Test
     public void testUpdateChuyenXe() throws SQLException {
         String gioDi = "17:00:00";
-        LocalDate ngayDi = LocalDate.of(2023, 4, 8);
+        LocalDate ngayDi = LocalDate.of(2023, 5, 8);
         LocalDateTime thoiGianDi = LocalDateTime.of(ngayDi, LocalTime.parse(gioDi));
         ChuyenXe chuyenXe = new ChuyenXe("Hà Nội - Nam Định 3", thoiGianDi, 2, 2, false);
         boolean success = chuyenXeService.addChuyenXe(chuyenXe);
         Assertions.assertTrue(success);
         
         ChuyenXe chuyenXeMoiNhat = chuyenXeService.getChuyenXeMoiNhat();
-        ChuyenXe chuyenXeUpdate = new ChuyenXe("Hà Nội - Nam Định 4", LocalDateTime.of(LocalDate.of(2023, 4, 12), LocalTime.parse("11:30:00")), 2, 2, true);
+        ChuyenXe chuyenXeUpdate = new ChuyenXe("Hà Nội - Nam Định 4", LocalDateTime.of(LocalDate.of(2023, 5, 12), LocalTime.parse("11:30:00")), 2, 2, true);
         chuyenXeService.updateChuyenXe(chuyenXeUpdate, chuyenXeMoiNhat.getMaChuyenXe());
         ChuyenXe chuyenXeSauUpdate = chuyenXeService.getChuyenXeById(chuyenXeMoiNhat.getMaChuyenXe());
         
         Assertions.assertEquals("Hà Nội - Nam Định 4", chuyenXeSauUpdate.getTenChuyen());
-        Assertions.assertEquals(LocalDateTime.of(LocalDate.of(2023, 4, 12), LocalTime.parse("11:30:00")), chuyenXeSauUpdate.getThoiGianDi());
+        Assertions.assertEquals(LocalDateTime.of(LocalDate.of(2023, 5, 12), LocalTime.parse("11:30:00")), chuyenXeSauUpdate.getThoiGianDi());
         Assertions.assertEquals(2, chuyenXeSauUpdate.getMaTuyenXe());
         Assertions.assertEquals(2, chuyenXeSauUpdate.getMaTaiXe());
         Assertions.assertTrue(chuyenXeSauUpdate.isIs_updated());
@@ -135,7 +134,7 @@ public class ChuyenXeTester {
     @Test
     public void testDeleteChuyenXe() throws SQLException {
         String gioDi = "16:00:00";
-        LocalDate ngayDi = LocalDate.of(2023, 4, 9);
+        LocalDate ngayDi = LocalDate.of(2023, 5, 9);
         LocalDateTime thoiGianDi = LocalDateTime.of(ngayDi, LocalTime.parse(gioDi));
         ChuyenXe chuyenXe = new ChuyenXe("Hà Nội - Nam Định 5", thoiGianDi, 2, 1, false);
         boolean success = chuyenXeService.addChuyenXe(chuyenXe);

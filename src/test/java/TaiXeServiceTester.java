@@ -49,9 +49,9 @@ public class TaiXeServiceTester {
         
         Assertions.assertNotNull(taiXe);
         Assertions.assertEquals(1,taiXe.getMaTaiXe());
-        Assertions.assertEquals("A", taiXe.getTenTaiXe());
+        Assertions.assertEquals("Nguyễn Văn An", taiXe.getTenTaiXe());
         Assertions.assertTrue(taiXe.isGioiTinh());
-        Assertions.assertEquals("TP HCM", taiXe.getDiaChi());
+        Assertions.assertEquals("Huyện Nhà Bè, Hồ Chí Minh", taiXe.getDiaChi());
         Assertions.assertEquals("0988969820", taiXe.getDienThoai());
         Assertions.assertEquals("038202001543", taiXe.getCCCD());
         Assertions.assertEquals("abc@gmail.com", taiXe.getEmail());

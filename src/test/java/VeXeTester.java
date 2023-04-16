@@ -60,12 +60,12 @@ public class VeXeTester {
         VeXeService veXeService = new VeXeService();
         
         // Tạo một xe mong đợi từ cơ sở dữ liệu với id = 3
-        VeXe expected = new VeXe(3, LocalDateTime.of(2023, 3, 6, 15, 30, 0), Status.Canceled, 2, 2, 1, 1);
+        VeXe expected = new VeXe(67, LocalDateTime.of(2023, 3, 6, 15, 30, 0), Status.Canceled, 2, 2, 1, 1);
         
-        // Thực thi phương thức getXeById(3) để lấy xe thực tế với id = 3
+        // Thực thi phương thức getXeById(3) để lấy xe thực tế với id = 67
         VeXe actualVeXe = null;
         try {
-            actualVeXe = veXeService.getVeXeById(3);
+            actualVeXe = veXeService.getVeXeById(67);
         } catch (SQLException ex) {
             fail("Lỗi khi truy vấn cơ sở dữ liệu");
         }
@@ -86,13 +86,13 @@ public class VeXeTester {
         // Tạo một đối tượng XeDAO để truy cập cơ sở dữ liệu
         VeXeService veXeService = new VeXeService();
         
-        // Tạo một xe mong đợi từ cơ sở dữ liệu với id = 3
-        VeXe expected = new VeXe(3, LocalDateTime.of(2023, 3, 6, 15, 30, 0), Status.Canceled, 2, 2, 1, 1);
+        // Tạo một xe mong đợi từ cơ sở dữ liệu với id = 67
+        VeXe expected = new VeXe(67, LocalDateTime.of(2023, 3, 6, 15, 30, 0), Status.Canceled, 2, 2, 1, 1);
         
         
         VeXe actualVeXe = null;
         try {
-            actualVeXe = veXeService.getVeXeById(3);
+            actualVeXe = veXeService.getVeXeById(67);
         } catch (SQLException ex) {
             fail("Lỗi khi truy vấn cơ sở dữ liệu");
         }
@@ -107,7 +107,7 @@ public class VeXeTester {
         VeXeService veXeService = new VeXeService();
         
         //Tạo một id không có trong csdl
-        int id = 100;
+        int id = 1000;
         
         VeXe actualVeXe = null;
         try {
@@ -126,8 +126,8 @@ public class VeXeTester {
         veXe.setThoiGianBan(LocalDateTime.now());
         veXe.setTrangThai(Status.Done);
         veXe.setMaNV(2);
-        veXe.setMaKH(33);
-        veXe.setMaChuyenXe(2);
+        veXe.setMaKH(94);
+        veXe.setMaChuyenXe(14);
         veXe.setMaGhe(2);
 
         // Thực hiện thêm mới đối tượng VeXe vào cơ sở dữ liệu
@@ -148,10 +148,15 @@ public class VeXeTester {
     @Test
     public void testUpdateVeXe() throws SQLException {
         VeXe veXe = new VeXe();
-        
+        veXe.setThoiGianBan(LocalDateTime.now());
+        veXe.setTrangThai(Status.Done);
+        veXe.setMaNV(2);
+        veXe.setMaKH(95);
+        veXe.setMaChuyenXe(14);
+        veXe.setMaGhe(2);
         // Thực hiện cập nhật thông tin của đối tượng VeXe vào cơ sở dữ liệu
          VeXeService veXeService = new VeXeService();
-        boolean result = veXeService.updateVeXe(veXe, 27, Status.Canceled);
+        boolean result = veXeService.updateVeXe(veXe, 67, Status.Canceled);
 
         // Kiểm tra kết quả
         Assertions.assertTrue(result);
@@ -159,7 +164,7 @@ public class VeXeTester {
         // Kiểm tra dữ liệu đã được cập nhật trong cơ sở dữ liệu chưa
         String sql = "SELECT * FROM ve_xe WHERE Ma_Ve_Xe = ?";
         PreparedStatement stm = conn.prepareStatement(sql);
-        stm.setInt(1, 27);
+        stm.setInt(1, 67);
         ResultSet rs = stm.executeQuery();
         Assertions.assertTrue(rs.next());
         Assertions.assertEquals(Status.Canceled.toString(), rs.getString("Trang_thai"));

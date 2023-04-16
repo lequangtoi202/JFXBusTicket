@@ -1,4 +1,4 @@
 -------------------------------------------------------------------------------
 Test set: XeTester
 -------------------------------------------------------------------------------
-Tests run: 3, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.58 s - in XeTester
+Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.87 s - in XeTester

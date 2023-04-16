@@ -58,7 +58,7 @@ public class GheTester {
     @Test
     public void testUpdateTrangThaiGheByMaGhe() throws SQLException {
         TrangThaiGhe trangThai = TrangThaiGhe.Selected;
-        Ghe ghe = new Ghe("A2", TrangThaiGhe.Empty, 2);
+        Ghe ghe = new Ghe("A17", TrangThaiGhe.Empty, 1);
         int id = gheService.addGhe(ghe);
         boolean rs = gheService.updateTrangThaiGheByMaGhe(id, trangThai);
         PreparedStatement stm = conn.prepareCall("SELECT * FROM ghe WHERE Ma_ghe=?");
@@ -71,9 +71,9 @@ public class GheTester {
     
     @Test
     public void testUpdateTrangThaiGheByMaXe() throws SQLException {
-        List<Ghe> dsGhe = new ArrayList<>();
+        List<Ghe> dsGhe;
         TrangThaiGhe trangThai = TrangThaiGhe.Empty;
-        Ghe newGhe = new Ghe("A2", TrangThaiGhe.Selected, 2);
+        Ghe newGhe = new Ghe("A17", TrangThaiGhe.Selected, 1);
         int id = gheService.addGhe(newGhe);
         Ghe ghe = gheService.getGheById(id);
         
@@ -87,15 +87,15 @@ public class GheTester {
     
     @Test
     public void testGetAllGheEmptyByMaXeNotExisted() throws SQLException {
-        List<Ghe> dsGhe = new ArrayList<>();
-        dsGhe = gheService.getAllGheEmptyByMaXe(4);
+        List<Ghe> dsGhe;
+        dsGhe = gheService.getAllGheEmptyByMaXe(20);
         
         Assertions.assertTrue(dsGhe.isEmpty());
     }
     
     @Test
     public void testGetAllGheEmptyByMaXe() throws SQLException {
-        List<Ghe> dsGhe = new ArrayList<>();
+        List<Ghe> dsGhe;
         dsGhe = gheService.getAllGheEmptyByMaXe(1);
         
         Assertions.assertTrue(!dsGhe.isEmpty());

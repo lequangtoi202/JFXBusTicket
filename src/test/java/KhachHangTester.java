@@ -46,7 +46,7 @@ public class KhachHangTester {
     
     @Test
     public void testGetKhachHangByValidId() throws SQLException{
-        int maKH = 40;
+        int maKH = 93;
         KhachHang khachHang = khachHangService.getKhachHangById(maKH);
         Assertions.assertNotNull(khachHang);
 //        Assertions.assertTrue(khachHang.isGioiTinh());
@@ -74,7 +74,7 @@ public class KhachHangTester {
     @Test
     public void testUpdateKhachHang() throws SQLException, ParseException{
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-        KhachHang khachHang = new KhachHang("Nguyễn Văn A", true, dateFormat.parse("2003-04-12"), "ABC", "0988969820", "0192847562134");
+        KhachHang khachHang = new KhachHang("Nguyễn Văn B", true, dateFormat.parse("2003-04-12"), "ABC", "0988969820", "0192847562134");
         int id = khachHangService.addKhachHang(khachHang);
         
         KhachHang khachHangUpdate = new KhachHang(id, "Nguyễn Thị B", false, dateFormat.parse("1999-04-11"), "Nguyễn Thị Thập, Quận 7", "0988969820", "0192847562134");

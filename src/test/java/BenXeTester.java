@@ -45,7 +45,7 @@ public class BenXeTester {
     
     @Test
     public void testGetBenXeByIdNotExisted() throws SQLException{
-        int maBenXe = 20;
+        int maBenXe = 999;
         BenXe benXe = benXeService.getBenXeById(maBenXe);
         Assertions.assertEquals(null, benXe);
     }

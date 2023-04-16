@@ -49,8 +49,16 @@ public class XeTester {
         XeService xeService = new XeService();
         // Tạo một danh sách các xe mong đợi từ cơ sở dữ liệu
         List<Xe> expectedXeList = Arrays.asList(
-            new Xe(1, "Limousine", "59 - A2 57245", 16, 1),
-            new Xe(2, "Limousine 2", "59 - B5 92746", 16, 1)
+            new Xe(1, "Huyndai Solati", "59D - 57245", 16, 3),
+            new Xe(2, "Ford Transit", "59 B - 92746", 16, 3),
+            new Xe(3, "Phương Trang", "65A - 54637", 16, 1),
+            new Xe(4, "Phương Trang(ghế ngồi)", "55E - 74585", 16, 2),
+            new Xe(5, "Ford Transit 2", "59H - 92776", 16, 3),
+            new Xe(6, "Huyndai County", "62H - 92776", 16, 2),
+            new Xe(7, "Huyndai Universe 47", "47A - 78695", 16, 1),
+            new Xe(8, "Huyndai Universe 29", "47K - 78695", 16, 2),
+            new Xe(9, "Samco", "55F - 78576", 16, 2),
+            new Xe(10, "Samco 35", "57F - 45476", 16, 1)
         );
         // Thực thi phương thức getAllXe() để lấy danh sách xe thực tế
         List<Xe> actualXeList = null;
@@ -78,7 +86,7 @@ public class XeTester {
         // Tạo một đối tượng XeDAO để truy cập cơ sở dữ liệu
         XeService xeService = new XeService();
         // Tạo một xe mong đợi từ cơ sở dữ liệu với id = 1
-        Xe expectedXe = new Xe(1, "Limousine", "59 - A2 57245", 16, 1);
+        Xe expectedXe = new Xe(1, "Huyndai Solati", "59D - 57245", 16, 3);
         // Thực thi phương thức getXeById(1) để lấy xe thực tế với id = 1
         Xe actualXe = null;
         try {
