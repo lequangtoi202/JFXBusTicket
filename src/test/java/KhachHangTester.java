@@ -39,9 +39,9 @@ public class KhachHangTester {
             try {
             conn.close();
 
-        } catch (SQLException ex) {
-            Logger.getLogger(ChuyenXeTester.class.getName()).log(Level.SEVERE, null, ex);
-        }
+            } catch (SQLException ex) {
+                Logger.getLogger(ChuyenXeTester.class.getName()).log(Level.SEVERE, null, ex);
+            }
     }
     
     @Test

@@ -35,8 +35,8 @@ public class LoginController {
     private TextField txtPassword;
 
     public void login(ActionEvent evt) throws SQLException, IOException {
-        String username = this.txtUsername.getText().trim();
-        String password = this.txtPassword.getText().trim();
+        String username = this.txtUsername.getText();
+        String password = this.txtPassword.getText();
         if (username.isEmpty()) {
             MessageBox.getBox("Login", "Vui lòng nhập tên đăng nhập",
                     Alert.AlertType.ERROR).show();

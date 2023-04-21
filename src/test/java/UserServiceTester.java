@@ -93,4 +93,60 @@ public class UserServiceTester {
         Assertions.assertNotEquals(expectedUser.getPassword(), actualUser.getPassword());
        
     }
+    
+    @Test
+    public void testGetUsernameAndPasswordWithUsernameContainsSpace() throws SQLException {
+        // Tạo đối tượng UserDao
+        UserService userService = new UserService();
+        
+        String username = "   quangtoi   ";
+        String password = "lqt25092002";
+        
+        // Gọi phương thức getUsernameAndPassword
+        User actualUser = userService.getUsernameAndPassword(username, password);
+        
+        // Kết quả trả về hai giá trị khác nhau
+        Assertions.assertNull(actualUser);
+       
+    }
+    
+    @Test
+    public void testGetUsernameAndPasswordWithPasswordContainsSpace() throws SQLException {
+        // Tạo đối tượng UserDao
+        UserService userService = new UserService();
+        
+        User expectedUser = new User(1, "quangtoi", "lqt25092002", 2);
+        String username = "quangtoi";
+        String password = " lqt2509  2002     ";
+        
+        // Gọi phương thức getUsernameAndPassword
+        User actualUser = userService.getUsernameAndPassword(username, password);
+        
+        // Kết quả trả về hai giá trị khác nhau
+        Assertions.assertNotNull(actualUser);
+        Assertions.assertEquals(expectedUser.getMaUser(), actualUser.getMaUser());
+        Assertions.assertEquals(expectedUser.getUsername(), actualUser.getUsername());
+        Assertions.assertNotEquals(expectedUser.getPassword(), password);
+
+    }
+    
+    @Test
+    public void testGetUsernameAndPasswordWithPasswordContainsSpaceAtStartAndEnd() throws SQLException {
+        // Tạo đối tượng UserDao
+        UserService userService = new UserService();
+        
+        User expectedUser = new User(1, "quangtoi", "lqt25092002", 2);
+        String username = "quangtoi";
+        String password = "  lqt25092002     ";
+        
+        // Gọi phương thức getUsernameAndPassword
+        User actualUser = userService.getUsernameAndPassword(username, password);
+        
+        // Kết quả trả về hai giá trị khác nhau
+        Assertions.assertNotNull(actualUser);
+        Assertions.assertEquals(expectedUser.getMaUser(), actualUser.getMaUser());
+        Assertions.assertEquals(expectedUser.getUsername(), actualUser.getUsername());
+        Assertions.assertNotEquals(expectedUser.getPassword(), password);
+
+    }
 }

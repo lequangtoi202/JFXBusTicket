@@ -190,6 +190,7 @@ public class BanVeController implements Initializable {
             gioiTinh = this.rdNam.isSelected();
             String diaChi = this.txtDiaChi.getText();
             String CCCD = this.txtCCCD.getText();
+            
             String dienThoai = this.txtDienThoai.getText();
 
             Date ngaySinh = new SimpleDateFormat("yyyy-MM-dd").parse(this.dNgaySinh.getValue().toString());
@@ -313,6 +314,8 @@ public class BanVeController implements Initializable {
         this.cbXe.setItems(FXCollections.observableList(dsXe));
 
     }
+    
+    
 
     private void loadTableColumns() {
 

@@ -124,7 +124,7 @@ public class VeXeTester {
         // Tạo một đối tượng VeXe mới để thêm vào cơ sở dữ liệu
         VeXe veXe = new VeXe();
         veXe.setThoiGianBan(LocalDateTime.now());
-        veXe.setTrangThai(Status.Done);
+        veXe.setTrangThai(Status.Booked);
         veXe.setMaNV(2);
         veXe.setMaKH(94);
         veXe.setMaChuyenXe(14);
@@ -149,7 +149,7 @@ public class VeXeTester {
     public void testUpdateVeXe() throws SQLException {
         VeXe veXe = new VeXe();
         veXe.setThoiGianBan(LocalDateTime.now());
-        veXe.setTrangThai(Status.Done);
+        veXe.setTrangThai(Status.Booked);
         veXe.setMaNV(2);
         veXe.setMaKH(95);
         veXe.setMaChuyenXe(14);

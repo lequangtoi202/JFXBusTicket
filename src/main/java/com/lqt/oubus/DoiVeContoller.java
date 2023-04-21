@@ -98,38 +98,44 @@ public class DoiVeContoller {
             MessageBox.getBox("Vé Xe", "Vui lòng nhập mã vé",
                     Alert.AlertType.WARNING).show();
         } else {
-            int maVe = Integer.parseInt(this.txtMaVe.getText().trim());
-            VeXe veXe = veXeService.getVeXeBookedById(maVe);
-            clear();
-            if (veXe != null) {
-                Ghe ghe = gheService.getGheById(veXe.getMaGhe());
-                ChuyenXe chuyenXe = chuyenXeService.getChuyenXeById(veXe.getMaChuyenXe());
-                TuyenXe tuyenXe = tuyenXeService.getTuyenXeById(chuyenXe.getMaTuyenXe());
-                Xe xe = xeService.getXeById(ghe.getMaXe());
-                List<ChuyenXe> dsChuyenXe = chuyenXeService.getAllChuyenXe();
-                List<Ghe> dsGhe = gheService.getAllGheEmptyByMaXe(xe.getMaXe());
+            if (isNumber(this.txtMaVe.getText())) {
+                int maVe = Integer.parseInt(this.txtMaVe.getText().trim());
+                VeXe veXe = veXeService.getVeXeBookedById(maVe);
+                clear();
+                if (veXe != null) {
+                    Ghe ghe = gheService.getGheById(veXe.getMaGhe());
+                    ChuyenXe chuyenXe = chuyenXeService.getChuyenXeById(veXe.getMaChuyenXe());
+                    TuyenXe tuyenXe = tuyenXeService.getTuyenXeById(chuyenXe.getMaTuyenXe());
+                    Xe xe = xeService.getXeById(ghe.getMaXe());
+                    List<ChuyenXe> dsChuyenXe = chuyenXeService.getAllChuyenXe();
+                    List<Ghe> dsGhe = gheService.getAllGheEmptyByMaXe(xe.getMaXe());
 
-                KhachHang khachHang = khachHangService.getKhachHangById(veXe.getMaKH());
-                this.cbChuyenXe.setItems(FXCollections.observableList(dsChuyenXe));
-                this.cbGhe.setItems(FXCollections.observableList(dsGhe));
-                this.txtBienSoXe.setText(xe.getBienSoXe());
-                this.txtCCCD.setText(khachHang.getCCCD());
-                this.txtDiaChi.setText(khachHang.getDiaChi());
-                this.txtDienThoai.setText(khachHang.getDienThoai());
-                this.cbChuyenXe.setValue(chuyenXe);
-                this.cbGhe.setValue(ghe);
-                this.txtGioDi.setText(chuyenXe.getThoiGianDi().toLocalTime().toString());
-                this.txtTenKH.setText(khachHang.getTenKH());
+                    KhachHang khachHang = khachHangService.getKhachHangById(veXe.getMaKH());
+                    this.cbChuyenXe.setItems(FXCollections.observableList(dsChuyenXe));
+                    this.cbGhe.setItems(FXCollections.observableList(dsGhe));
+                    this.txtBienSoXe.setText(xe.getBienSoXe());
+                    this.txtCCCD.setText(khachHang.getCCCD());
+                    this.txtDiaChi.setText(khachHang.getDiaChi());
+                    this.txtDienThoai.setText(khachHang.getDienThoai());
+                    this.cbChuyenXe.setValue(chuyenXe);
+                    this.cbGhe.setValue(ghe);
+                    this.txtGioDi.setText(chuyenXe.getThoiGianDi().toLocalTime().toString());
+                    this.txtTenKH.setText(khachHang.getTenKH());
 
-                this.dThoiGianDi.setValue(chuyenXe.getThoiGianDi().toLocalDate());
-                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-                this.dNgaySinh.setValue(LocalDate.parse(khachHang.getNgaySinh().toString(), formatter));
-                this.lbThanhTien.setText(tuyenXe.getBangGia() + " VNĐ");
+                    this.dThoiGianDi.setValue(chuyenXe.getThoiGianDi().toLocalDate());
+                    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+                    this.dNgaySinh.setValue(LocalDate.parse(khachHang.getNgaySinh().toString(), formatter));
+                    this.lbThanhTien.setText(tuyenXe.getBangGia() + " VNĐ");
 
+                } else {
+                    MessageBox.getBox("Vé Xe", "Không tìm thấy vé xe có mã " + maVe + " hoặc vé đã được mua.",
+                            Alert.AlertType.WARNING).show();
+                }
             } else {
-                MessageBox.getBox("Vé Xe", "KHÔNG CÓ VÉ XE CÓ MÃ LÀ " + maVe + " HOẶC VÉ ĐÃ ĐƯỢC MUA.",
+                MessageBox.getBox("Vé Xe", "Mã vé không hợp lệ",
                         Alert.AlertType.WARNING).show();
             }
+
         }
     }
 
@@ -170,8 +176,8 @@ public class DoiVeContoller {
                     Alert.AlertType.WARNING).show();
             return false;
         }
-        
-        if (this.dNgaySinh.getValue().isAfter(LocalDate.now())&&!ngaySinhMatchar.matches()) {
+
+        if (this.dNgaySinh.getValue().isAfter(LocalDate.now()) && !ngaySinhMatchar.matches()) {
             MessageBox.getBox("Ngày sinh", "Ngày sinh không hợp lệ",
                     Alert.AlertType.WARNING).show();
             return false;
@@ -194,62 +200,69 @@ public class DoiVeContoller {
             MessageBox.getBox("Vé Xe", "Vui lòng nhập mã vé",
                     Alert.AlertType.WARNING).show();
         } else {
-            int maVe = Integer.parseInt(this.txtMaVe.getText().trim());
-            VeXe veXe = veXeService.getVeXeBookedById(maVe);
-            if (veXe != null) {
-                if (kiemTraThongTin()) {
-                    LocalDate ngayDi = this.dThoiGianDi.getValue();
-                    String gioDi = txtGioDi.getText();
-                    LocalTime localTime = LocalTime.parse(gioDi);
+            if (isNumber(this.txtMaVe.getText())) {
+                int maVe = Integer.parseInt(this.txtMaVe.getText().trim());
+                VeXe veXe = veXeService.getVeXeBookedById(maVe);
+                if (veXe != null) {
+                    if (kiemTraThongTin()) {
+                        LocalDate ngayDi = this.dThoiGianDi.getValue();
+                        String gioDi = txtGioDi.getText();
+                        LocalTime localTime = LocalTime.parse(gioDi);
 
-                    LocalDateTime thoiGianDi = LocalDateTime.of(ngayDi, localTime);
-                    Duration duration = Duration.between(LocalDateTime.now(), thoiGianDi);
-                    long minutes = duration.toMinutes();
+                        LocalDateTime thoiGianDi = LocalDateTime.of(ngayDi, localTime);
+                        Duration duration = Duration.between(LocalDateTime.now(), thoiGianDi);
+                        long minutes = duration.toMinutes();
 
-                    if (minutes < 60) {
-                        MessageBox.getBox("Vé Xe", "Thời gian đổi vé không hợp lệ!",
-                                Alert.AlertType.WARNING).show();
-                    } else {
-                        //sửa thông tin khách hàng
-                        KhachHang khachHang = khachHangService.getKhachHangById(veXe.getMaKH());
-                        khachHang.setCCCD(this.txtCCCD.getText());
-                        khachHang.setDiaChi(this.txtDiaChi.getText());
-                        khachHang.setDienThoai(this.txtDienThoai.getText());
-                        khachHang.setTenKH(this.txtTenKH.getText());
-                        Date ngaySinh = new SimpleDateFormat("yyyy-MM-dd").parse(this.dNgaySinh.getValue().toString());
-                        khachHang.setNgaySinh(ngaySinh);
-                        if (!khachHangService.updateKhachHang(khachHang)) {
-                            MessageBox.getBox("Khách hàng", "Cập nhật thông tin khách hàng thất bại.",
-                                    Alert.AlertType.WARNING).show();
-                        }
-                        int maGheDaDat = veXe.getMaGhe();
-                        if (!gheService.updateTrangThaiGheByMaGhe(maGheDaDat, TrangThaiGhe.Empty)) {
-                            MessageBox.getBox("Ghế", "Cập nhật ghế thất bại.",
+                        if (minutes < 60) {
+                            MessageBox.getBox("Vé Xe", "Thời gian đổi vé không hợp lệ!",
                                     Alert.AlertType.WARNING).show();
                         } else {
-                            //lấy ghế mới
-                            Ghe gheMoi = this.cbGhe.getValue();
-                            veXe.setMaGhe(gheMoi.getMaGhe());
-                            veXe.setMaChuyenXe(this.cbChuyenXe.getValue().getMaChuyenXe());
-                            if (!veXeService.updateVeXe(veXe, veXe.getMaVeXe(), Status.Booked)) {
-                                MessageBox.getBox("Vé xe", "Cập nhật thông tin vé xe thất bại.",
+                            //sửa thông tin khách hàng
+                            KhachHang khachHang = khachHangService.getKhachHangById(veXe.getMaKH());
+                            khachHang.setCCCD(this.txtCCCD.getText());
+                            khachHang.setDiaChi(this.txtDiaChi.getText());
+                            khachHang.setDienThoai(this.txtDienThoai.getText());
+                            khachHang.setTenKH(this.txtTenKH.getText());
+                            Date ngaySinh = new SimpleDateFormat("yyyy-MM-dd").parse(this.dNgaySinh.getValue().toString());
+                            khachHang.setNgaySinh(ngaySinh);
+
+                            if (!khachHangService.updateKhachHang(khachHang)) {
+                                MessageBox.getBox("Khách hàng", "Cập nhật thông tin khách hàng thất bại.",
+                                        Alert.AlertType.WARNING).show();
+                            }
+                            int maGheDaDat = veXe.getMaGhe();
+                            if (!gheService.updateTrangThaiGheByMaGhe(maGheDaDat, TrangThaiGhe.Empty)) {
+                                MessageBox.getBox("Ghế", "Cập nhật ghế thất bại.",
                                         Alert.AlertType.WARNING).show();
                             } else {
-                                if (!gheService.updateTrangThaiGheByMaGhe(gheMoi.getMaGhe(), TrangThaiGhe.Selected)) {
-                                    MessageBox.getBox("Ghế", "Cập nhật ghế thất bại.",
+                                //lấy ghế mới
+                                Ghe gheMoi = this.cbGhe.getValue();
+                                veXe.setMaGhe(gheMoi.getMaGhe());
+                                veXe.setMaChuyenXe(this.cbChuyenXe.getValue().getMaChuyenXe());
+                                if (!veXeService.updateVeXe(veXe, veXe.getMaVeXe(), Status.Booked)) {
+                                    MessageBox.getBox("Vé xe", "Cập nhật thông tin vé xe thất bại.",
                                             Alert.AlertType.WARNING).show();
                                 } else {
-                                    MessageBox.getBox("Vé xe", "Cập nhật thông tin vé xe thành công.",
-                                            Alert.AlertType.INFORMATION).show();
+                                    if (!gheService.updateTrangThaiGheByMaGhe(gheMoi.getMaGhe(), TrangThaiGhe.Selected)) {
+                                        MessageBox.getBox("Ghế", "Cập nhật ghế thất bại.",
+                                                Alert.AlertType.WARNING).show();
+                                    } else {
+                                        MessageBox.getBox("Vé xe", "Cập nhật thông tin vé xe thành công.",
+                                                Alert.AlertType.INFORMATION).show();
+                                    }
                                 }
                             }
                         }
                     }
+                } else {
+                    MessageBox.getBox("Vé Xe", "Không tìm thấy vé xe có mã " + maVe + " hoặc vé đã được mua.",
+                            Alert.AlertType.WARNING).show();
                 }
             } else {
-                MessageBox.getBox("Vé Xe", "KHÔNG CÓ VÉ XE CÓ MÃ LÀ " + maVe + " HOẶC VÉ ĐÃ ĐƯỢC MUA.",
+                MessageBox.getBox("Vé Xe", "Mã vé không hợp lệ",
                         Alert.AlertType.WARNING).show();
             }
+
         }
     }
 
@@ -260,6 +273,10 @@ public class DoiVeContoller {
         this.txtDienThoai.clear();
         this.txtGioDi.clear();
         this.txtTenKH.clear();
+    }
+
+    public boolean isNumber(String str) {
+        return str.matches("[0-9]+");
     }
 
     //-----------Chuyển trang ------------- 

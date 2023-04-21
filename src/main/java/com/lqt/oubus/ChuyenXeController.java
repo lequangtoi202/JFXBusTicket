@@ -8,7 +8,6 @@ import com.lqt.pojo.ChuyenXe;
 import com.lqt.pojo.TaiXe;
 import com.lqt.pojo.TuyenXe;
 import com.lqt.pojo.User;
-import com.lqt.pojo.Xe;
 import com.lqt.service.ChuyenXeService;
 import com.lqt.service.TaiXeService;
 import com.lqt.service.TuyenXeService;

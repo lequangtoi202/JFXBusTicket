@@ -105,7 +105,6 @@ public class XeTester {
     
     @Test
     public void testGetXeByIdNull() {
-        // Tạo một đối tượng XeDAO để truy cập cơ sở dữ liệu
         XeService xeService = new XeService();
         
         Xe actualXe = null;

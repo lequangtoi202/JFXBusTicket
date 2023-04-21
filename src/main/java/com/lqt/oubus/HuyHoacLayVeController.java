@@ -13,7 +13,6 @@ import com.lqt.service.VeXeService;
 import com.lqt.utils.MessageBox;
 import java.io.IOException;
 import java.sql.SQLException;
-import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -63,27 +62,37 @@ public class HuyHoacLayVeController {
         lbUsername.setText(user.getUsername());
     }
 
+    public boolean isNumber(String str) {
+        return str.matches("[0-9]+");
+    }
+
     public void timVeHandler(ActionEvent evt) throws SQLException {
         if (txtMaVe.getText().trim().isBlank()) {
             MessageBox.getBox("Vé Xe", "Vui lòng nhập mã vé",
                     Alert.AlertType.WARNING).show();
         } else {
-            int maVe = Integer.parseInt(this.txtMaVe.getText().trim());
-            VeXe veXe = veXeService.getVeXeBookedById(maVe);
-            clear();
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
-            if (veXe != null) {
-                this.txtMaGhe.setText(String.valueOf(veXe.getMaGhe()));
-                this.txtMaNV.setText(String.valueOf(veXe.getMaNV()));
-                this.txtMaVeXe.setText(String.valueOf(veXe.getMaVeXe()));
-                this.txtMaChuyenXe.setText(String.valueOf(veXe.getMaChuyenXe()));
-                this.txtMaKH.setText(String.valueOf(veXe.getMaKH()));
-                this.txtThoiGianBan.setText(veXe.getThoiGianBan().format(formatter));
-                this.txtTrangThai.setText(veXe.getTrangThai().toString());
+            if (isNumber(this.txtMaVe.getText())) {
+                int maVe = Integer.parseInt(this.txtMaVe.getText().trim());
+                VeXe veXe = veXeService.getVeXeBookedById(maVe);
+                clear();
+                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
+                if (veXe != null) {
+                    this.txtMaGhe.setText(String.valueOf(veXe.getMaGhe()));
+                    this.txtMaNV.setText(String.valueOf(veXe.getMaNV()));
+                    this.txtMaVeXe.setText(String.valueOf(veXe.getMaVeXe()));
+                    this.txtMaChuyenXe.setText(String.valueOf(veXe.getMaChuyenXe()));
+                    this.txtMaKH.setText(String.valueOf(veXe.getMaKH()));
+                    this.txtThoiGianBan.setText(veXe.getThoiGianBan().format(formatter));
+                    this.txtTrangThai.setText(veXe.getTrangThai().toString());
+                } else {
+                    MessageBox.getBox("Vé Xe", "KHÔNG CÓ VÉ XE CÓ MÃ LÀ " + maVe + " HOẶC VÉ ĐÃ ĐƯỢC MUA.",
+                            Alert.AlertType.WARNING).show();
+                }
             } else {
-                MessageBox.getBox("Vé Xe", "KHÔNG CÓ VÉ XE CÓ MÃ LÀ " + maVe + " HOẶC VÉ ĐÃ ĐƯỢC MUA.",
+                MessageBox.getBox("Vé Xe", "Mã vé xe không hợp lệ",
                         Alert.AlertType.WARNING).show();
             }
+
         }
     }
 
@@ -99,59 +108,69 @@ public class HuyHoacLayVeController {
 
     public void huyVeHandler(ActionEvent evt) throws SQLException {
         if (!txtMaVeXe.getText().isEmpty()) {
-            int maVeXe = Integer.parseInt(this.txtMaVeXe.getText());
-            VeXe veXe = veXeService.getVeXeBookedById(maVeXe);
-            Alert confirm = MessageBox.getBox("Vé xe",
-                    "Bạn có muốn hủy vé xe này không?",
-                    Alert.AlertType.CONFIRMATION);
-            confirm.showAndWait().ifPresent((ButtonType res) -> {
-                if (res == ButtonType.OK) {
-                    try {
-                        if (veXeService.updateVeXe(veXe, maVeXe, Status.Canceled) == true) {
-                            if (!gheService.updateTrangThaiGheByMaGhe(veXe.getMaGhe(), TrangThaiGhe.Empty)) {
-                                MessageBox.getBox("Ghế", "Hủy ghế thất bại!", Alert.AlertType.WARNING).show();
+            if (isNumber(this.txtMaVe.getText())) {
+                int maVeXe = Integer.parseInt(this.txtMaVeXe.getText());
+                VeXe veXe = veXeService.getVeXeBookedById(maVeXe);
+                Alert confirm = MessageBox.getBox("Vé xe",
+                        "Bạn có muốn hủy vé xe này không?",
+                        Alert.AlertType.CONFIRMATION);
+                confirm.showAndWait().ifPresent((ButtonType res) -> {
+                    if (res == ButtonType.OK) {
+                        try {
+                            if (veXeService.updateVeXe(veXe, maVeXe, Status.Canceled) == true) {
+                                if (!gheService.updateTrangThaiGheByMaGhe(veXe.getMaGhe(), TrangThaiGhe.Empty)) {
+                                    MessageBox.getBox("Ghế", "Hủy ghế thất bại!", Alert.AlertType.WARNING).show();
+                                } else {
+                                    MessageBox.getBox("Vé xe", "Hủy vé thành công!", Alert.AlertType.INFORMATION).show();
+                                    clear();
+                                }
                             } else {
-                                MessageBox.getBox("Vé xe", "Hủy vé thành công!", Alert.AlertType.INFORMATION).show();
-                                clear();
+                                MessageBox.getBox("Vé xe", "Hủy vé thất bại", Alert.AlertType.WARNING).show();
                             }
-                        } else {
-                            MessageBox.getBox("Vé xe", "Hủy vé thất bại", Alert.AlertType.WARNING).show();
+                        } catch (SQLException ex) {
+                            Logger.getLogger(HuyHoacLayVeController.class.getName()).log(Level.SEVERE, null, ex);
                         }
-                    } catch (SQLException ex) {
-                        Logger.getLogger(HuyHoacLayVeController.class.getName()).log(Level.SEVERE, null, ex);
                     }
-                }
-            });
+                });
+            } else {
+                MessageBox.getBox("Vé Xe", "Mã vé xe không hợp lệ",
+                        Alert.AlertType.WARNING).show();
+            }
+
         } else {
             MessageBox.getBox("Vé xe",
                     "Vui lòng nhập mã vé muốn hủy",
                     Alert.AlertType.WARNING).show();
         }
     }
-    
-    
 
     public void layVeHandler(ActionEvent evt) throws SQLException {
         if (!txtMaVeXe.getText().isEmpty()) {
-            int maVeXe = Integer.parseInt(this.txtMaVeXe.getText());
-            VeXe veXe = veXeService.getVeXeBookedById(maVeXe);
-            Alert confirm = MessageBox.getBox("Vé xe",
-                    "Bạn có muốn lấy vé xe này không?",
-                    Alert.AlertType.CONFIRMATION);
-            confirm.showAndWait().ifPresent((ButtonType res) -> {
-                if (res == ButtonType.OK) {
-                    try {
-                        if (veXeService.updateVeXe(veXe, maVeXe, Status.Done) == true) {
-                            MessageBox.getBox("Vé xe", "Lấy vé thành công!", Alert.AlertType.INFORMATION).show();
-                            clear();
-                        } else {
-                            MessageBox.getBox("Vé xe", "Lấy vé thất bại", Alert.AlertType.INFORMATION).show();
+            if (isNumber(this.txtMaVe.getText())) {
+                int maVeXe = Integer.parseInt(this.txtMaVeXe.getText());
+                VeXe veXe = veXeService.getVeXeBookedById(maVeXe);
+                Alert confirm = MessageBox.getBox("Vé xe",
+                        "Bạn có muốn lấy vé xe này không?",
+                        Alert.AlertType.CONFIRMATION);
+                confirm.showAndWait().ifPresent((ButtonType res) -> {
+                    if (res == ButtonType.OK) {
+                        try {
+                            if (veXeService.updateVeXe(veXe, maVeXe, Status.Done) == true) {
+                                MessageBox.getBox("Vé xe", "Lấy vé thành công!", Alert.AlertType.INFORMATION).show();
+                                clear();
+                            } else {
+                                MessageBox.getBox("Vé xe", "Lấy vé thất bại", Alert.AlertType.INFORMATION).show();
+                            }
+                        } catch (SQLException ex) {
+                            Logger.getLogger(HuyHoacLayVeController.class.getName()).log(Level.SEVERE, null, ex);
                         }
-                    } catch (SQLException ex) {
-                        Logger.getLogger(HuyHoacLayVeController.class.getName()).log(Level.SEVERE, null, ex);
                     }
-                }
-            });
+                });
+            }else{
+                MessageBox.getBox("Vé Xe", "Mã vé xe không hợp lệ",
+                        Alert.AlertType.WARNING).show();
+            }
+
         } else {
             MessageBox.getBox("Vé xe", "Vui lòng điền mã vé.", Alert.AlertType.WARNING).show();
         }
